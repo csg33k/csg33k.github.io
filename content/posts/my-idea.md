@@ -1,7 +1,9 @@
----
-title: "My Idea"
-date: 2020-09-20T18:26:21-07:00
-draft: true
----
++++
+date = "2019-12-31"
+title = "My Idea"
+draft = false
+slug = "idea" 
+categories = ["blog"]
++++
 
 Not sure why this looks any different but here goes.

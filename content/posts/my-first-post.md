@@ -1,14 +1,10 @@
----
-title: "My First Post"
-date: 2020-09-20T17:46:33-07:00
-draft: true
----
++++ 
+date = "2018-12-31"
+title = "Dummy"
+slug = "dummy" 
+tags = ["hugo", "i18n"]
+categories = ["blog"]
+authors = ["Translation test"]
++++
 
-# Hello World
-
-OMG Hello this is a test.. let's see how this works.
-
-```python
-def main():
-  print("Hello world")
-```
+Nada para ver aqui!

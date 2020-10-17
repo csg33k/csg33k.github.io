@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://safaci2000.github.io/"
 languageCode = "en-us"
 title = "'csgeek' Blog"
 theme = "hugo-coder"
@@ -16,7 +16,7 @@ pygmentscodefencesguesssyntax = true
 
 [params]
     author = "Samir Faci (csgeek)"
-    info = "Backend Engineer, Docker enthusaist"
+    info = "Backend Engineer, Docker enthusiast and other musings"
     description = "csgeek's personal website"
     keywords = "blog,personal"
     avatarurl = "images/avatar.jpg"
@@ -24,12 +24,20 @@ pygmentscodefencesguesssyntax = true
     favicon_32 = "/img/favicon-32x32.png"
     favicon_16 = "/img/favicon-16x16.png"
 
-    footercontent = "Enter a text here."
+    footercontent = "Geeky musings, thoughts and other randomness"
 
     hidecredits = false
     hidecopyright = false
 
     rtl = false
+    maxSeeAlsoItems = 5
+
+    enableTwemoji = true
+
+    dateformat = "January 2, 2006"
+
+    colorscheme = "auto"
+
 
     math = true
     custom_css = ["css/custom.css"]
@@ -60,8 +68,8 @@ pygmentscodefencesguesssyntax = true
 # Menu links
 [[menu.main]]
     name = "Blog"
-    weight = 1
-    url  = "/posts/"
+    weight = 2
+    url  = "posts/"
 [[menu.main]]
     name = "About"
     weight = 2
