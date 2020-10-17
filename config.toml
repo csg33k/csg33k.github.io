@@ -1,4 +1,4 @@
-baseURL = "https://safaci2000.github.io/"
+baseURL = "https://safaci2000.github.io/blog/"
 languageCode = "en-us"
 title = "'csgeek' Blog"
 theme = "hugo-coder"
@@ -11,6 +11,9 @@ canonifyurls = true
 pygmentsstyle = "bw"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
+
+publishDir = "public"
+enableRobotsTXT = "true"
 
 #disqusShortname = "yourdiscussshortname"
 
@@ -73,4 +76,4 @@ pygmentscodefencesguesssyntax = true
 [[menu.main]]
     name = "About"
     weight = 2
-    url = "/about/"
+    url = "about/"
