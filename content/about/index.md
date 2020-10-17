@@ -6,4 +6,8 @@ draft: false
 
 # Me
 
-More about me
+Yes, I know this should likely have more useful details.
+
+Coming soon.
+
+
