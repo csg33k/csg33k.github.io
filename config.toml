@@ -8,7 +8,8 @@ defaultcontentlanguage = "en"
 paginate = 20
 canonifyurls = true
 
-pygmentsstyle = "bw"
+#pygmentsstyle = "bw"
+pygmentsstyle = "fruity"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
@@ -43,7 +44,7 @@ enableRobotsTXT = "true"
 
 
     math = true
-    custom_css = ["css/custom.css"]
+#    custom_css = ["css/custom.css"]
 
 # Social links
 [[params.social]]
@@ -71,7 +72,7 @@ enableRobotsTXT = "true"
 # Menu links
 [[menu.main]]
     name = "Blog"
-    weight = 2
+    weight = 1
     url  = "posts/"
 [[menu.main]]
     name = "About"
