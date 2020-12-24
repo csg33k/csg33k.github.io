@@ -1,4 +1,4 @@
-baseURL = "https://safaci2000.github.io/blog/"
+baseURL = "https://www.esamir.com/blog/"
 languageCode = "en-us"
 title = "'csgeek' Blog"
 theme = "hugo-coder"
