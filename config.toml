@@ -53,20 +53,30 @@ enableRobotsTXT = "true"
     weight = 1
     url = "https://github.com/safaci2000"
 [[params.social]]
-    name = "LinkedIn"
-    icon = "fab fa-linkedin fa-2x"
-    weight = 1
-    url = "https://www.linkedin.com/in/samirfaci/"
-[[params.social]]
     name = "Twitter"
     icon = "fab fa-twitter fa-2x"
-    weight = 3
+    weight = 1
     url = "https://twitter.com/csgeek/"
 [[params.social]]
     name = "Mastodon"
     icon = "fab fa-mastodon fa-2x"
-    weight = 3
+    weight = 1
     url = "https://mastodon.social/@csgeek"
+[[params.social]]
+    name = "Telegram"
+    icon = "fab fa-telegram fa-2x"
+    weight = 1
+    url = "https://t.me/csgeek"
+[[params.social]]
+    name = "StackOverflow"
+    icon = "fab fa-stack-exchange fa-2x"
+    weight = 1
+    url = "https://stackoverflow.com/users/669378/csgeek"
+[[params.social]]
+    name = "LinkedIn"
+    icon = "fab fa-linkedin fa-2x"
+    weight = 1
+    url = "https://www.linkedin.com/in/samirfaci/"
 
 
 # Menu links

@@ -12,4 +12,4 @@ I’ve been involved in more Linux Users Groups, mailing lists and conferences t
 
 I'm a software engineering with a backend and big data focus.  I tend to prefer coding in Go and python these days though I've done Java for well over a decade now.  I love container technology, Kubernetes and always passionate about new tech and learning new skills.
 
-You can find how to reach me on the landing page of this [blog](https://safaci2000.github.io/blog/)
+You can find how to reach me on the landing page of this [blog](https://www.esamir.com)
