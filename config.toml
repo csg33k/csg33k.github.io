@@ -1,4 +1,4 @@
-baseURL = "https://www.esamir.com/blog/"
+baseURL = "https://www.esamir.com/"
 languageCode = "en-us"
 title = "'csgeek' Blog"
 theme = "hugo-coder"
