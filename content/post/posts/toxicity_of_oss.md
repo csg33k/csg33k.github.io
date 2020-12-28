@@ -1,11 +1,13 @@
 ---
 title: "The Toxicity Of Open Source"
 date: 2020-12-23T19:39:55-08:00
-draft: true
+draft: false
 categories: ["blog"]
 tags: ["linux", "opensource", "community"]
 authors: ["csgeek"]
 ---
+![Penguin Banner](/images/penguins_banner.png)
+
 My most recent experiences though really saddened me and exposed a certain toxicity in the OSS community that I really wish wasn't so prevalent. 
 
 I've been posting on and off on dev.to but I never introduced myself so let me preface this post with a bit about me to give some context. 
