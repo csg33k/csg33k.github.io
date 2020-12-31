@@ -4,6 +4,7 @@ title = "'csgeek' Blog"
 theme = "hugo-coder"
 languagecode = "en"
 defaultcontentlanguage = "en"
+googleAnalytics = "UA-46486821-1"
 
 paginate = 20
 canonifyurls = true
