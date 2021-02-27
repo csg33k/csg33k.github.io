@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Samir Faci (csgeek)">
+    <meta name="description" content="I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init.">
+    <meta name="keywords" content="blog,personal">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Poor Man&#39;s Docker Deployment"/>
+<meta name="twitter:description" content="I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init."/>
+
+    <meta property="og:title" content="Poor Man&#39;s Docker Deployment" />
+<meta property="og:description" content="I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.esamir.com/post/posts/docker_deploy_cheaply/" />
+<meta property="article:published_time" content="2020-08-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-26T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.esamir.com/post/posts/docker_deploy_cheaply/">
+    
+    <title>
+  Poor Man&#39;s Docker Deployment · &#39;csgeek&#39; Blog
+</title>
+
+    
+      <link rel="canonical" href="https://www.esamir.com/post/posts/docker_deploy_cheaply/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.esamir.com/css/coder.min.fce3d3684e836ce340cdd591dad1749c310472d5ed4049fab99845c9aec4d4bf.css" integrity="sha256-/OPTaE6DbONAzdWR2tF0nDEEctXtQEn6uZhFya7E1L8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.esamir.com/css/coder-dark.min.717236c74e0a5208ef73964a9f44c6b443b689a95b270d8b2a40d0c012460dac.css" integrity="sha256-cXI2x04KUgjvc5ZKn0TGtEO2ialbJw2LKkDQwBJGDaw=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://www.esamir.com/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon"  sizes="180x180" href="https://www.esamir.com/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+  
+  
+  
+    
+  
+  <body class="colorscheme-auto"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.esamir.com/">
+      &#39;csgeek&#39; Blog
+    </a>
+    
+      <span id="dark-mode-toggle" class="float-right">
+        <i class="fas fa-adjust fa-fw"></i>
+      </span>
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fas fa-bars fa-fw"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/post/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/about/">About</a>
+            </li>
+          
+        
+        
+        <li class="navigation-item separator">
+          <span>|</span>
+        </li>
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Poor Man&#39;s Docker Deployment</h1>
+    </header>
+
+    <p>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one.  Low entry bar, less maintenance that makes docker deployment more appealing.  I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others</p>
+<p><strong>Assumptions</strong>:</p>
+<ol>
+<li>You are somewhat familiar with <a href="www.docker.com">docker</a></li>
+<li>You have some exposure with <a href="https://docs.docker.com/compose/">docker-compose</a></li>
+<li>You know what systemd, init.d scripts are etc.</li>
+<li>You have some exposure to nginx or a similar Proxy.</li>
+</ol>
+<h2 id="ssl">SSL</h2>
+<p>Most services require some level of security.  This is primarily focused towards web based services, so we&rsquo;ll be using letsencrypt.  I usually force all traffic through SSL, though you don&rsquo;t have to.</p>
+<p>If you&rsquo;re not familiar with <a href="https://letsencrypt.org/">letsencrypt</a> and <a href="https://certbot.eff.org/">certbot</a> it&rsquo;s the defacto way of getting a valid certificate of late (for free).  There are other sources but they&rsquo;re all paid services.</p>
+<p>I won&rsquo;t go into the full details on setting this up, but I&rsquo;m making the assumption that you have some kind of wildcard or host based SSL that are on your local file system under some variation of these paths:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/etc/letsencrypt/live/myhost.org/fullchain.pem; /etc/letsencrypt/live/myhost.org/privkey.pem;
+</code></pre></div><p>If you did buy your own cert, I&rsquo;m assuming you know how to get it in a format where nginx will accept them or are able to find the information through your god like google-fu.</p>
+<h2 id="nginx">NGINX</h2>
+<p>There are two approaches to this.  They each have their drawbacks and advantages.</p>
+<ol>
+<li>Running NGINX in a container.</li>
+</ol>
+<p>The big advantage to this approach is that you don&rsquo;t need to expose any ports except HTTPS and HTTP.  Everything else is in the docker internal network.</p>
+<p>Downside, is that you&rsquo;ll have to be using the same docker network for all services.  You also will need to ensure a certain order of operation.  Likely nginx needs to come up last in order to detect the running services.  Or wait the timeout session for service discovery to work.  I&rsquo;ve always had better luck letting everything start first and starting the web server last.</p>
+<ol start="2">
+<li>Running NGINX on Host</li>
+</ol>
+<p>Downside: You will need to expose the services locally on various ports at the very least on localhost.</p>
+<p>Upside: You can simply start nginx as a system service and not worry about docker.  They are disjoint and usually works fairly well.</p>
+<p>I&rsquo;m using the second approach so I&rsquo;ll mainly be exploring what needs to be done to get that working, but keep in mind that solution 1 is perfectly valid.</p>
+<h3 id="nginx-vhost-config">NGINX vhost config.</h3>
+<p>This will vary on your OS, but Debian bases hosts under /etc/nginx/sites-available you&rsquo;ll need to create the config and have a symlink on /etc/nginx/sites-enabled/</p>
+<p>Here&rsquo;s an example configuration:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">server<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">	</span><span style="color:#080;background-color:#0f140f;font-style:italic"># SSL configuration</span><span style="color:#888">
+</span><span style="color:#888">	</span><span style="color:#080;background-color:#0f140f;font-style:italic">#</span><span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">443</span><span style="color:#888"> </span>ssl;<span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span>[::]:<span style="color:#0086f7;font-weight:bold">443</span><span style="color:#888"> </span>ssl;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>access_log<span style="color:#888"> </span>/var/log/nginx/APPNAME_access.log;<span style="color:#888">
+</span><span style="color:#888">        </span>error_log<span style="color:#888"> </span>/var/log/nginx/APPNAME_error.log;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">	</span>ssl<span style="color:#888"> </span>on;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">	</span>ssl_certificate<span style="color:#888"> </span>/etc/letsencrypt/live/appname.myhost.org/fullchain.pem;<span style="color:#888">
+</span><span style="color:#888">	</span>ssl_certificate_key<span style="color:#888"> </span>/etc/letsencrypt/live/appname.myhost.org/privkey.pem;<span style="color:#888">
+</span><span style="color:#888">        </span>client_max_body_size<span style="color:#888"> </span>50M;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#log_format compression &#39;$remote_addr - $remote_user [$time_local] &#39;</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#                       &#39;&#34;$request&#34; $status $bytes_sent &#39;</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#                       &#39;&#34;$http_referer&#34; &#34;$http_user_agent&#34; &#34;$gzip_ratio&#34;&#39;;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#access_log log/nixie_access.log  compression;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>server_name<span style="color:#888"> </span>appname.myhost.org;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>/<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_pass<span style="color:#888"> </span>http://localhost:<span style="color:#0086f7;font-weight:bold">8080</span>;<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_set_header<span style="color:#888"> </span>Host<span style="color:#888">            </span>$host;<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_set_header<span style="color:#888"> </span>X-Forwarded-For<span style="color:#888"> </span>$remote_addr;<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_set_header<span style="color:#888"> </span>X-Real-IP<span style="color:#888"> </span>$remote_addr;<span style="color:#888">
+</span><span style="color:#888">         
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>=<span style="color:#888"> </span>/favicon.ico<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>log_not_found<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">            </span>access_log<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>=<span style="color:#888"> </span>/robots.txt<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>allow<span style="color:#888"> </span>all;<span style="color:#888">
+</span><span style="color:#888">            </span>log_not_found<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">            </span>access_log<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>~*<span style="color:#888"> </span>\.(txt|log)$<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>allow<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">192.168.0.0</span>/<span style="color:#0086f7;font-weight:bold">16</span>;<span style="color:#888">
+</span><span style="color:#888">            </span>deny<span style="color:#888"> </span>all;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>~<span style="color:#888"> </span>\..<span style="color:#ff0007;background-color:#0f140f;font-weight:bold;font-style:italic">*/.*\.php$</span><span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>return<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">403</span>;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic"># Block access to &#34;hidden&#34; files and directories whose names begin with a</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic"># period. This includes directories used by version control systems such</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic"># as Subversion or Git to store control files.</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>~<span style="color:#888"> </span>(^|/)\.<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>return<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">403</span>;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span>server<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">80</span>;<span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span>[::]:<span style="color:#0086f7;font-weight:bold">80</span>;<span style="color:#888">
+</span><span style="color:#888">         </span>server_name<span style="color:#888"> </span>appname.myhost.org<span style="color:#888"> </span>;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">	</span>rewrite<span style="color:#888"> </span>^<span style="color:#888"> </span>https://$server_name$request_uri?<span style="color:#888"> </span>permanent;<span style="color:#888">
+</span><span style="color:#888"></span>}<span style="color:#888">
+</span><span style="color:#888">
+</span></code></pre></div><p>Here&rsquo;s the big take away from this file.  We are hosting a new application that&rsquo;s exposing locally port 8080.  Any request that comes in on appname.myhost.org will get redirected to localhost:8080 and we will return the response.</p>
+<p>This will work great, but we do need to make sure that our docker stack is also running.</p>
+<h2 id="docker-application">Docker application</h2>
+<p>I won&rsquo;t spend too much time on this but let&rsquo;s assume you have a wordpress application similar to the one in the example on their <a href="https://hub.docker.com/_/wordpress">docker hub</a>.</p>
+<p>This is the config example pulled from that link:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;3.1&#39;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>wordpress<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8080</span>:<span style="color:#0086f7;font-weight:bold">80</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_HOST</span>:<span style="color:#888"> </span>db<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_NAME</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- wordpress:/var/www/html<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>mysql:<span style="color:#0086f7;font-weight:bold">5.7</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_DATABASE</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_RANDOM_ROOT_PASSWORD</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;1&#39;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- db:/var/lib/mysql<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span></code></pre></div><p>if everything works as expected when you start the application via docker-compose up -d http://localhost:8080 will become accessible.</p>
+<p>Now, what we need to do is to get it so our docker based application starts up each time our host restarts.  It would be nice if we can manage a docker app like any other service installed.</p>
+<p>So, we&rsquo;re going to create a systemd start up script.</p>
+<h3 id="docker-systemd-script">Docker Systemd script</h3>
+<p>I&rsquo;m running all my docker apps as the docker_user with limited permissions.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[Unit]
+Description = WordPress Blog
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=idle
+WorkingDirectory=/home/docker_user/blog
+ExecStart=/usr/bin/docker-compose up
+ExecStop=/usr/bin/docker-compose  stop
+ExecReload =/usr/bin/docker-compose  restart
+User=docker_user
+GUser=docker_user
+Restart=always
+RestartSec=3
+RestartPreventExitStatus=0
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target 
+
+</code></pre></div><p>let&rsquo;s save this file in /etc/systemd/system/blog.service</p>
+<p>we can enable the service on boot via:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo systemctl enable blog.service
+</code></pre></div><p>You can also test this out manually by simply running:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo service blog {start|stop|restart}
+</code></pre></div><p>At this point you should be able to get a response from:</p>
+<p><a href="https://appname.myhost.org">https://appname.myhost.org</a>, granted the behavior and hostname will vary based on what you do end up running, but if you are running wordpress, You should see the Installation wizards come up.</p>
+<h2 id="docker-check-list">Docker Check List.</h2>
+<ol>
+<li>It&rsquo;s always a good practice to have</li>
+</ol>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> restart: always
+
+</code></pre></div><ol start="2">
+<li>Database backups are not configured here but you should have a script or cron that will create a datadump every so often.</li>
+</ol>
+<h2 id="final-stage">Final stage</h2>
+<p>Ensure the nginx config is valid by using <code>nginx -t</code> and if it all checks out let&rsquo;s restart the nginx server.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo service nginx start
+</code></pre></div><p>At this point even if you have a power outage or someone does a sudo reboot all your services should come back up as expected.</p>
+<p>Naturally this still suffers from a single point of failure, but it&rsquo;s much easier to manage IMO, then the typical bare metal deployments.</p>
+
+  </article>
+</section>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>Geeky musings, thoughts and other randomness</p>
+      
+      
+        ©
+        
+        2021
+         Samir Faci (csgeek) 
+      
+      
+         · 
+        Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+      
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="https://www.esamir.com/js/dark-mode.min.0213e1773e6d1c5a644f847c67a6f8abac49a3776e2976f6008038af8c5b76a1.js"></script>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46486821-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+    
+
+    
+
+  </body>
+
+</html>

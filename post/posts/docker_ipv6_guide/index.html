@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Samir Faci (csgeek)">
+    <meta name="description" content="I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.">
+    <meta name="keywords" content="blog,personal">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker IPV6 Guide"/>
+<meta name="twitter:description" content="I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ."/>
+
+    <meta property="og:title" content="Docker IPV6 Guide" />
+<meta property="og:description" content="I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.esamir.com/post/posts/docker_ipv6_guide/" />
+<meta property="article:published_time" content="2020-08-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-26T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.esamir.com/post/posts/docker_ipv6_guide/">
+    
+    <title>
+  Docker IPV6 Guide · &#39;csgeek&#39; Blog
+</title>
+
+    
+      <link rel="canonical" href="https://www.esamir.com/post/posts/docker_ipv6_guide/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.esamir.com/css/coder.min.fce3d3684e836ce340cdd591dad1749c310472d5ed4049fab99845c9aec4d4bf.css" integrity="sha256-/OPTaE6DbONAzdWR2tF0nDEEctXtQEn6uZhFya7E1L8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.esamir.com/css/coder-dark.min.717236c74e0a5208ef73964a9f44c6b443b689a95b270d8b2a40d0c012460dac.css" integrity="sha256-cXI2x04KUgjvc5ZKn0TGtEO2ialbJw2LKkDQwBJGDaw=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://www.esamir.com/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon"  sizes="180x180" href="https://www.esamir.com/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+  
+  
+  
+    
+  
+  <body class="colorscheme-auto"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.esamir.com/">
+      &#39;csgeek&#39; Blog
+    </a>
+    
+      <span id="dark-mode-toggle" class="float-right">
+        <i class="fas fa-adjust fa-fw"></i>
+      </span>
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fas fa-bars fa-fw"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/post/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/about/">About</a>
+            </li>
+          
+        
+        
+        <li class="navigation-item separator">
+          <span>|</span>
+        </li>
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Docker IPV6 Guide</h1>
+    </header>
+
+    <p>I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.</p>
+<p><strong>Assumptions</strong>:</p>
+<ol>
+<li>You are somewhat familiar with <a href="www.docker.com">docker</a></li>
+<li>You have some exposure with <a href="https://docs.docker.com/compose/">docker-compose</a></li>
+<li>You have at least a basic understanding of networking fundamentals.  I&rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</li>
+<li>Some basic understanding of firewalls, iptables would be good.</li>
+</ol>
+<hr>
+<p>First of all as a developer I find docker to be a glorious thing.  Though it&rsquo;s not limited to just docker, containers in general have made software development so much easier.  It allows a user to run a simple command and have a database, cache, application pretty much any component at your disposal without having the need to be a system administrator and understand the intricacies of configurations in order to get all of these services up and running.</p>
+<p>That being said, in production there are many MANY questions that need to be addressed before going from a dev&rsquo;s use case of docker to a production environment but still it&rsquo;s really a great tool.</p>
+<p>Now, back to the problem at hand, networking.</p>
+<h1 id="networking">Networking</h1>
+<h2 id="ipv4">IPV4</h2>
+<p>Docker was initially built with IPV4 in mind and IPV6 feels like an afterthought.  For IPV4, if you want to expose a service, linked multiple docker containers together, do load balancing everything seems to &lsquo;Just work&rsquo;.  Everything is taken care of for you under the hood and you really don&rsquo;t need to do much.</p>
+<p>This is an example configuration pulled from the <a href="https://hub.docker.com/_/wordpress">wordpress</a> docker hug.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;3.1&#39;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>wordpress<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8080</span>:<span style="color:#0086f7;font-weight:bold">80</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_HOST</span>:<span style="color:#888"> </span>db<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_NAME</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- wordpress:/var/www/html<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>mysql:<span style="color:#0086f7;font-weight:bold">5.7</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_DATABASE</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_RANDOM_ROOT_PASSWORD</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;1&#39;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- db:/var/lib/mysql<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span><span style="color:#888">
+</span></code></pre></div><p>Bringing up different services and wiring them together is a breeze.  All the iptables rules are taken care of and things just work.  I can connect to http://localhost:8080 and I will see the wordpress getting started guide that walks me through the steps to configure my application.</p>
+<p>Now, IF you are operating in an IPV6 only world.  Let&rsquo;s see what this nightmare is about.</p>
+<h3 id="ipv6-networking">IPV6 Networking</h3>
+<h4 id="step-1-enable-in-the-daemon">Step 1, enable in the Daemon</h4>
+<p>You need to edit /etc/docker/daemon.json and add these options.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#fb660a;font-weight:bold">&#34;ipv6&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>,
+  <span style="color:#fb660a;font-weight:bold">&#34;fixed-cidr-v6&#34;</span>: <span style="color:#0086d2">&#34;fd00::/80&#34;</span>
+}
+</code></pre></div><p>The fixed-cidr6 doesn&rsquo;t matter too much but you shouldn&rsquo;t clash with other networks already defined.   The official documentation can be found <a href="https://docs.docker.com/config/daemon/ipv6/">here</a> and I wouldn&rsquo;t stray too far from it unless you know what you&rsquo;re doing.</p>
+<p>Now, the official instructions say all you need to do is restart the service, but I&rsquo;ve found you may need to restart your computer.</p>
+<p>At this point, the network for docker0 default network has been updated to use IPv6.  This does NOT mean that every docker network is IPv6 enabled.</p>
+<h3 id="step-2-firewall-rules">Step 2. FIrewall rules</h3>
+<p>For some reason this is not automatic and needs to be applied manually.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ip6tables -t nat -A POSTROUTING -s fd00::/80 ! -o docker0 -j MASQUERADE
+
+</code></pre></div><p>At this point basic functionality works fine.  So to test this out we can run this:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker run --rm -t busybox ping6 -c <span style="color:#0086f7;font-weight:bold">4</span> google.com
+</code></pre></div><p>Which results in:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">PING google.com (2607:f8b0:400a:808::200e): <span style="color:#0086f7;font-weight:bold">56</span> data bytes
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">0</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.133 ms
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">1</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.119 ms
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">2</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.281 ms
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">3</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.430 ms
+
+--- google.com ping statistics ---
+<span style="color:#0086f7;font-weight:bold">4</span> packets transmitted, <span style="color:#0086f7;font-weight:bold">4</span> packets received, 0% packet loss
+round-trip min/avg/max = 17.119/17.240/17.430 ms
+</code></pre></div><h3 id="docker-compose--ipv6">Docker Compose + IPV6</h3>
+<p>At this point docker has support for IPV6, but since docker-compose generally creates a new network for each docker-compose.yml definition it won&rsquo;t work as expected.</p>
+<p>The big issue with docker-compose is that it seems IPV6 is not supported for any schema version higher than 2.1 (Current version is 3.7).</p>
+<p>Here is an equivalent version using IPV6 and docker-compose</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;2.1&#34;</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">busy</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>busybox<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">command</span>:<span style="color:#888"> </span>ping6<span style="color:#888"> </span>-c<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">4</span><span style="color:#888"> </span>google.com<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">networks</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- app_net<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">networks</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">app_net</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">enable_ipv6</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">driver</span>:<span style="color:#888"> </span>bridge<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">driver_opts</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">com.docker.network.enable_ipv6</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;true&#34;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ipam</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">driver</span>:<span style="color:#888"> </span>default<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">config</span>:<span style="color:#888">
+</span><span style="color:#888">       </span>- <span style="color:#fb660a;font-weight:bold">subnet</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2001</span>:<span style="color:#0086f7;font-weight:bold">3984</span>:<span style="color:#0086f7;font-weight:bold">3989</span>::/<span style="color:#0086f7;font-weight:bold">64</span><span style="color:#888">
+</span><span style="color:#888">         </span><span style="color:#fb660a;font-weight:bold">gateway</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2001</span>:<span style="color:#0086f7;font-weight:bold">3984</span>:<span style="color:#0086f7;font-weight:bold">3989</span>::<span style="color:#0086f7;font-weight:bold">1</span><span style="color:#888">
+</span></code></pre></div><p>Of course now we also need to update the iptable rules:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo ip6tables -t nat -A POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
+</code></pre></div><p>ANDDDDDD.. once you&rsquo;re done you&rsquo;ll have to remove them.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo ip6tables -t nat -D POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
+
+</code></pre></div><p>A few notes and warnings</p>
+<ol>
+<li>The network cannot clash with the existing docker0 network you gave the daemon.</li>
+<li>Version of the schema must not be higher than 2.1.  Docker-compose Binary can be the latest version, but the schema has to be 2.1.  You can read more info on the issue <a href="https://github.com/docker/compose/issues/3988">here</a>.</li>
+</ol>
+<h3 id="nat-issues">NAT Issues</h3>
+<p>Okay, so the way IPV4 works is that all traffic is masked so that if  the host&rsquo;s IP is 10.5.5.23 (for example) and we have 5 different containers all with their own individual addresses, let&rsquo;s say 1.1.1.2-1.1.1.7 respectively.   Any traffic that goes out is <a href="https://en.wikipedia.org/wiki/Network_address_translation">NAT</a>ed  and as far as the outside world and internet network is concerned the request came from 10.5.5.23.</p>
+<p>For IPV6, The request is NOT NATed so all request are coming from the IPV6 docker address and if the firewall doesn&rsquo;t explicitly allow that address then the request will be dropped.</p>
+<p>This is especially troublesome for internal networks where we want to ensure we don&rsquo;t allow external traffic in.</p>
+<p>At this point we have 2 options.</p>
+<ol>
+<li>Allocate docker a range of IPv6 and update all firewall rules to allow traffic in from those IPs to the appropriate resources.</li>
+</ol>
+<p>This I find to be particularly annoying because docker in general is intended to be a transient resource.  You create/destroy resources as needed to allow you to scale up and down.  Having a permanent allocation of address in your network and having to subdivide that range across your multiple compose files can become a logistic nightmare.</p>
+<ol start="2">
+<li>IPV6 NAT-ing</li>
+</ol>
+<p>In general this practice is frowned upon.  I&rsquo;m not a network expert so I will let you all make your decision on this but from a Developer perspective this solution is great.  Though I do encourage you to read up more about this before just copy/pasting this in.</p>
+<p>I ran across this github project called <a href="https://github.com/robbertkl/docker-ipv6nat">docker-ipv6nat</a> which solved all of my problems.  Someone should really buy the author a beer.</p>
+<p>Let&rsquo;s convert our busybox ping project to use this then I&rsquo;ll explain everything it does.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">version: &#34;2.1&#34;
+services:
+  busy:
+    image: busybox
+    command: ping6 -c 4 google.com
+    networks:
+      - app_net
+
+
+  ipv6:
+    image: robbertkl/ipv6nat
+    restart: unless-stopped
+    network_mode: &#34;host&#34;
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /lib/modules:/lib/modules:ro
+
+networks:
+  beef:
+    enable_ipv6: true
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: &#34;true&#34;
+    ipam:
+      driver: default
+      config:
+       - subnet: 2001:3984:3989::/64
+</code></pre></div><p>This approach no longer requires you to create custom iptables rules AND it NATs ipv6 so the request will be accepted without having to update all firewall rules with your favorite IPv6 network.  The project also cleans up after itself and removes any routing rules it creates.</p>
+<p>This unblocked me personally and allowed me to have a docker container work as it used under IPV4.</p>
+<p>Now, is this ideal? It depends.</p>
+<p>From a networking perspective, it&rsquo;s an anti-pattern because we&rsquo;re doing doing things we shouldn&rsquo;t be with IPV6
+From a dev perspective it&rsquo;s perfect.</p>
+<p>The alternative though is to make things work as desired from a networking perspective and create an administration hell which makes docker have to be treated as if it was bare metal.</p>
+<p>Final thoughts.</p>
+<p>For the love of god docker needs to update its IPV6 policy and the way their application supports IPV6.  This is so overly complicated for no reason.</p>
+<p>I would love to hear everyone&rsquo;s thoughts on this and if there are better ways of doing this, but for now for my own personal use I will use IPV6 NAT whenever and wherever i need IPV6 support.1G</p>
+
+  </article>
+</section>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>Geeky musings, thoughts and other randomness</p>
+      
+      
+        ©
+        
+        2021
+         Samir Faci (csgeek) 
+      
+      
+         · 
+        Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+      
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="https://www.esamir.com/js/dark-mode.min.0213e1773e6d1c5a644f847c67a6f8abac49a3776e2976f6008038af8c5b76a1.js"></script>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46486821-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+    
+
+    
+
+  </body>
+
+</html>

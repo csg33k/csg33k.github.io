@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on &#39;csgeek&#39; Blog</title>
+    <link>https://www.esamir.com/tags/docker/</link>
+    <description>Recent content in docker on &#39;csgeek&#39; Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 26 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.esamir.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker IPV6 Guide</title>
+      <link>https://www.esamir.com/post/posts/docker_ipv6_guide/</link>
+      <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/post/posts/docker_ipv6_guide/</guid>
+      <description>I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&amp;rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</description>
+    </item>
+    
+    <item>
+      <title>Poor Man&#39;s Docker Deployment</title>
+      <link>https://www.esamir.com/post/posts/docker_deploy_cheaply/</link>
+      <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/post/posts/docker_deploy_cheaply/</guid>
+      <description>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
+Assumptions:
+ You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init.</description>
+    </item>
+    
+  </channel>
+</rss>

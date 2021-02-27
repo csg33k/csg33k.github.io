@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Samir Faci (csgeek)">
+    <meta name="description" content="Converting from Raid 1 to Raid 5 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.
+Disclaimer: At some point during this process I realized that I had a bad mother board. The reason my /dev/sdd1 failed wasn&rsquo;t the drive, but the bus on the board. That being said, this is the unverified procedure.
+I&rsquo;m running on Ubuntu 12.10 but you should be able to do this on any modern Linux distribution.">
+    <meta name="keywords" content="blog,personal">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Converting Raid 1 to Raid 5 on Linux file systems"/>
+<meta name="twitter:description" content="Converting from Raid 1 to Raid 5 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.
+Disclaimer: At some point during this process I realized that I had a bad mother board. The reason my /dev/sdd1 failed wasn&rsquo;t the drive, but the bus on the board. That being said, this is the unverified procedure.
+I&rsquo;m running on Ubuntu 12.10 but you should be able to do this on any modern Linux distribution."/>
+
+    <meta property="og:title" content="Converting Raid 1 to Raid 5 on Linux file systems" />
+<meta property="og:description" content="Converting from Raid 1 to Raid 5 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.
+Disclaimer: At some point during this process I realized that I had a bad mother board. The reason my /dev/sdd1 failed wasn&rsquo;t the drive, but the bus on the board. That being said, this is the unverified procedure.
+I&rsquo;m running on Ubuntu 12.10 but you should be able to do this on any modern Linux distribution." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.esamir.com/post/posts/raid_convertion_guide/" />
+<meta property="article:published_time" content="2020-08-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-22T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.esamir.com/post/posts/raid_convertion_guide/">
+    
+    <title>
+  Converting Raid 1 to Raid 5 on Linux file systems · &#39;csgeek&#39; Blog
+</title>
+
+    
+      <link rel="canonical" href="https://www.esamir.com/post/posts/raid_convertion_guide/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.esamir.com/css/coder.min.fce3d3684e836ce340cdd591dad1749c310472d5ed4049fab99845c9aec4d4bf.css" integrity="sha256-/OPTaE6DbONAzdWR2tF0nDEEctXtQEn6uZhFya7E1L8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.esamir.com/css/coder-dark.min.717236c74e0a5208ef73964a9f44c6b443b689a95b270d8b2a40d0c012460dac.css" integrity="sha256-cXI2x04KUgjvc5ZKn0TGtEO2ialbJw2LKkDQwBJGDaw=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://www.esamir.com/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon"  sizes="180x180" href="https://www.esamir.com/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+  
+  
+  
+    
+  
+  <body class="colorscheme-auto"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.esamir.com/">
+      &#39;csgeek&#39; Blog
+    </a>
+    
+      <span id="dark-mode-toggle" class="float-right">
+        <i class="fas fa-adjust fa-fw"></i>
+      </span>
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fas fa-bars fa-fw"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/post/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/about/">About</a>
+            </li>
+          
+        
+        
+        <li class="navigation-item separator">
+          <span>|</span>
+        </li>
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Converting Raid 1 to Raid 5 on Linux file systems</h1>
+    </header>
+
+    <p>Converting from Raid 1 to Raid 5
+This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.</p>
+<p>Disclaimer:  At some point during this process I realized that I had a bad mother board.  The reason my /dev/sdd1 failed wasn&rsquo;t the drive, but the bus on the board.  That being said, this is the unverified procedure.</p>
+<p>I&rsquo;m running on Ubuntu 12.10 but you should be able to do this on any modern Linux distribution.</p>
+<ol>
+<li>Stop all mdadm related tasks.</li>
+</ol>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo umount /media/data <span style="color:#080;background-color:#0f140f;font-style:italic">#of whatever mountpoint is appropriate.</span>
+sudo /etc/init.d/mdadm stop 
+sudo mdadm --stop /dev/md0
+</code></pre></div><ol start="2">
+<li>Change the raid layout</li>
+</ol>
+<p>This part is kind of scary, and I wouldn&rsquo;t advice mounting the raid at this point.  I especially didn&rsquo;t like the fact that it looks like it&rsquo;s overwriting my raid.. that made me nerveous, but it&rsquo;s essentially restrucuting how data is stored, and putting  a raid 5 mapping on 2 drives.  ie.  creating a degraded raid 5.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#update this as appropriate.
+mdadm --create /dev/md0 --level=5 --raid-devices=2 /dev/sda1 /dev/sdd1 
+</code></pre></div><p>WARNING: wait for this step to complete.. look at /prod/mdstats and wait for it to finish before proceeding.</p>
+<ol start="3">
+<li>Add a 3rd drive.</li>
+</ol>
+<p>#in my case I started with /dev/sdd1, added /dev/sda1 to create a raid 1, and then adding /dev/sdb1 as the final device.  You don&rsquo;t have to follow my convention.  That made sense for my use case, since my dead drive was /dev/sdd you can simply start with /dev/sda1 and go alphabetical.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mdadm --add /dev/md0 /dev/sdb1
+mdadm --grow /dev/md0 --raid-devices=3
+</code></pre></div><p>This part took around 15 hours for me.</p>
+<p>At this point, I&rsquo;d be okay with mounting my raid partition.  Again, it&rsquo;s safer not to&hellip; but.. it&rsquo;s won&rsquo;t break the process if you do.</p>
+<ol start="4">
+<li>Expand File System.</li>
+</ol>
+<p>At this point what we have is the equivalent of have a large hard drive, but a smaller partition on it.  We need to grow the local file system.</p>
+<p>I&rsquo;m covering 3 use cases.</p>
+<p>a.  LVM</p>
+<p>I&rsquo;ve have had lvm on my raid before.  Actually, I used to have raid + lukefs encryption + lvm.  Too many layers though the performance isn&rsquo;t as bad as you might expect.</p>
+<p>TODO:  I have to look this up&hellip; I&rsquo;ll update this eventually.</p>
+<p>b. XFS</p>
+<p>xfs is a bit odd, you need to have the file system mounted in order to grow it.</p>
+<p>xfs_repair -n /dev/md0  #just to be safe.
+mount /dev/md0 /media/data</p>
+<p>xfs_growfs /media/data</p>
+<p>c. EXT3/4</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">e2fsck -f /dev/md0 #check file system
+resize2fs /dev/md0   #grow file system
+</code></pre></div><ol start="5">
+<li>Update fstab</li>
+</ol>
+<p>This should not need any changes, but just in case:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/dev/md0        /media/data     xfs     defaults
+</code></pre></div><ol start="6">
+<li>Update mdadm.conf</li>
+</ol>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo su - 
+mdadm --detail --scan &gt;&gt; /etc/mdadm/mdadm.conf
+</code></pre></div><p>##edit the file and remove the next to last line.  ie.  The command above appends the new mdadm config to your config file.  So remove the previous raid 1 line.  There should be a single line defining md0 which looks something like this:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ARRAY /dev/md/md0 metadata=1.2  UUID=0ec3c5aa:5cee600b:ef1e8f7d:09b20cc8
+</code></pre></div><p>This is the line I removed:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#ARRAY /dev/md/md0 metadata=0.90 UUID=bf8a2737:554e654c:c2eab133:b01f9710
+</code></pre></div><p>In other words, assuming you only have 1 raid setup, your mdadm.conf should only have a single ARRAY configured.</p>
+<p>References:</p>
+<ol>
+<li><a href="http://www.davelachapelle.ca/2008/07/25/converting-raid-1-to-raid-5/">http://www.davelachapelle.ca/2008/07/25/converting-raid-1-to-raid-5/</a></li>
+</ol>
+
+  </article>
+</section>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>Geeky musings, thoughts and other randomness</p>
+      
+      
+        ©
+        
+        2021
+         Samir Faci (csgeek) 
+      
+      
+         · 
+        Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+      
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="https://www.esamir.com/js/dark-mode.min.0213e1773e6d1c5a644f847c67a6f8abac49a3776e2976f6008038af8c5b76a1.js"></script>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46486821-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+    
+
+    
+
+  </body>
+
+</html>
