@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>Home Backup Solution</title>
+      <link>https://www.esamir.com/post/posts/home_backup_solution/</link>
+      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/post/posts/home_backup_solution/</guid>
+      <description>Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&amp;rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.
+I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
+I have about 3 TB of data I want to backup and was looking for something that&amp;rsquo;s secure and is a bit more intelligent than a crontab of aws sync.</description>
+    </item>
+    
+    <item>
       <title>The Toxicity Of Open Source</title>
       <link>https://www.esamir.com/post/posts/toxicity_of_oss/</link>
       <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>

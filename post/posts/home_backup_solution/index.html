@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Samir Faci (csgeek)">
+    <meta name="description" content="Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.
+I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
+I have about 3 TB of data I want to backup and was looking for something that&rsquo;s secure and is a bit more intelligent than a crontab of aws sync.">
+    <meta name="keywords" content="blog,personal">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Home Backup Solution"/>
+<meta name="twitter:description" content="Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.
+I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
+I have about 3 TB of data I want to backup and was looking for something that&rsquo;s secure and is a bit more intelligent than a crontab of aws sync."/>
+
+    <meta property="og:title" content="Home Backup Solution" />
+<meta property="og:description" content="Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.
+I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
+I have about 3 TB of data I want to backup and was looking for something that&rsquo;s secure and is a bit more intelligent than a crontab of aws sync." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.esamir.com/post/posts/home_backup_solution/" />
+<meta property="article:published_time" content="2021-03-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-03-07T00:00:00+00:00" />
+
+
+    
+      <base href="https://www.esamir.com/post/posts/home_backup_solution/">
+    
+    <title>
+  Home Backup Solution · &#39;csgeek&#39; Blog
+</title>
+
+    
+      <link rel="canonical" href="https://www.esamir.com/post/posts/home_backup_solution/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.esamir.com/css/coder.min.fce3d3684e836ce340cdd591dad1749c310472d5ed4049fab99845c9aec4d4bf.css" integrity="sha256-/OPTaE6DbONAzdWR2tF0nDEEctXtQEn6uZhFya7E1L8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.esamir.com/css/coder-dark.min.717236c74e0a5208ef73964a9f44c6b443b689a95b270d8b2a40d0c012460dac.css" integrity="sha256-cXI2x04KUgjvc5ZKn0TGtEO2ialbJw2LKkDQwBJGDaw=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://www.esamir.com/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon"  sizes="180x180" href="https://www.esamir.com/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+  
+  
+  
+    
+  
+  <body class="colorscheme-auto"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.esamir.com/">
+      &#39;csgeek&#39; Blog
+    </a>
+    
+      <span id="dark-mode-toggle" class="float-right">
+        <i class="fas fa-adjust fa-fw"></i>
+      </span>
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fas fa-bars fa-fw"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/post/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/about/">About</a>
+            </li>
+          
+        
+        
+        <li class="navigation-item separator">
+          <span>|</span>
+        </li>
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Home Backup Solution</h1>
+    </header>
+
+    <h2 id="home-backup-solution">Home Backup Solution</h2>
+<p>I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology.  It&rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.</p>
+<p>I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.</p>
+<p>I have about 3 TB of data I want to backup and was looking for something that&rsquo;s secure and is a bit more intelligent than a crontab of <code>aws sync</code>.</p>
+<p>Also, on the off chance that my backup takes more than a few days, I wanted it to be smart enough to not execute two jobs at the same time.</p>
+<h3 id="choosing-storage-solution">Choosing Storage Solution</h3>
+<p>I was initially using S3 but firstly I find the AWS permissioning incredibly convoluted to manage.  I started using GCP more so of late and I really like its simplicity.  I ended up giving it a go and made sure to use the equivalent of their &lsquo;cold storage&rsquo;</p>
+<p>From the available list of Storage classes I ended up choosing &lsquo;Archive&rsquo;</p>
+<p><img src="https://www.esamir.com/images/home_backup_solution/storage_class.png" alt="Storage Classes"></p>
+<p>it Also seems to have a very reasonable pricing for essentially long term storage that does not need to be access very frequently as you can see below.</p>
+<p><img src="https://www.esamir.com/images/home_backup_solution/archive_pricing.png" alt="Storage Pricing"></p>
+<p>The other reason I chose GS (Google Storage) over S3 is because the <a href="https://www.duplicati.com/">tool</a> I ended up choosing didn&rsquo;t support S3 coldstorage backup.</p>
+<h3 id="backup-service">Backup Service</h3>
+<p>Duplicati is a really cool project though it can be a bit tricky to setup.  I ended up utilizing docker-compose and docker to get it up and running.</p>
+<p>Here&rsquo;s my simple little setup.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;3.7&#34;</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">duplicati</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>ghcr.io/linuxserver/duplicati<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">container_name</span>:<span style="color:#888"> </span>duplicati<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">hostname</span>:<span style="color:#888"> </span>duplicati<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- PUID=<span style="color:#0086f7;font-weight:bold">1000</span><span style="color:#888">
+</span><span style="color:#888">      </span>- PGID=<span style="color:#0086f7;font-weight:bold">1000</span><span style="color:#888">
+</span><span style="color:#888">      </span>- TZ=America/Los_Angeles<span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#080;background-color:#0f140f;font-style:italic">#      - CLI_ARGS= #optional</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- ./config:/config<span style="color:#888">
+</span><span style="color:#888">      </span>- /backups:/backups<span style="color:#888">
+</span><span style="color:#888">      </span>- /tank:/source<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8200</span>:<span style="color:#0086f7;font-weight:bold">8200</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>unless-stopped<span style="color:#888">
+</span></code></pre></div><p>Please note the mounts.  /backups is the destination where you want to store data.  I&rsquo;m mainly using it for the cloud storage so that is mainly pointless. /tank is my ZFS mount point which is mapped to /source and of course the configuration is exposed as a local volume.</p>
+<h4 id="systemd-service">Systemd Service</h4>
+<p>Place the following file under /etc/systemd/system/duplicati.service</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#fb660a;font-weight:bold">[Unit]</span>
+<span style="color:#ff0086;font-weight:bold">Description</span> = <span style="color:#0086d2">Duplicati</span>
+<span style="color:#ff0086;font-weight:bold">After</span>=<span style="color:#0086d2">docker.service</span>
+<span style="color:#ff0086;font-weight:bold">Requires</span>=<span style="color:#0086d2">docker.service</span>
+
+<span style="color:#fb660a;font-weight:bold">[Service]</span>
+<span style="color:#ff0086;font-weight:bold">Type</span>=<span style="color:#0086d2">idle</span>
+<span style="color:#ff0086;font-weight:bold">WorkingDirectory</span>=<span style="color:#0086d2">/home/docker_user/backup</span>
+<span style="color:#ff0086;font-weight:bold">ExecStart</span>=<span style="color:#0086d2">/usr/bin/docker-compose up</span>
+<span style="color:#ff0086;font-weight:bold">ExecStop</span>=<span style="color:#0086d2">/usr/bin/docker-compose  stop</span>
+<span style="color:#ff0086;font-weight:bold">ExecReload</span> =<span style="color:#0086d2">/usr/bin/docker-compose  restart</span>
+<span style="color:#ff0086;font-weight:bold">User</span>=<span style="color:#0086d2">docker_user</span>
+<span style="color:#ff0086;font-weight:bold">Restart</span>=<span style="color:#0086d2">always</span>
+<span style="color:#ff0086;font-weight:bold">RestartSec</span>=<span style="color:#0086d2">3</span>
+<span style="color:#ff0086;font-weight:bold">RestartPreventExitStatus</span>=<span style="color:#0086d2">0</span>
+<span style="color:#ff0086;font-weight:bold">TimeoutStopSec</span>=<span style="color:#0086d2">10</span>
+
+<span style="color:#fb660a;font-weight:bold">[Install]</span>
+<span style="color:#ff0086;font-weight:bold">WantedBy</span>=<span style="color:#0086d2">multi-user.target</span>
+</code></pre></div><p>As you can see I&rsquo;m running this as a special user I created with limited permissions only being used for running docker applications.</p>
+<p>Let&rsquo;s enable the service using:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemclt enable duplicati
+</code></pre></div><p>and of course if you haven&rsquo;t done so already you should start the service.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemctl start duplicati
+</code></pre></div><h2 id="backup-data">BackUp Data</h2>
+<p>Once duplicati is running it&rsquo;ll be accessible via at port 8200.  My NAS&rsquo;s local ip, is 192.168.1.200, so I can access it via http://192.168.1.200:8200</p>
+<p>You should see something that looks like this:</p>
+<p><img src="https://www.esamir.com/images/home_backup_solution/duplicati.png" alt="Duplicati"></p>
+<h3 id="encryption">Encryption</h3>
+<p>When you create a backup it&rsquo;ll ask you to enter an Encryption key if you would like.  GS is already private but the added level of encryption doesn&rsquo;t hurt.  Like all secrets make sure you remember the key in case you need it for disaster recovery.</p>
+<p><img src="https://www.esamir.com/images/home_backup_solution/duplicati_cipher.png" alt="Duplicati_cipher"></p>
+<h3 id="destination">Destination</h3>
+<p>The next screen lets you setup the GS bucket.  You can use any number of alternative offsite solution ranging from a local backup, (s)ftp, S3, Azure, webdav and many more.  You can find the full list <a href="https://duplicati.readthedocs.io/en/latest/01-introduction/#supported-backends">here</a>.</p>
+<p>If you use GS, then authorization is made very simply by simply clicking on the Auth key will generate a token for duplicati to use.</p>
+<p><img src="https://www.esamir.com/images/home_backup_solution/duplicati_google_storage.png" alt="Duplicati_storage"></p>
+<h3 id="source">Source</h3>
+<p>The next two steps i&rsquo;ll skip over as they&rsquo;re fairly straight forward.  Just choose the Source data.  If you remember you mounted your Raid/ZFS as /source and the destination if you did mount it should be /backup.  Navigation has a mild <code>windows</code> feel with <code>My Computer</code> replacing the typical root but otherwise this should feel familiar.  You can add a single or multiple paths.</p>
+<p>Please note, that the output will be stored in a duplicati special format.  You won&rsquo;t be able to go to the backup location and simply look at the files without Duplicati restoring the data.</p>
+<h3 id="schedule">Schedule</h3>
+<p>The schedule is pretty easy to setup.  Though it would be nice if they supported cron expression, I found their UI pretty flexible and configurable for every pattern that I was interested in.</p>
+<p><img src="https://www.esamir.com/images/home_backup_solution/duplicati_schedule.png" alt="Duplicati_Schedule"></p>
+<h3 id="backup-retention">Backup Retention</h3>
+<p>Finally the backup retention.  You can set it up so backups older than so many days are deleted, or ensure that you have no more than N number of backups etc.  <code>Smart backup retention</code> is pretty cool as well keeping one copy of the last 7 days, one copy of the last 4 weeks and one copy of the last 12 months.  Personally since i&rsquo;m storing about 3 TB of data as it is, I&rsquo;m only keeping one copy remotely.</p>
+<p><img src="https://www.esamir.com/images/home_backup_solution/duplicati_retention.png" alt="Duplicati_Retention"></p>
+<h2 id="final-step-backup-duplicati">Final Step, Backup Duplicati</h2>
+<p>I also wanted to backup my Duplicati installation.  Initially I had setup duplicati to save to my NAS as a local backup but since I need duplicati to restore it I ended up just adding a little cron + rsync to ensure that I have a copy of the settings in case I do something extra dumb and destroy my docker installation of duplcati.</p>
+<h2 id="references-requirements">References/ Requirements</h2>
+<ol>
+<li><a href="https://www.duplicati.com/">Duplicati</a></li>
+<li><a href="https://www.docker.com/">Docker</a></li>
+<li><a href="https://docs.docker.com/compose/">Docker Compose</a></li>
+<li><a href="https://cloud.google.com/">Google Cloud</a></li>
+</ol>
+
+  </article>
+</section>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>Geeky musings, thoughts and other randomness</p>
+      
+      
+        ©
+        
+        2021
+         Samir Faci (csgeek) 
+      
+      
+         · 
+        Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+      
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="https://www.esamir.com/js/dark-mode.min.0213e1773e6d1c5a644f847c67a6f8abac49a3776e2976f6008038af8c5b76a1.js"></script>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46486821-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+    
+
+    
+
+  </body>
+
+</html>
