@@ -141,7 +141,7 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
             </span>
             <span class="reading-time">
               <i class="fas fa-clock"></i>
-              5-minute read
+              4-minute read
             </span>
           </div>
           <div class="categories">
@@ -172,51 +172,51 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
 <h3 id="backup-service">Backup Service</h3>
 <p>Duplicati is a really cool project though it can be a bit tricky to setup.  I ended up utilizing docker-compose and docker to get it up and running.</p>
 <p>Here&rsquo;s my simple little setup.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fff;font-weight:bold">version</span>: <span style="color:#0ff;font-weight:bold">&#34;3.7&#34;</span>
-<span style="color:#fff;font-weight:bold">services</span>:
-  <span style="color:#fff;font-weight:bold">duplicati</span>:
-    <span style="color:#fff;font-weight:bold">image</span>: ghcr.io/linuxserver/duplicati
-    <span style="color:#fff;font-weight:bold">container_name</span>: duplicati
-    <span style="color:#fff;font-weight:bold">hostname</span>: duplicati
-    <span style="color:#fff;font-weight:bold">environment</span>:
-      - PUID=<span style="color:#ff0;font-weight:bold">1000</span>
-      - PGID=<span style="color:#ff0;font-weight:bold">1000</span>
-      - TZ=America/Los_Angeles
-<span style="color:#007f7f">#      - CLI_ARGS= #optional</span>
-    <span style="color:#fff;font-weight:bold">volumes</span>:
-      - ./config:/config
-      - /backups:/backups
-      - /tank:/source
-    <span style="color:#fff;font-weight:bold">ports</span>:
-      - <span style="color:#ff0;font-weight:bold">8200</span>:<span style="color:#ff0;font-weight:bold">8200</span>
-    <span style="color:#fff;font-weight:bold">restart</span>: unless-stopped
-</code></pre></div><p>Please note the mounts.  /backups is the destination where you want to store data.  I&rsquo;m mainly using it for the cloud storage so that is mainly pointless. /tank is my ZFS mount point which is mapped to /source and of course the configuration is exposed as a local volume.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;3.7&#34;</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">duplicati</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>ghcr.io/linuxserver/duplicati<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">container_name</span>:<span style="color:#888"> </span>duplicati<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">hostname</span>:<span style="color:#888"> </span>duplicati<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- PUID=<span style="color:#0086f7;font-weight:bold">1000</span><span style="color:#888">
+</span><span style="color:#888">      </span>- PGID=<span style="color:#0086f7;font-weight:bold">1000</span><span style="color:#888">
+</span><span style="color:#888">      </span>- TZ=America/Los_Angeles<span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#080;background-color:#0f140f;font-style:italic">#      - CLI_ARGS= #optional</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- ./config:/config<span style="color:#888">
+</span><span style="color:#888">      </span>- /backups:/backups<span style="color:#888">
+</span><span style="color:#888">      </span>- /tank:/source<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8200</span>:<span style="color:#0086f7;font-weight:bold">8200</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>unless-stopped<span style="color:#888">
+</span></code></pre></div><p>Please note the mounts.  /backups is the destination where you want to store data.  I&rsquo;m mainly using it for the cloud storage so that is mainly pointless. /tank is my ZFS mount point which is mapped to /source and of course the configuration is exposed as a local volume.</p>
 <h4 id="systemd-service">Systemd Service</h4>
 <p>Place the following file under /etc/systemd/system/duplicati.service</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#fff;font-weight:bold">[Unit]</span>
-<span style="color:#007f7f">Description</span> = <span style="color:#0ff;font-weight:bold">Duplicati</span>
-<span style="color:#007f7f">After</span>=<span style="color:#0ff;font-weight:bold">docker.service</span>
-<span style="color:#007f7f">Requires</span>=<span style="color:#0ff;font-weight:bold">docker.service</span>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#fb660a;font-weight:bold">[Unit]</span>
+<span style="color:#ff0086;font-weight:bold">Description</span> = <span style="color:#0086d2">Duplicati</span>
+<span style="color:#ff0086;font-weight:bold">After</span>=<span style="color:#0086d2">docker.service</span>
+<span style="color:#ff0086;font-weight:bold">Requires</span>=<span style="color:#0086d2">docker.service</span>
 
-<span style="color:#fff;font-weight:bold">[Service]</span>
-<span style="color:#007f7f">Type</span>=<span style="color:#0ff;font-weight:bold">idle</span>
-<span style="color:#007f7f">WorkingDirectory</span>=<span style="color:#0ff;font-weight:bold">/home/docker_user/backup</span>
-<span style="color:#007f7f">ExecStart</span>=<span style="color:#0ff;font-weight:bold">/usr/bin/docker-compose up</span>
-<span style="color:#007f7f">ExecStop</span>=<span style="color:#0ff;font-weight:bold">/usr/bin/docker-compose  stop</span>
-<span style="color:#007f7f">ExecReload</span> =<span style="color:#0ff;font-weight:bold">/usr/bin/docker-compose  restart</span>
-<span style="color:#007f7f">User</span>=<span style="color:#0ff;font-weight:bold">docker_user</span>
-<span style="color:#007f7f">Restart</span>=<span style="color:#0ff;font-weight:bold">always</span>
-<span style="color:#007f7f">RestartSec</span>=<span style="color:#0ff;font-weight:bold">3</span>
-<span style="color:#007f7f">RestartPreventExitStatus</span>=<span style="color:#0ff;font-weight:bold">0</span>
-<span style="color:#007f7f">TimeoutStopSec</span>=<span style="color:#0ff;font-weight:bold">10</span>
+<span style="color:#fb660a;font-weight:bold">[Service]</span>
+<span style="color:#ff0086;font-weight:bold">Type</span>=<span style="color:#0086d2">idle</span>
+<span style="color:#ff0086;font-weight:bold">WorkingDirectory</span>=<span style="color:#0086d2">/home/docker_user/backup</span>
+<span style="color:#ff0086;font-weight:bold">ExecStart</span>=<span style="color:#0086d2">/usr/bin/docker-compose up</span>
+<span style="color:#ff0086;font-weight:bold">ExecStop</span>=<span style="color:#0086d2">/usr/bin/docker-compose  stop</span>
+<span style="color:#ff0086;font-weight:bold">ExecReload</span> =<span style="color:#0086d2">/usr/bin/docker-compose  restart</span>
+<span style="color:#ff0086;font-weight:bold">User</span>=<span style="color:#0086d2">docker_user</span>
+<span style="color:#ff0086;font-weight:bold">Restart</span>=<span style="color:#0086d2">always</span>
+<span style="color:#ff0086;font-weight:bold">RestartSec</span>=<span style="color:#0086d2">3</span>
+<span style="color:#ff0086;font-weight:bold">RestartPreventExitStatus</span>=<span style="color:#0086d2">0</span>
+<span style="color:#ff0086;font-weight:bold">TimeoutStopSec</span>=<span style="color:#0086d2">10</span>
 
-<span style="color:#fff;font-weight:bold">[Install]</span>
-<span style="color:#007f7f">WantedBy</span>=<span style="color:#0ff;font-weight:bold">multi-user.target</span>
+<span style="color:#fb660a;font-weight:bold">[Install]</span>
+<span style="color:#ff0086;font-weight:bold">WantedBy</span>=<span style="color:#0086d2">multi-user.target</span>
 </code></pre></div><p>As you can see I&rsquo;m running this as a special user I created with limited permissions only being used for running docker applications.</p>
 <p>Let&rsquo;s enable the service using:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemclt <span style="color:#fff;font-weight:bold">enable</span> duplicati
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemclt enable duplicati
 </code></pre></div><p>and of course if you haven&rsquo;t done so already you should start the service.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemctl start duplicati
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemctl start duplicati
 </code></pre></div><h2 id="backup-data">BackUp Data</h2>
 <p>Once duplicati is running it&rsquo;ll be accessible via at port 8200.  My NAS&rsquo;s local ip, is 192.168.1.200, so I can access it via http://192.168.1.200:8200</p>
 <p>You should see something that looks like this:</p>

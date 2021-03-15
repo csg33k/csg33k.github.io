@@ -141,7 +141,7 @@ Assumptions:
             </span>
             <span class="reading-time">
               <i class="fas fa-clock"></i>
-              7-minute read
+              6-minute read
             </span>
           </div>
           <div class="categories">
@@ -179,95 +179,95 @@ Assumptions:
 <h2 id="ipv4">IPV4</h2>
 <p>Docker was initially built with IPV4 in mind and IPV6 feels like an afterthought.  For IPV4, if you want to expose a service, linked multiple docker containers together, do load balancing everything seems to &lsquo;Just work&rsquo;.  Everything is taken care of for you under the hood and you really don&rsquo;t need to do much.</p>
 <p>This is an example configuration pulled from the <a href="https://hub.docker.com/_/wordpress">wordpress</a> docker hug.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">
-<span style="color:#fff;font-weight:bold">version</span>: <span style="color:#0ff;font-weight:bold">&#39;3.1&#39;</span>
-
-<span style="color:#fff;font-weight:bold">services</span>:
-
-  <span style="color:#fff;font-weight:bold">wordpress</span>:
-    <span style="color:#fff;font-weight:bold">image</span>: wordpress
-    <span style="color:#fff;font-weight:bold">restart</span>: always
-    <span style="color:#fff;font-weight:bold">ports</span>:
-      - <span style="color:#ff0;font-weight:bold">8080</span>:<span style="color:#ff0;font-weight:bold">80</span>
-    <span style="color:#fff;font-weight:bold">environment</span>:
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_HOST</span>: db
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_USER</span>: exampleuser
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_PASSWORD</span>: examplepass
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_NAME</span>: exampledb
-    <span style="color:#fff;font-weight:bold">volumes</span>:
-      - wordpress:/var/www/html
-
-  <span style="color:#fff;font-weight:bold">db</span>:
-    <span style="color:#fff;font-weight:bold">image</span>: mysql:<span style="color:#ff0;font-weight:bold">5.7</span>
-    <span style="color:#fff;font-weight:bold">restart</span>: always
-    <span style="color:#fff;font-weight:bold">environment</span>:
-      <span style="color:#fff;font-weight:bold">MYSQL_DATABASE</span>: exampledb
-      <span style="color:#fff;font-weight:bold">MYSQL_USER</span>: exampleuser
-      <span style="color:#fff;font-weight:bold">MYSQL_PASSWORD</span>: examplepass
-      <span style="color:#fff;font-weight:bold">MYSQL_RANDOM_ROOT_PASSWORD</span>: <span style="color:#0ff;font-weight:bold">&#39;1&#39;</span>
-    <span style="color:#fff;font-weight:bold">volumes</span>:
-      - db:/var/lib/mysql
-
-<span style="color:#fff;font-weight:bold">volumes</span>:
-  <span style="color:#fff;font-weight:bold">wordpress</span>:
-  <span style="color:#fff;font-weight:bold">db</span>:
-
-</code></pre></div><p>Bringing up different services and wiring them together is a breeze.  All the iptables rules are taken care of and things just work.  I can connect to http://localhost:8080 and I will see the wordpress getting started guide that walks me through the steps to configure my application.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;3.1&#39;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>wordpress<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8080</span>:<span style="color:#0086f7;font-weight:bold">80</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_HOST</span>:<span style="color:#888"> </span>db<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_NAME</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- wordpress:/var/www/html<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>mysql:<span style="color:#0086f7;font-weight:bold">5.7</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_DATABASE</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_RANDOM_ROOT_PASSWORD</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;1&#39;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- db:/var/lib/mysql<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span><span style="color:#888">
+</span></code></pre></div><p>Bringing up different services and wiring them together is a breeze.  All the iptables rules are taken care of and things just work.  I can connect to http://localhost:8080 and I will see the wordpress getting started guide that walks me through the steps to configure my application.</p>
 <p>Now, IF you are operating in an IPV6 only world.  Let&rsquo;s see what this nightmare is about.</p>
 <h3 id="ipv6-networking">IPV6 Networking</h3>
 <h4 id="step-1-enable-in-the-daemon">Step 1, enable in the Daemon</h4>
 <p>You need to edit /etc/docker/daemon.json and add these options.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="font-weight:bold">&#34;ipv6&#34;</span>: <span style="color:#fff;font-weight:bold">true</span>,
-  <span style="font-weight:bold">&#34;fixed-cidr-v6&#34;</span>: <span style="color:#0ff;font-weight:bold">&#34;fd00::/80&#34;</span>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#fb660a;font-weight:bold">&#34;ipv6&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>,
+  <span style="color:#fb660a;font-weight:bold">&#34;fixed-cidr-v6&#34;</span>: <span style="color:#0086d2">&#34;fd00::/80&#34;</span>
 }
 </code></pre></div><p>The fixed-cidr6 doesn&rsquo;t matter too much but you shouldn&rsquo;t clash with other networks already defined.   The official documentation can be found <a href="https://docs.docker.com/config/daemon/ipv6/">here</a> and I wouldn&rsquo;t stray too far from it unless you know what you&rsquo;re doing.</p>
 <p>Now, the official instructions say all you need to do is restart the service, but I&rsquo;ve found you may need to restart your computer.</p>
 <p>At this point, the network for docker0 default network has been updated to use IPv6.  This does NOT mean that every docker network is IPv6 enabled.</p>
 <h3 id="step-2-firewall-rules">Step 2. FIrewall rules</h3>
 <p>For some reason this is not automatic and needs to be applied manually.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ip6tables -t nat -A POSTROUTING -s fd00::/80 ! -o docker0 -j MASQUERADE
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ip6tables -t nat -A POSTROUTING -s fd00::/80 ! -o docker0 -j MASQUERADE
 
 </code></pre></div><p>At this point basic functionality works fine.  So to test this out we can run this:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker run --rm -t busybox ping6 -c <span style="color:#ff0;font-weight:bold">4</span> google.com
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker run --rm -t busybox ping6 -c <span style="color:#0086f7;font-weight:bold">4</span> google.com
 </code></pre></div><p>Which results in:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">PING google.com (2607:f8b0:400a:808::200e): <span style="color:#ff0;font-weight:bold">56</span> data bytes
-<span style="color:#ff0;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: seq=<span style="color:#ff0;font-weight:bold">0</span> ttl=<span style="color:#ff0;font-weight:bold">119</span> time=17.133 ms
-<span style="color:#ff0;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: seq=<span style="color:#ff0;font-weight:bold">1</span> ttl=<span style="color:#ff0;font-weight:bold">119</span> time=17.119 ms
-<span style="color:#ff0;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: seq=<span style="color:#ff0;font-weight:bold">2</span> ttl=<span style="color:#ff0;font-weight:bold">119</span> time=17.281 ms
-<span style="color:#ff0;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: seq=<span style="color:#ff0;font-weight:bold">3</span> ttl=<span style="color:#ff0;font-weight:bold">119</span> time=17.430 ms
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">PING google.com (2607:f8b0:400a:808::200e): <span style="color:#0086f7;font-weight:bold">56</span> data bytes
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">0</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.133 ms
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">1</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.119 ms
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">2</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.281 ms
+<span style="color:#0086f7;font-weight:bold">64</span> bytes from 2607:f8b0:400a:808::200e: <span style="color:#fb660a">seq</span>=<span style="color:#0086f7;font-weight:bold">3</span> <span style="color:#fb660a">ttl</span>=<span style="color:#0086f7;font-weight:bold">119</span> <span style="color:#fb660a">time</span>=17.430 ms
 
 --- google.com ping statistics ---
-<span style="color:#ff0;font-weight:bold">4</span> packets transmitted, <span style="color:#ff0;font-weight:bold">4</span> packets received, 0% packet loss
+<span style="color:#0086f7;font-weight:bold">4</span> packets transmitted, <span style="color:#0086f7;font-weight:bold">4</span> packets received, 0% packet loss
 round-trip min/avg/max = 17.119/17.240/17.430 ms
 </code></pre></div><h3 id="docker-compose--ipv6">Docker Compose + IPV6</h3>
 <p>At this point docker has support for IPV6, but since docker-compose generally creates a new network for each docker-compose.yml definition it won&rsquo;t work as expected.</p>
 <p>The big issue with docker-compose is that it seems IPV6 is not supported for any schema version higher than 2.1 (Current version is 3.7).</p>
 <p>Here is an equivalent version using IPV6 and docker-compose</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fff;font-weight:bold">version</span>: <span style="color:#0ff;font-weight:bold">&#34;2.1&#34;</span>
-<span style="color:#fff;font-weight:bold">services</span>:
-  <span style="color:#fff;font-weight:bold">busy</span>:
-    <span style="color:#fff;font-weight:bold">image</span>: busybox
-    <span style="color:#fff;font-weight:bold">command</span>: ping6 -c <span style="color:#ff0;font-weight:bold">4</span> google.com
-    <span style="color:#fff;font-weight:bold">networks</span>:
-      - app_net
-
-
-<span style="color:#fff;font-weight:bold">networks</span>:
-  <span style="color:#fff;font-weight:bold">app_net</span>:
-    <span style="color:#fff;font-weight:bold">enable_ipv6</span>: <span style="color:#fff;font-weight:bold">true</span>
-    <span style="color:#fff;font-weight:bold">driver</span>: bridge
-    <span style="color:#fff;font-weight:bold">driver_opts</span>:
-      <span style="color:#fff;font-weight:bold">com.docker.network.enable_ipv6</span>: <span style="color:#0ff;font-weight:bold">&#34;true&#34;</span>
-    <span style="color:#fff;font-weight:bold">ipam</span>:
-      <span style="color:#fff;font-weight:bold">driver</span>: default
-      <span style="color:#fff;font-weight:bold">config</span>:
-       - <span style="color:#fff;font-weight:bold">subnet</span>: <span style="color:#ff0;font-weight:bold">2001</span>:<span style="color:#ff0;font-weight:bold">3984</span>:<span style="color:#ff0;font-weight:bold">3989</span>::/<span style="color:#ff0;font-weight:bold">64</span>
-         <span style="color:#fff;font-weight:bold">gateway</span>: <span style="color:#ff0;font-weight:bold">2001</span>:<span style="color:#ff0;font-weight:bold">3984</span>:<span style="color:#ff0;font-weight:bold">3989</span>::<span style="color:#ff0;font-weight:bold">1</span>
-</code></pre></div><p>Of course now we also need to update the iptable rules:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo ip6tables -t nat -A POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;2.1&#34;</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">busy</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>busybox<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">command</span>:<span style="color:#888"> </span>ping6<span style="color:#888"> </span>-c<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">4</span><span style="color:#888"> </span>google.com<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">networks</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- app_net<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">networks</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">app_net</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">enable_ipv6</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">driver</span>:<span style="color:#888"> </span>bridge<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">driver_opts</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">com.docker.network.enable_ipv6</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;true&#34;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ipam</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">driver</span>:<span style="color:#888"> </span>default<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">config</span>:<span style="color:#888">
+</span><span style="color:#888">       </span>- <span style="color:#fb660a;font-weight:bold">subnet</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2001</span>:<span style="color:#0086f7;font-weight:bold">3984</span>:<span style="color:#0086f7;font-weight:bold">3989</span>::/<span style="color:#0086f7;font-weight:bold">64</span><span style="color:#888">
+</span><span style="color:#888">         </span><span style="color:#fb660a;font-weight:bold">gateway</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2001</span>:<span style="color:#0086f7;font-weight:bold">3984</span>:<span style="color:#0086f7;font-weight:bold">3989</span>::<span style="color:#0086f7;font-weight:bold">1</span><span style="color:#888">
+</span></code></pre></div><p>Of course now we also need to update the iptable rules:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo ip6tables -t nat -A POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
 </code></pre></div><p>ANDDDDDD.. once you&rsquo;re done you&rsquo;ll have to remove them.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo ip6tables -t nat -D POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo ip6tables -t nat -D POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
 
 </code></pre></div><p>A few notes and warnings</p>
 <ol>
@@ -289,7 +289,7 @@ round-trip min/avg/max = 17.119/17.240/17.430 ms
 <p>In general this practice is frowned upon.  I&rsquo;m not a network expert so I will let you all make your decision on this but from a Developer perspective this solution is great.  Though I do encourage you to read up more about this before just copy/pasting this in.</p>
 <p>I ran across this github project called <a href="https://github.com/robbertkl/docker-ipv6nat">docker-ipv6nat</a> which solved all of my problems.  Someone should really buy the author a beer.</p>
 <p>Let&rsquo;s convert our busybox ping project to use this then I&rsquo;ll explain everything it does.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">version: &#34;2.1&#34;
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">version: &#34;2.1&#34;
 services:
   busy:
     image: busybox

@@ -169,7 +169,7 @@ Assumptions:
 <p>Most services require some level of security.  This is primarily focused towards web based services, so we&rsquo;ll be using letsencrypt.  I usually force all traffic through SSL, though you don&rsquo;t have to.</p>
 <p>If you&rsquo;re not familiar with <a href="https://letsencrypt.org/">letsencrypt</a> and <a href="https://certbot.eff.org/">certbot</a> it&rsquo;s the defacto way of getting a valid certificate of late (for free).  There are other sources but they&rsquo;re all paid services.</p>
 <p>I won&rsquo;t go into the full details on setting this up, but I&rsquo;m making the assumption that you have some kind of wildcard or host based SSL that are on your local file system under some variation of these paths:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/etc/letsencrypt/live/myhost.org/fullchain.pem; /etc/letsencrypt/live/myhost.org/privkey.pem;
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/etc/letsencrypt/live/myhost.org/fullchain.pem; /etc/letsencrypt/live/myhost.org/privkey.pem;
 </code></pre></div><p>If you did buy your own cert, I&rsquo;m assuming you know how to get it in a format where nginx will accept them or are able to find the information through your god like google-fu.</p>
 <h2 id="nginx">NGINX</h2>
 <p>There are two approaches to this.  They each have their drawbacks and advantages.</p>
@@ -187,120 +187,120 @@ Assumptions:
 <h3 id="nginx-vhost-config">NGINX vhost config.</h3>
 <p>This will vary on your OS, but Debian bases hosts under /etc/nginx/sites-available you&rsquo;ll need to create the config and have a symlink on /etc/nginx/sites-enabled/</p>
 <p>Here&rsquo;s an example configuration:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">server {
-	<span style="color:#007f7f"># SSL configuration</span>
-	<span style="color:#007f7f">#</span>
-	listen <span style="color:#ff0;font-weight:bold">443</span> ssl;
-	listen [::]:<span style="color:#ff0;font-weight:bold">443</span> ssl;
-
-
-        access_log /var/log/nginx/APPNAME_access.log;
-        error_log /var/log/nginx/APPNAME_error.log;
-
-	ssl on;
-
-	ssl_certificate /etc/letsencrypt/live/appname.myhost.org/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/appname.myhost.org/privkey.pem;
-        client_max_body_size 50M;
-
-        <span style="color:#007f7f">#log_format compression &#39;$remote_addr - $remote_user [$time_local] &#39;</span>
-        <span style="color:#007f7f">#                       &#39;&#34;$request&#34; $status $bytes_sent &#39;</span>
-        <span style="color:#007f7f">#                       &#39;&#34;$http_referer&#34; &#34;$http_user_agent&#34; &#34;$gzip_ratio&#34;&#39;;</span>
-
-        <span style="color:#007f7f">#access_log log/nixie_access.log  compression;</span>
-
-        server_name appname.myhost.org;
-
-        location / {
-            proxy_pass http://localhost:<span style="color:#ff0;font-weight:bold">8080</span>;
-            proxy_set_header Host            $host;
-            proxy_set_header X-Forwarded-For $remote_addr;
-            proxy_set_header X-Real-IP $remote_addr;
-         
-        }
-
-
-        location = /favicon.ico {
-            log_not_found off;
-            access_log off;
-        }
-
-        location = /robots.txt {
-            allow all;
-            log_not_found off;
-            access_log off;
-        }
-
-        location ~* \.(txt|log)$ {
-            allow <span style="color:#ff0;font-weight:bold">192.168.0.0</span>/<span style="color:#ff0;font-weight:bold">16</span>;
-            deny all;
-        }
-
-        location ~ \..<span style="color:#0f0;font-weight:bold">*/.*\.php$</span> {
-            return <span style="color:#ff0;font-weight:bold">403</span>;
-        }
-
-
-        <span style="color:#007f7f"># Block access to &#34;hidden&#34; files and directories whose names begin with a</span>
-        <span style="color:#007f7f"># period. This includes directories used by version control systems such</span>
-        <span style="color:#007f7f"># as Subversion or Git to store control files.</span>
-        location ~ (^|/)\. {
-            return <span style="color:#ff0;font-weight:bold">403</span>;
-        }
-
-}
-
-server {
-	listen <span style="color:#ff0;font-weight:bold">80</span>;
-	listen [::]:<span style="color:#ff0;font-weight:bold">80</span>;
-         server_name appname.myhost.org ;
-
-
-	rewrite ^ https://$server_name$request_uri? permanent;
-}
-
-</code></pre></div><p>Here&rsquo;s the big take away from this file.  We are hosting a new application that&rsquo;s exposing locally port 8080.  Any request that comes in on appname.myhost.org will get redirected to localhost:8080 and we will return the response.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">server<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">	</span><span style="color:#080;background-color:#0f140f;font-style:italic"># SSL configuration</span><span style="color:#888">
+</span><span style="color:#888">	</span><span style="color:#080;background-color:#0f140f;font-style:italic">#</span><span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">443</span><span style="color:#888"> </span>ssl;<span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span>[::]:<span style="color:#0086f7;font-weight:bold">443</span><span style="color:#888"> </span>ssl;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>access_log<span style="color:#888"> </span>/var/log/nginx/APPNAME_access.log;<span style="color:#888">
+</span><span style="color:#888">        </span>error_log<span style="color:#888"> </span>/var/log/nginx/APPNAME_error.log;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">	</span>ssl<span style="color:#888"> </span>on;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">	</span>ssl_certificate<span style="color:#888"> </span>/etc/letsencrypt/live/appname.myhost.org/fullchain.pem;<span style="color:#888">
+</span><span style="color:#888">	</span>ssl_certificate_key<span style="color:#888"> </span>/etc/letsencrypt/live/appname.myhost.org/privkey.pem;<span style="color:#888">
+</span><span style="color:#888">        </span>client_max_body_size<span style="color:#888"> </span>50M;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#log_format compression &#39;$remote_addr - $remote_user [$time_local] &#39;</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#                       &#39;&#34;$request&#34; $status $bytes_sent &#39;</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#                       &#39;&#34;$http_referer&#34; &#34;$http_user_agent&#34; &#34;$gzip_ratio&#34;&#39;;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic">#access_log log/nixie_access.log  compression;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>server_name<span style="color:#888"> </span>appname.myhost.org;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>/<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_pass<span style="color:#888"> </span>http://localhost:<span style="color:#0086f7;font-weight:bold">8080</span>;<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_set_header<span style="color:#888"> </span>Host<span style="color:#888">            </span>$host;<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_set_header<span style="color:#888"> </span>X-Forwarded-For<span style="color:#888"> </span>$remote_addr;<span style="color:#888">
+</span><span style="color:#888">            </span>proxy_set_header<span style="color:#888"> </span>X-Real-IP<span style="color:#888"> </span>$remote_addr;<span style="color:#888">
+</span><span style="color:#888">         
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>=<span style="color:#888"> </span>/favicon.ico<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>log_not_found<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">            </span>access_log<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>=<span style="color:#888"> </span>/robots.txt<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>allow<span style="color:#888"> </span>all;<span style="color:#888">
+</span><span style="color:#888">            </span>log_not_found<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">            </span>access_log<span style="color:#888"> </span>off;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>~*<span style="color:#888"> </span>\.(txt|log)$<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>allow<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">192.168.0.0</span>/<span style="color:#0086f7;font-weight:bold">16</span>;<span style="color:#888">
+</span><span style="color:#888">            </span>deny<span style="color:#888"> </span>all;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>~<span style="color:#888"> </span>\..<span style="color:#ff0007;background-color:#0f140f;font-weight:bold;font-style:italic">*/.*\.php$</span><span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>return<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">403</span>;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic"># Block access to &#34;hidden&#34; files and directories whose names begin with a</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic"># period. This includes directories used by version control systems such</span><span style="color:#888">
+</span><span style="color:#888">        </span><span style="color:#080;background-color:#0f140f;font-style:italic"># as Subversion or Git to store control files.</span><span style="color:#888">
+</span><span style="color:#888">        </span>location<span style="color:#888"> </span>~<span style="color:#888"> </span>(^|/)\.<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">            </span>return<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">403</span>;<span style="color:#888">
+</span><span style="color:#888">        </span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span>}<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span>server<span style="color:#888"> </span>{<span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">80</span>;<span style="color:#888">
+</span><span style="color:#888">	</span>listen<span style="color:#888"> </span>[::]:<span style="color:#0086f7;font-weight:bold">80</span>;<span style="color:#888">
+</span><span style="color:#888">         </span>server_name<span style="color:#888"> </span>appname.myhost.org<span style="color:#888"> </span>;<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">	</span>rewrite<span style="color:#888"> </span>^<span style="color:#888"> </span>https://$server_name$request_uri?<span style="color:#888"> </span>permanent;<span style="color:#888">
+</span><span style="color:#888"></span>}<span style="color:#888">
+</span><span style="color:#888">
+</span></code></pre></div><p>Here&rsquo;s the big take away from this file.  We are hosting a new application that&rsquo;s exposing locally port 8080.  Any request that comes in on appname.myhost.org will get redirected to localhost:8080 and we will return the response.</p>
 <p>This will work great, but we do need to make sure that our docker stack is also running.</p>
 <h2 id="docker-application">Docker application</h2>
 <p>I won&rsquo;t spend too much time on this but let&rsquo;s assume you have a wordpress application similar to the one in the example on their <a href="https://hub.docker.com/_/wordpress">docker hub</a>.</p>
 <p>This is the config example pulled from that link:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fff;font-weight:bold">version</span>: <span style="color:#0ff;font-weight:bold">&#39;3.1&#39;</span>
-
-<span style="color:#fff;font-weight:bold">services</span>:
-
-  <span style="color:#fff;font-weight:bold">wordpress</span>:
-    <span style="color:#fff;font-weight:bold">image</span>: wordpress
-    <span style="color:#fff;font-weight:bold">restart</span>: always
-    <span style="color:#fff;font-weight:bold">ports</span>:
-      - <span style="color:#ff0;font-weight:bold">8080</span>:<span style="color:#ff0;font-weight:bold">80</span>
-    <span style="color:#fff;font-weight:bold">environment</span>:
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_HOST</span>: db
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_USER</span>: exampleuser
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_PASSWORD</span>: examplepass
-      <span style="color:#fff;font-weight:bold">WORDPRESS_DB_NAME</span>: exampledb
-    <span style="color:#fff;font-weight:bold">volumes</span>:
-      - wordpress:/var/www/html
-
-  <span style="color:#fff;font-weight:bold">db</span>:
-    <span style="color:#fff;font-weight:bold">image</span>: mysql:<span style="color:#ff0;font-weight:bold">5.7</span>
-    <span style="color:#fff;font-weight:bold">restart</span>: always
-    <span style="color:#fff;font-weight:bold">environment</span>:
-      <span style="color:#fff;font-weight:bold">MYSQL_DATABASE</span>: exampledb
-      <span style="color:#fff;font-weight:bold">MYSQL_USER</span>: exampleuser
-      <span style="color:#fff;font-weight:bold">MYSQL_PASSWORD</span>: examplepass
-      <span style="color:#fff;font-weight:bold">MYSQL_RANDOM_ROOT_PASSWORD</span>: <span style="color:#0ff;font-weight:bold">&#39;1&#39;</span>
-    <span style="color:#fff;font-weight:bold">volumes</span>:
-      - db:/var/lib/mysql
-
-<span style="color:#fff;font-weight:bold">volumes</span>:
-  <span style="color:#fff;font-weight:bold">wordpress</span>:
-  <span style="color:#fff;font-weight:bold">db</span>:
-</code></pre></div><p>if everything works as expected when you start the application via docker-compose up -d http://localhost:8080 will become accessible.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;3.1&#39;</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>wordpress<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8080</span>:<span style="color:#0086f7;font-weight:bold">80</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_HOST</span>:<span style="color:#888"> </span>db<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">WORDPRESS_DB_NAME</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- wordpress:/var/www/html<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>mysql:<span style="color:#0086f7;font-weight:bold">5.7</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_DATABASE</span>:<span style="color:#888"> </span>exampledb<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_USER</span>:<span style="color:#888"> </span>exampleuser<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_PASSWORD</span>:<span style="color:#888"> </span>examplepass<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">MYSQL_RANDOM_ROOT_PASSWORD</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;1&#39;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- db:/var/lib/mysql<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">wordpress</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">db</span>:<span style="color:#888">
+</span></code></pre></div><p>if everything works as expected when you start the application via docker-compose up -d http://localhost:8080 will become accessible.</p>
 <p>Now, what we need to do is to get it so our docker based application starts up each time our host restarts.  It would be nice if we can manage a docker app like any other service installed.</p>
 <p>So, we&rsquo;re going to create a systemd start up script.</p>
 <h3 id="docker-systemd-script">Docker Systemd script</h3>
 <p>I&rsquo;m running all my docker apps as the docker_user with limited permissions.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[Unit]
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[Unit]
 Description = WordPress Blog
 After=docker.service
 Requires=docker.service
@@ -323,23 +323,23 @@ WantedBy=multi-user.target
 
 </code></pre></div><p>let&rsquo;s save this file in /etc/systemd/system/blog.service</p>
 <p>we can enable the service on boot via:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo systemctl enable blog.service
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo systemctl enable blog.service
 </code></pre></div><p>You can also test this out manually by simply running:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo service blog {start|stop|restart}
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo service blog {start|stop|restart}
 </code></pre></div><p>At this point you should be able to get a response from:</p>
 <p><a href="https://appname.myhost.org">https://appname.myhost.org</a>, granted the behavior and hostname will vary based on what you do end up running, but if you are running wordpress, You should see the Installation wizards come up.</p>
 <h2 id="docker-check-list">Docker Check List.</h2>
 <ol>
 <li>It&rsquo;s always a good practice to have</li>
 </ol>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> restart: always
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> restart: always
 
 </code></pre></div><ol start="2">
 <li>Database backups are not configured here but you should have a script or cron that will create a datadump every so often.</li>
 </ol>
 <h2 id="final-stage">Final stage</h2>
 <p>Ensure the nginx config is valid by using <code>nginx -t</code> and if it all checks out let&rsquo;s restart the nginx server.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo service nginx start
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo service nginx start
 </code></pre></div><p>At this point even if you have a power outage or someone does a sudo reboot all your services should come back up as expected.</p>
 <p>Naturally this still suffers from a single point of failure, but it&rsquo;s much easier to manage IMO, then the typical bare metal deployments.</p>
 

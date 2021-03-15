@@ -168,21 +168,21 @@ This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.</p
 <ol>
 <li>Stop all mdadm related tasks.</li>
 </ol>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo umount /media/data <span style="color:#007f7f">#of whatever mountpoint is appropriate.</span>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo umount /media/data <span style="color:#080;background-color:#0f140f;font-style:italic">#of whatever mountpoint is appropriate.</span>
 sudo /etc/init.d/mdadm stop 
 sudo mdadm --stop /dev/md0
 </code></pre></div><ol start="2">
 <li>Change the raid layout</li>
 </ol>
 <p>This part is kind of scary, and I wouldn&rsquo;t advice mounting the raid at this point.  I especially didn&rsquo;t like the fact that it looks like it&rsquo;s overwriting my raid.. that made me nerveous, but it&rsquo;s essentially restrucuting how data is stored, and putting  a raid 5 mapping on 2 drives.  ie.  creating a degraded raid 5.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#update this as appropriate.
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#update this as appropriate.
 mdadm --create /dev/md0 --level=5 --raid-devices=2 /dev/sda1 /dev/sdd1 
 </code></pre></div><p>WARNING: wait for this step to complete.. look at /prod/mdstats and wait for it to finish before proceeding.</p>
 <ol start="3">
 <li>Add a 3rd drive.</li>
 </ol>
 <p>#in my case I started with /dev/sdd1, added /dev/sda1 to create a raid 1, and then adding /dev/sdb1 as the final device.  You don&rsquo;t have to follow my convention.  That made sense for my use case, since my dead drive was /dev/sdd you can simply start with /dev/sda1 and go alphabetical.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mdadm --add /dev/md0 /dev/sdb1
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mdadm --add /dev/md0 /dev/sdb1
 mdadm --grow /dev/md0 --raid-devices=3
 </code></pre></div><p>This part took around 15 hours for me.</p>
 <p>At this point, I&rsquo;d be okay with mounting my raid partition.  Again, it&rsquo;s safer not to&hellip; but.. it&rsquo;s won&rsquo;t break the process if you do.</p>
@@ -200,22 +200,22 @@ mdadm --grow /dev/md0 --raid-devices=3
 mount /dev/md0 /media/data</p>
 <p>xfs_growfs /media/data</p>
 <p>c. EXT3/4</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">e2fsck -f /dev/md0 #check file system
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">e2fsck -f /dev/md0 #check file system
 resize2fs /dev/md0   #grow file system
 </code></pre></div><ol start="5">
 <li>Update fstab</li>
 </ol>
 <p>This should not need any changes, but just in case:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/dev/md0        /media/data     xfs     defaults
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/dev/md0        /media/data     xfs     defaults
 </code></pre></div><ol start="6">
 <li>Update mdadm.conf</li>
 </ol>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo su - 
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sudo su - 
 mdadm --detail --scan &gt;&gt; /etc/mdadm/mdadm.conf
 </code></pre></div><p>##edit the file and remove the next to last line.  ie.  The command above appends the new mdadm config to your config file.  So remove the previous raid 1 line.  There should be a single line defining md0 which looks something like this:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ARRAY /dev/md/md0 metadata=1.2  UUID=0ec3c5aa:5cee600b:ef1e8f7d:09b20cc8
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ARRAY /dev/md/md0 metadata=1.2  UUID=0ec3c5aa:5cee600b:ef1e8f7d:09b20cc8
 </code></pre></div><p>This is the line I removed:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#ARRAY /dev/md/md0 metadata=0.90 UUID=bf8a2737:554e654c:c2eab133:b01f9710
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#ARRAY /dev/md/md0 metadata=0.90 UUID=bf8a2737:554e654c:c2eab133:b01f9710
 </code></pre></div><p>In other words, assuming you only have 1 raid setup, your mdadm.conf should only have a single ARRAY configured.</p>
 <p>References:</p>
 <ol>
