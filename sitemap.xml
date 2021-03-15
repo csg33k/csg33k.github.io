@@ -8,12 +8,17 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/post/posts/kubenetes_resources/</loc>
+    <loc>https://www.esamir.com/blog/kubenetes_resources/</loc>
     <lastmod>2021-03-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.esamir.com/categories/blog/</loc>
+    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/blog/</loc>
     <lastmod>2021-03-15T00:00:00+00:00</lastmod>
   </url>
   
@@ -33,17 +38,12 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/post/</loc>
-    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.esamir.com/tags/</loc>
     <lastmod>2021-03-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.esamir.com/post/posts/home_backup_solution/</loc>
+    <loc>https://www.esamir.com/blog/home_backup_solution/</loc>
     <lastmod>2021-03-07T00:00:00+00:00</lastmod>
   </url>
   
@@ -68,7 +68,7 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/post/posts/toxicity_of_oss/</loc>
+    <loc>https://www.esamir.com/blog/toxicity_of_oss/</loc>
     <lastmod>2020-12-23T19:39:55-08:00</lastmod>
   </url>
   
@@ -88,17 +88,17 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/post/posts/docker_ipv6_guide/</loc>
+    <loc>https://www.esamir.com/blog/docker_ipv6_guide/</loc>
     <lastmod>2020-08-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.esamir.com/post/posts/docker_deploy_cheaply/</loc>
+    <loc>https://www.esamir.com/blog/docker_deploy_cheaply/</loc>
     <lastmod>2020-08-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.esamir.com/post/posts/raid_convertion_guide/</loc>
+    <loc>https://www.esamir.com/blog/raid_convertion_guide/</loc>
     <lastmod>2020-08-22T00:00:00+00:00</lastmod>
   </url>
   

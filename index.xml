@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 20 Sep 2020 18:56:42 -0700</lastBuildDate><atom:link href="https://www.esamir.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Awesome Kubernetes Resources</title>
-      <link>https://www.esamir.com/post/posts/kubenetes_resources/</link>
+      <link>https://www.esamir.com/blog/kubenetes_resources/</link>
       <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/post/posts/kubenetes_resources/</guid>
+      <guid>https://www.esamir.com/blog/kubenetes_resources/</guid>
       <description>&lt;p&gt;A much more comprehensive list can be found &lt;a href=&#34;https://github.com/tomhuang12/awesome-k8s-resources&#34;&gt;here&lt;/a&gt;.  This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.&lt;/p&gt;
 &lt;p&gt;CLI Tools:&lt;/p&gt;
 &lt;ul&gt;
@@ -56,10 +56,10 @@
     
     <item>
       <title>Home Backup Solution</title>
-      <link>https://www.esamir.com/post/posts/home_backup_solution/</link>
+      <link>https://www.esamir.com/blog/home_backup_solution/</link>
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/post/posts/home_backup_solution/</guid>
+      <guid>https://www.esamir.com/blog/home_backup_solution/</guid>
       <description>&lt;h2 id=&#34;home-backup-solution&#34;&gt;Home Backup Solution&lt;/h2&gt;
 &lt;p&gt;I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology.  It&amp;rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.&lt;/p&gt;
 &lt;p&gt;I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.&lt;/p&gt;
@@ -154,10 +154,10 @@
     
     <item>
       <title>The Toxicity Of Open Source</title>
-      <link>https://www.esamir.com/post/posts/toxicity_of_oss/</link>
+      <link>https://www.esamir.com/blog/toxicity_of_oss/</link>
       <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>
       
-      <guid>https://www.esamir.com/post/posts/toxicity_of_oss/</guid>
+      <guid>https://www.esamir.com/blog/toxicity_of_oss/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://www.esamir.com/images/penguins_banner.png&#34; alt=&#34;Penguin Banner&#34;&gt;&lt;/p&gt;
 &lt;p&gt;My most recent experiences though really saddened me and exposed a certain toxicity in the OSS community that I really wish wasn&amp;rsquo;t so prevalent.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;ve been posting on and off on dev.to but I never introduced myself so let me preface this post with a bit about me to give some context.&lt;/p&gt;
@@ -192,10 +192,10 @@
     
     <item>
       <title>Docker IPV6 Guide</title>
-      <link>https://www.esamir.com/post/posts/docker_ipv6_guide/</link>
+      <link>https://www.esamir.com/blog/docker_ipv6_guide/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/post/posts/docker_ipv6_guide/</guid>
+      <guid>https://www.esamir.com/blog/docker_ipv6_guide/</guid>
       <description>&lt;p&gt;I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Assumptions&lt;/strong&gt;:&lt;/p&gt;
 &lt;ol&gt;
@@ -364,10 +364,10 @@ From a dev perspective it&amp;rsquo;s perfect.&lt;/p&gt;
     
     <item>
       <title>Poor Man&#39;s Docker Deployment</title>
-      <link>https://www.esamir.com/post/posts/docker_deploy_cheaply/</link>
+      <link>https://www.esamir.com/blog/docker_deploy_cheaply/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/post/posts/docker_deploy_cheaply/</guid>
+      <guid>https://www.esamir.com/blog/docker_deploy_cheaply/</guid>
       <description>&lt;p&gt;I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one.  Low entry bar, less maintenance that makes docker deployment more appealing.  I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Assumptions&lt;/strong&gt;:&lt;/p&gt;
 &lt;ol&gt;
@@ -558,10 +558,10 @@ WantedBy=multi-user.target
     
     <item>
       <title>Converting Raid 1 to Raid 5 on Linux file systems</title>
-      <link>https://www.esamir.com/post/posts/raid_convertion_guide/</link>
+      <link>https://www.esamir.com/blog/raid_convertion_guide/</link>
       <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/post/posts/raid_convertion_guide/</guid>
+      <guid>https://www.esamir.com/blog/raid_convertion_guide/</guid>
       <description>&lt;p&gt;Converting from Raid 1 to Raid 5
 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.&lt;/p&gt;
 &lt;p&gt;Disclaimer:  At some point during this process I realized that I had a bad mother board.  The reason my /dev/sdd1 failed wasn&amp;rsquo;t the drive, but the bus on the board.  That being said, this is the unverified procedure.&lt;/p&gt;
