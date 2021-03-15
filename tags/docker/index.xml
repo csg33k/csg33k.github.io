@@ -13,10 +13,10 @@
     
     <item>
       <title>Docker IPV6 Guide</title>
-      <link>https://www.esamir.com/posts/docker_ipv6_guide/</link>
+      <link>https://www.esamir.com/20/8/26/docker-ipv6-guide/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/posts/docker_ipv6_guide/</guid>
+      <guid>https://www.esamir.com/20/8/26/docker-ipv6-guide/</guid>
       <description>I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
 Assumptions:
  You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&amp;rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</description>
@@ -24,10 +24,10 @@ Assumptions:
     
     <item>
       <title>Poor Man&#39;s Docker Deployment</title>
-      <link>https://www.esamir.com/posts/docker_deploy_cheaply/</link>
+      <link>https://www.esamir.com/20/8/26/poor-mans-docker-deployment/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/posts/docker_deploy_cheaply/</guid>
+      <guid>https://www.esamir.com/20/8/26/poor-mans-docker-deployment/</guid>
       <description>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
 Assumptions:
  You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init.</description>

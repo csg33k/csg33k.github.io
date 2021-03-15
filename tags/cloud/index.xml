@@ -13,10 +13,10 @@
     
     <item>
       <title>Awesome Kubernetes Resources</title>
-      <link>https://www.esamir.com/posts/kubenetes_resources/</link>
+      <link>https://www.esamir.com/21/3/15/awesome-kubernetes-resources/</link>
       <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/posts/kubenetes_resources/</guid>
+      <guid>https://www.esamir.com/21/3/15/awesome-kubernetes-resources/</guid>
       <description>A much more comprehensive list can be found here. This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.
 CLI Tools:
  Helm Kubernetes package manager K9s CLI management tool. kube-shell integrated shell environment  Cluster Provisioning
