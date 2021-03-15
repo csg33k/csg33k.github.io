@@ -13,7 +13,7 @@
       <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/post/posts/kubenetes_resources/</guid>
-      <description>&lt;p&gt;A much better more comprehensive list can be found &lt;a href=&#34;https://github.com/tomhuang12/awesome-k8s-resources&#34;&gt;here&lt;/a&gt;.  This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.&lt;/p&gt;
+      <description>&lt;p&gt;A much more comprehensive list can be found &lt;a href=&#34;https://github.com/tomhuang12/awesome-k8s-resources&#34;&gt;here&lt;/a&gt;.  This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.&lt;/p&gt;
 &lt;p&gt;CLI Tools:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/helm/helm&#34;&gt;Helm&lt;/a&gt; Kubernetes package manager&lt;/li&gt;
