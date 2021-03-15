@@ -6,10 +6,37 @@
     <description>Recent content in Tags on &#39;csgeek&#39; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 07 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://www.esamir.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>awesome</title>
+      <link>https://www.esamir.com/tags/awesome/</link>
+      <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/tags/awesome/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cloud</title>
+      <link>https://www.esamir.com/tags/cloud/</link>
+      <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/tags/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://www.esamir.com/tags/kubernetes/</link>
+      <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/tags/kubernetes/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>software_development</title>
@@ -53,15 +80,6 @@
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/tags/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://www.esamir.com/tags/kubernetes/</link>
-      <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.esamir.com/tags/kubernetes/</guid>
       <description></description>
     </item>
     

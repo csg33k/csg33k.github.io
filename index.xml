@@ -8,6 +8,53 @@
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Sep 2020 18:56:42 -0700</lastBuildDate><atom:link href="https://www.esamir.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Awesome Kubernetes Resources</title>
+      <link>https://www.esamir.com/post/posts/kubenetes_resources/</link>
+      <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/post/posts/kubenetes_resources/</guid>
+      <description>&lt;p&gt;A much better more comprehensive list can be found &lt;a href=&#34;https://github.com/tomhuang12/awesome-k8s-resources&#34;&gt;here&lt;/a&gt;.  This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.&lt;/p&gt;
+&lt;p&gt;CLI Tools:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/helm/helm&#34;&gt;Helm&lt;/a&gt; Kubernetes package manager&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/derailed/k9s&#34;&gt;K9s&lt;/a&gt; CLI management tool.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/cloudnativelabs/kube-shell&#34;&gt;kube-shell&lt;/a&gt; integrated shell environment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Cluster Provisioning&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kind&#34;&gt;kind&lt;/a&gt; Docker based kubernetes deployment.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes/minikube&#34;&gt;minikube&lt;/a&gt; VM based cross-platform kubernetes with addons support&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Automation and CI/CD&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fluxcd/flux2&#34;&gt;flux 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Development:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://web.teamhephy.com/&#34;&gt;Hephy&lt;/a&gt; Developer workflow tool&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://skaffold.dev/&#34;&gt;Skaffold&lt;/a&gt; client side deployment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Testing/Troubleshooting&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/linki/chaoskube&#34;&gt;Chaos Kube&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/asobti/kube-monkey&#34;&gt;Kube Monkey&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Backup/Restore&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware-tanzu/velero&#34;&gt;Velero&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Service Mesh:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/istio/istio&#34;&gt;Istio&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Certifications&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://killer.sh/&#34;&gt;killer&lt;/a&gt; Kubernetes Exam Simulator&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Home Backup Solution</title>
       <link>https://www.esamir.com/post/posts/home_backup_solution/</link>
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
