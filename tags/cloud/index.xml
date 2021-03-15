@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cloud on &#39;csgeek&#39; Blog</title>
+    <title>cloud on csgeek Blog</title>
     <link>https://www.esamir.com/tags/cloud/</link>
-    <description>Recent content in cloud on &#39;csgeek&#39; Blog</description>
+    <description>Recent content in cloud on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate>
@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>Awesome Kubernetes Resources Testing</title>
-      <link>https://www.esamir.com/blog/kubenetes_resources/</link>
+      <title>Awesome Kubernetes Resources</title>
+      <link>https://www.esamir.com/posts/kubenetes_resources/</link>
       <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/kubenetes_resources/</guid>
+      <guid>https://www.esamir.com/posts/kubenetes_resources/</guid>
       <description>A much more comprehensive list can be found here. This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.
 CLI Tools:
  Helm Kubernetes package manager K9s CLI management tool. kube-shell integrated shell environment  Cluster Provisioning

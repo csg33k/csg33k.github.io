@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kubernetes on &#39;csgeek&#39; Blog</title>
+    <title>kubernetes on csgeek Blog</title>
     <link>https://www.esamir.com/tags/kubernetes/</link>
-    <description>Recent content in kubernetes on &#39;csgeek&#39; Blog</description>
+    <description>Recent content in kubernetes on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate>
@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>Awesome Kubernetes Resources Testing</title>
-      <link>https://www.esamir.com/blog/kubenetes_resources/</link>
+      <title>Awesome Kubernetes Resources</title>
+      <link>https://www.esamir.com/posts/kubenetes_resources/</link>
       <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/kubenetes_resources/</guid>
+      <guid>https://www.esamir.com/posts/kubenetes_resources/</guid>
       <description>A much more comprehensive list can be found here. This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.
 CLI Tools:
  Helm Kubernetes package manager K9s CLI management tool. kube-shell integrated shell environment  Cluster Provisioning
@@ -25,10 +25,10 @@ CLI Tools:
     
     <item>
       <title>Docker IPV6 Guide</title>
-      <link>https://www.esamir.com/blog/docker_ipv6_guide/</link>
+      <link>https://www.esamir.com/posts/docker_ipv6_guide/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/docker_ipv6_guide/</guid>
+      <guid>https://www.esamir.com/posts/docker_ipv6_guide/</guid>
       <description>I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
 Assumptions:
  You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&amp;rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</description>

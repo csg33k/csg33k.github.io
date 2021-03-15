@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>software_development on &#39;csgeek&#39; Blog</title>
+    <title>software_development on csgeek Blog</title>
     <link>https://www.esamir.com/tags/software_development/</link>
-    <description>Recent content in software_development on &#39;csgeek&#39; Blog</description>
+    <description>Recent content in software_development on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 07 Mar 2021 00:00:00 +0000</lastBuildDate>
@@ -13,10 +13,10 @@
     
     <item>
       <title>Home Backup Solution</title>
-      <link>https://www.esamir.com/blog/home_backup_solution/</link>
+      <link>https://www.esamir.com/posts/home_backup_solution/</link>
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/home_backup_solution/</guid>
+      <guid>https://www.esamir.com/posts/home_backup_solution/</guid>
       <description>Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&amp;rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.
 I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
 I have about 3 TB of data I want to backup and was looking for something that&amp;rsquo;s secure and is a bit more intelligent than a crontab of aws sync.</description>

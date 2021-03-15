@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>linux on &#39;csgeek&#39; Blog</title>
+    <title>linux on csgeek Blog</title>
     <link>https://www.esamir.com/tags/linux/</link>
-    <description>Recent content in linux on &#39;csgeek&#39; Blog</description>
+    <description>Recent content in linux on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 23 Dec 2020 19:39:55 -0800</lastBuildDate>
@@ -13,10 +13,10 @@
     
     <item>
       <title>The Toxicity Of Open Source</title>
-      <link>https://www.esamir.com/blog/toxicity_of_oss/</link>
+      <link>https://www.esamir.com/posts/toxicity_of_oss/</link>
       <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>
       
-      <guid>https://www.esamir.com/blog/toxicity_of_oss/</guid>
+      <guid>https://www.esamir.com/posts/toxicity_of_oss/</guid>
       <description>My most recent experiences though really saddened me and exposed a certain toxicity in the OSS community that I really wish wasn&amp;rsquo;t so prevalent.
 I&amp;rsquo;ve been posting on and off on dev.to but I never introduced myself so let me preface this post with a bit about me to give some context.
 I&amp;rsquo;ve been using open source and Linux on and off since the early 2000s. My first Linux distro was Caldera 2.</description>
@@ -24,10 +24,10 @@ I&amp;rsquo;ve been using open source and Linux on and off since the early 2000s
     
     <item>
       <title>Docker IPV6 Guide</title>
-      <link>https://www.esamir.com/blog/docker_ipv6_guide/</link>
+      <link>https://www.esamir.com/posts/docker_ipv6_guide/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/docker_ipv6_guide/</guid>
+      <guid>https://www.esamir.com/posts/docker_ipv6_guide/</guid>
       <description>I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
 Assumptions:
  You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&amp;rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</description>
@@ -35,10 +35,10 @@ Assumptions:
     
     <item>
       <title>Converting Raid 1 to Raid 5 on Linux file systems</title>
-      <link>https://www.esamir.com/blog/raid_convertion_guide/</link>
+      <link>https://www.esamir.com/posts/raid_convertion_guide/</link>
       <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/raid_convertion_guide/</guid>
+      <guid>https://www.esamir.com/posts/raid_convertion_guide/</guid>
       <description>Converting from Raid 1 to Raid 5 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.
 Disclaimer: At some point during this process I realized that I had a bad mother board. The reason my /dev/sdd1 failed wasn&amp;rsquo;t the drive, but the bus on the board. That being said, this is the unverified procedure.
 I&amp;rsquo;m running on Ubuntu 12.10 but you should be able to do this on any modern Linux distribution.</description>

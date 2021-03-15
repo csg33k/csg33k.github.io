@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>&#39;csgeek&#39; Blog</title>
+    <title>csgeek Blog</title>
     <link>https://www.esamir.com/</link>
-    <description>Recent content on &#39;csgeek&#39; Blog</description>
+    <description>Recent content on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Sep 2020 18:56:42 -0700</lastBuildDate><atom:link href="https://www.esamir.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Awesome Kubernetes Resources Testing</title>
-      <link>https://www.esamir.com/blog/kubenetes_resources/</link>
+      <title>Awesome Kubernetes Resources</title>
+      <link>https://www.esamir.com/posts/kubenetes_resources/</link>
       <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/kubenetes_resources/</guid>
+      <guid>https://www.esamir.com/posts/kubenetes_resources/</guid>
       <description>&lt;p&gt;A much more comprehensive list can be found &lt;a href=&#34;https://github.com/tomhuang12/awesome-k8s-resources&#34;&gt;here&lt;/a&gt;.  This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.&lt;/p&gt;
 &lt;p&gt;CLI Tools:&lt;/p&gt;
 &lt;ul&gt;
@@ -56,10 +56,10 @@
     
     <item>
       <title>Home Backup Solution</title>
-      <link>https://www.esamir.com/blog/home_backup_solution/</link>
+      <link>https://www.esamir.com/posts/home_backup_solution/</link>
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/home_backup_solution/</guid>
+      <guid>https://www.esamir.com/posts/home_backup_solution/</guid>
       <description>&lt;h2 id=&#34;home-backup-solution&#34;&gt;Home Backup Solution&lt;/h2&gt;
 &lt;p&gt;I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology.  It&amp;rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.&lt;/p&gt;
 &lt;p&gt;I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.&lt;/p&gt;
@@ -75,51 +75,51 @@
 &lt;h3 id=&#34;backup-service&#34;&gt;Backup Service&lt;/h3&gt;
 &lt;p&gt;Duplicati is a really cool project though it can be a bit tricky to setup.  I ended up utilizing docker-compose and docker to get it up and running.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s my simple little setup.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;version&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#34;3.7&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;services&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;duplicati&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;image&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ghcr.io/linuxserver/duplicati&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;container_name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;duplicati&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;hostname&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;duplicati&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;environment&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- PUID=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;1000&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- PGID=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;1000&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- TZ=America/Los_Angeles&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;#      - CLI_ARGS= #optional&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- ./config:/config&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- /backups:/backups&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- /tank:/source&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ports&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- &lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;8200&lt;/span&gt;:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;8200&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;restart&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;unless-stopped&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Please note the mounts.  /backups is the destination where you want to store data.  I&amp;rsquo;m mainly using it for the cloud storage so that is mainly pointless. /tank is my ZFS mount point which is mapped to /source and of course the configuration is exposed as a local volume.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#34;3.7&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;services&lt;/span&gt;:
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;duplicati&lt;/span&gt;:
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;image&lt;/span&gt;: ghcr.io/linuxserver/duplicati
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;container_name&lt;/span&gt;: duplicati
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;hostname&lt;/span&gt;: duplicati
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;environment&lt;/span&gt;:
+      - PUID=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;1000&lt;/span&gt;
+      - PGID=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;1000&lt;/span&gt;
+      - TZ=America/Los_Angeles
+&lt;span style=&#34;color:#007f7f&#34;&gt;#      - CLI_ARGS= #optional&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:
+      - ./config:/config
+      - /backups:/backups
+      - /tank:/source
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;8200&lt;/span&gt;:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;8200&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;restart&lt;/span&gt;: unless-stopped
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Please note the mounts.  /backups is the destination where you want to store data.  I&amp;rsquo;m mainly using it for the cloud storage so that is mainly pointless. /tank is my ZFS mount point which is mapped to /source and of course the configuration is exposed as a local volume.&lt;/p&gt;
 &lt;h4 id=&#34;systemd-service&#34;&gt;Systemd Service&lt;/h4&gt;
 &lt;p&gt;Place the following file under /etc/systemd/system/duplicati.service&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;[Unit]&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;Description&lt;/span&gt; = &lt;span style=&#34;color:#0086d2&#34;&gt;Duplicati&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;After&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;docker.service&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;Requires&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;docker.service&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;[Unit]&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;Description&lt;/span&gt; = &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;Duplicati&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;After&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;docker.service&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;Requires&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;docker.service&lt;/span&gt;
 
-&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;[Service]&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;Type&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;idle&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;WorkingDirectory&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;/home/docker_user/backup&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;ExecStart&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;/usr/bin/docker-compose up&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;ExecStop&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;/usr/bin/docker-compose  stop&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;ExecReload&lt;/span&gt; =&lt;span style=&#34;color:#0086d2&#34;&gt;/usr/bin/docker-compose  restart&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;User&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;docker_user&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;Restart&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;always&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;RestartSec&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;3&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;RestartPreventExitStatus&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;0&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;TimeoutStopSec&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;10&lt;/span&gt;
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;[Service]&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;Type&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;idle&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;WorkingDirectory&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;/home/docker_user/backup&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;ExecStart&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;/usr/bin/docker-compose up&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;ExecStop&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;/usr/bin/docker-compose  stop&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;ExecReload&lt;/span&gt; =&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;/usr/bin/docker-compose  restart&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;User&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;docker_user&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;Restart&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;always&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;RestartSec&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;3&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;RestartPreventExitStatus&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;0&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;TimeoutStopSec&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;10&lt;/span&gt;
 
-&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;[Install]&lt;/span&gt;
-&lt;span style=&#34;color:#ff0086;font-weight:bold&#34;&gt;WantedBy&lt;/span&gt;=&lt;span style=&#34;color:#0086d2&#34;&gt;multi-user.target&lt;/span&gt;
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;[Install]&lt;/span&gt;
+&lt;span style=&#34;color:#007f7f&#34;&gt;WantedBy&lt;/span&gt;=&lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;multi-user.target&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As you can see I&amp;rsquo;m running this as a special user I created with limited permissions only being used for running docker applications.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s enable the service using:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;systemclt enable duplicati
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;systemclt &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;enable&lt;/span&gt; duplicati
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and of course if you haven&amp;rsquo;t done so already you should start the service.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;systemctl start duplicati
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;systemctl start duplicati
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;backup-data&#34;&gt;BackUp Data&lt;/h2&gt;
 &lt;p&gt;Once duplicati is running it&amp;rsquo;ll be accessible via at port 8200.  My NAS&amp;rsquo;s local ip, is 192.168.1.200, so I can access it via http://192.168.1.200:8200&lt;/p&gt;
 &lt;p&gt;You should see something that looks like this:&lt;/p&gt;
@@ -154,10 +154,10 @@
     
     <item>
       <title>The Toxicity Of Open Source</title>
-      <link>https://www.esamir.com/blog/toxicity_of_oss/</link>
+      <link>https://www.esamir.com/posts/toxicity_of_oss/</link>
       <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>
       
-      <guid>https://www.esamir.com/blog/toxicity_of_oss/</guid>
+      <guid>https://www.esamir.com/posts/toxicity_of_oss/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://www.esamir.com/images/penguins_banner.png&#34; alt=&#34;Penguin Banner&#34;&gt;&lt;/p&gt;
 &lt;p&gt;My most recent experiences though really saddened me and exposed a certain toxicity in the OSS community that I really wish wasn&amp;rsquo;t so prevalent.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;ve been posting on and off on dev.to but I never introduced myself so let me preface this post with a bit about me to give some context.&lt;/p&gt;
@@ -192,10 +192,10 @@
     
     <item>
       <title>Docker IPV6 Guide</title>
-      <link>https://www.esamir.com/blog/docker_ipv6_guide/</link>
+      <link>https://www.esamir.com/posts/docker_ipv6_guide/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/docker_ipv6_guide/</guid>
+      <guid>https://www.esamir.com/posts/docker_ipv6_guide/</guid>
       <description>&lt;p&gt;I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Assumptions&lt;/strong&gt;:&lt;/p&gt;
 &lt;ol&gt;
@@ -212,95 +212,95 @@
 &lt;h2 id=&#34;ipv4&#34;&gt;IPV4&lt;/h2&gt;
 &lt;p&gt;Docker was initially built with IPV4 in mind and IPV6 feels like an afterthought.  For IPV4, if you want to expose a service, linked multiple docker containers together, do load balancing everything seems to &amp;lsquo;Just work&amp;rsquo;.  Everything is taken care of for you under the hood and you really don&amp;rsquo;t need to do much.&lt;/p&gt;
 &lt;p&gt;This is an example configuration pulled from the &lt;a href=&#34;https://hub.docker.com/_/wordpress&#34;&gt;wordpress&lt;/a&gt; docker hug.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;version&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#39;3.1&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;services&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;image&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;wordpress&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;restart&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;always&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ports&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- &lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;8080&lt;/span&gt;:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;environment&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_HOST&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;db&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_USER&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampleuser&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_PASSWORD&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;examplepass&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_NAME&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampledb&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- wordpress:/var/www/html&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;db&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;image&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;mysql:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;5.7&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;restart&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;always&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;environment&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_DATABASE&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampledb&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_USER&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampleuser&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_PASSWORD&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;examplepass&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_RANDOM_ROOT_PASSWORD&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- db:/var/lib/mysql&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;db&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Bringing up different services and wiring them together is a breeze.  All the iptables rules are taken care of and things just work.  I can connect to http://localhost:8080 and I will see the wordpress getting started guide that walks me through the steps to configure my application.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#39;3.1&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;services&lt;/span&gt;:
+
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;image&lt;/span&gt;: wordpress
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;restart&lt;/span&gt;: always
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;8080&lt;/span&gt;:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;80&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;environment&lt;/span&gt;:
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_HOST&lt;/span&gt;: db
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_USER&lt;/span&gt;: exampleuser
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_PASSWORD&lt;/span&gt;: examplepass
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_NAME&lt;/span&gt;: exampledb
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:
+      - wordpress:/var/www/html
+
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;db&lt;/span&gt;:
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;image&lt;/span&gt;: mysql:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;5.7&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;restart&lt;/span&gt;: always
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;environment&lt;/span&gt;:
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_DATABASE&lt;/span&gt;: exampledb
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_USER&lt;/span&gt;: exampleuser
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_PASSWORD&lt;/span&gt;: examplepass
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_RANDOM_ROOT_PASSWORD&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:
+      - db:/var/lib/mysql
+
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;db&lt;/span&gt;:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Bringing up different services and wiring them together is a breeze.  All the iptables rules are taken care of and things just work.  I can connect to http://localhost:8080 and I will see the wordpress getting started guide that walks me through the steps to configure my application.&lt;/p&gt;
 &lt;p&gt;Now, IF you are operating in an IPV6 only world.  Let&amp;rsquo;s see what this nightmare is about.&lt;/p&gt;
 &lt;h3 id=&#34;ipv6-networking&#34;&gt;IPV6 Networking&lt;/h3&gt;
 &lt;h4 id=&#34;step-1-enable-in-the-daemon&#34;&gt;Step 1, enable in the Daemon&lt;/h4&gt;
 &lt;p&gt;You need to edit /etc/docker/daemon.json and add these options.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
-  &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;&amp;#34;ipv6&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;true&lt;/span&gt;,
-  &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;&amp;#34;fixed-cidr-v6&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#34;fd00::/80&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+  &lt;span style=&#34;font-weight:bold&#34;&gt;&amp;#34;ipv6&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;true&lt;/span&gt;,
+  &lt;span style=&#34;font-weight:bold&#34;&gt;&amp;#34;fixed-cidr-v6&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#34;fd00::/80&amp;#34;&lt;/span&gt;
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The fixed-cidr6 doesn&amp;rsquo;t matter too much but you shouldn&amp;rsquo;t clash with other networks already defined.   The official documentation can be found &lt;a href=&#34;https://docs.docker.com/config/daemon/ipv6/&#34;&gt;here&lt;/a&gt; and I wouldn&amp;rsquo;t stray too far from it unless you know what you&amp;rsquo;re doing.&lt;/p&gt;
 &lt;p&gt;Now, the official instructions say all you need to do is restart the service, but I&amp;rsquo;ve found you may need to restart your computer.&lt;/p&gt;
 &lt;p&gt;At this point, the network for docker0 default network has been updated to use IPv6.  This does NOT mean that every docker network is IPv6 enabled.&lt;/p&gt;
 &lt;h3 id=&#34;step-2-firewall-rules&#34;&gt;Step 2. FIrewall rules&lt;/h3&gt;
 &lt;p&gt;For some reason this is not automatic and needs to be applied manually.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;ip6tables -t nat -A POSTROUTING -s fd00::/80 ! -o docker0 -j MASQUERADE
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;ip6tables -t nat -A POSTROUTING -s fd00::/80 ! -o docker0 -j MASQUERADE
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point basic functionality works fine.  So to test this out we can run this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;docker run --rm -t busybox ping6 -c &lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;4&lt;/span&gt; google.com
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;docker run --rm -t busybox ping6 -c &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;4&lt;/span&gt; google.com
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Which results in:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;PING google.com (2607:f8b0:400a:808::200e): &lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;56&lt;/span&gt; data bytes
-&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: &lt;span style=&#34;color:#fb660a&#34;&gt;seq&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;ttl&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;119&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;time&lt;/span&gt;=17.133 ms
-&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: &lt;span style=&#34;color:#fb660a&#34;&gt;seq&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;ttl&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;119&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;time&lt;/span&gt;=17.119 ms
-&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: &lt;span style=&#34;color:#fb660a&#34;&gt;seq&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;ttl&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;119&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;time&lt;/span&gt;=17.281 ms
-&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: &lt;span style=&#34;color:#fb660a&#34;&gt;seq&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;ttl&lt;/span&gt;=&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;119&lt;/span&gt; &lt;span style=&#34;color:#fb660a&#34;&gt;time&lt;/span&gt;=17.430 ms
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;PING google.com (2607:f8b0:400a:808::200e): &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;56&lt;/span&gt; data bytes
+&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: seq=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;0&lt;/span&gt; ttl=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;119&lt;/span&gt; time=17.133 ms
+&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: seq=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;1&lt;/span&gt; ttl=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;119&lt;/span&gt; time=17.119 ms
+&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: seq=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;2&lt;/span&gt; ttl=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;119&lt;/span&gt; time=17.281 ms
+&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;64&lt;/span&gt; bytes from 2607:f8b0:400a:808::200e: seq=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;3&lt;/span&gt; ttl=&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;119&lt;/span&gt; time=17.430 ms
 
 --- google.com ping statistics ---
-&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;4&lt;/span&gt; packets transmitted, &lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;4&lt;/span&gt; packets received, 0% packet loss
+&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;4&lt;/span&gt; packets transmitted, &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;4&lt;/span&gt; packets received, 0% packet loss
 round-trip min/avg/max = 17.119/17.240/17.430 ms
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;docker-compose--ipv6&#34;&gt;Docker Compose + IPV6&lt;/h3&gt;
 &lt;p&gt;At this point docker has support for IPV6, but since docker-compose generally creates a new network for each docker-compose.yml definition it won&amp;rsquo;t work as expected.&lt;/p&gt;
 &lt;p&gt;The big issue with docker-compose is that it seems IPV6 is not supported for any schema version higher than 2.1 (Current version is 3.7).&lt;/p&gt;
 &lt;p&gt;Here is an equivalent version using IPV6 and docker-compose&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;version&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#34;2.1&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;services&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;busy&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;image&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;busybox&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;command&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ping6&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;-c&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;google.com&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;networks&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- app_net&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;networks&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;app_net&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;enable_ipv6&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;driver&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;bridge&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;driver_opts&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;com.docker.network.enable_ipv6&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ipam&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;driver&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;default&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;config&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;       &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;subnet&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;2001&lt;/span&gt;:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;3984&lt;/span&gt;:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;3989&lt;/span&gt;::/&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;64&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;         &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;gateway&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;2001&lt;/span&gt;:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;3984&lt;/span&gt;:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;3989&lt;/span&gt;::&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course now we also need to update the iptable rules:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo ip6tables -t nat -A POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#34;2.1&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;services&lt;/span&gt;:
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;busy&lt;/span&gt;:
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;image&lt;/span&gt;: busybox
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;command&lt;/span&gt;: ping6 -c &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;4&lt;/span&gt; google.com
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;networks&lt;/span&gt;:
+      - app_net
+
+
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;networks&lt;/span&gt;:
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;app_net&lt;/span&gt;:
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;enable_ipv6&lt;/span&gt;: &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;true&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;driver&lt;/span&gt;: bridge
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;driver_opts&lt;/span&gt;:
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;com.docker.network.enable_ipv6&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;ipam&lt;/span&gt;:
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;driver&lt;/span&gt;: default
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;config&lt;/span&gt;:
+       - &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;subnet&lt;/span&gt;: &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;2001&lt;/span&gt;:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;3984&lt;/span&gt;:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;3989&lt;/span&gt;::/&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;64&lt;/span&gt;
+         &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;gateway&lt;/span&gt;: &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;2001&lt;/span&gt;:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;3984&lt;/span&gt;:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;3989&lt;/span&gt;::&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course now we also need to update the iptable rules:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo ip6tables -t nat -A POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ANDDDDDD.. once you&amp;rsquo;re done you&amp;rsquo;ll have to remove them.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo ip6tables -t nat -D POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo ip6tables -t nat -D POSTROUTING -s  2001:3984:3989::/64 ! -o docker0 -j MASQUERADE
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;A few notes and warnings&lt;/p&gt;
 &lt;ol&gt;
@@ -322,7 +322,7 @@ round-trip min/avg/max = 17.119/17.240/17.430 ms
 &lt;p&gt;In general this practice is frowned upon.  I&amp;rsquo;m not a network expert so I will let you all make your decision on this but from a Developer perspective this solution is great.  Though I do encourage you to read up more about this before just copy/pasting this in.&lt;/p&gt;
 &lt;p&gt;I ran across this github project called &lt;a href=&#34;https://github.com/robbertkl/docker-ipv6nat&#34;&gt;docker-ipv6nat&lt;/a&gt; which solved all of my problems.  Someone should really buy the author a beer.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s convert our busybox ping project to use this then I&amp;rsquo;ll explain everything it does.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;version: &amp;#34;2.1&amp;#34;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;version: &amp;#34;2.1&amp;#34;
 services:
   busy:
     image: busybox
@@ -364,10 +364,10 @@ From a dev perspective it&amp;rsquo;s perfect.&lt;/p&gt;
     
     <item>
       <title>Poor Man&#39;s Docker Deployment</title>
-      <link>https://www.esamir.com/blog/docker_deploy_cheaply/</link>
+      <link>https://www.esamir.com/posts/docker_deploy_cheaply/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/docker_deploy_cheaply/</guid>
+      <guid>https://www.esamir.com/posts/docker_deploy_cheaply/</guid>
       <description>&lt;p&gt;I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one.  Low entry bar, less maintenance that makes docker deployment more appealing.  I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Assumptions&lt;/strong&gt;:&lt;/p&gt;
 &lt;ol&gt;
@@ -380,7 +380,7 @@ From a dev perspective it&amp;rsquo;s perfect.&lt;/p&gt;
 &lt;p&gt;Most services require some level of security.  This is primarily focused towards web based services, so we&amp;rsquo;ll be using letsencrypt.  I usually force all traffic through SSL, though you don&amp;rsquo;t have to.&lt;/p&gt;
 &lt;p&gt;If you&amp;rsquo;re not familiar with &lt;a href=&#34;https://letsencrypt.org/&#34;&gt;letsencrypt&lt;/a&gt; and &lt;a href=&#34;https://certbot.eff.org/&#34;&gt;certbot&lt;/a&gt; it&amp;rsquo;s the defacto way of getting a valid certificate of late (for free).  There are other sources but they&amp;rsquo;re all paid services.&lt;/p&gt;
 &lt;p&gt;I won&amp;rsquo;t go into the full details on setting this up, but I&amp;rsquo;m making the assumption that you have some kind of wildcard or host based SSL that are on your local file system under some variation of these paths:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;/etc/letsencrypt/live/myhost.org/fullchain.pem; /etc/letsencrypt/live/myhost.org/privkey.pem;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;/etc/letsencrypt/live/myhost.org/fullchain.pem; /etc/letsencrypt/live/myhost.org/privkey.pem;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If you did buy your own cert, I&amp;rsquo;m assuming you know how to get it in a format where nginx will accept them or are able to find the information through your god like google-fu.&lt;/p&gt;
 &lt;h2 id=&#34;nginx&#34;&gt;NGINX&lt;/h2&gt;
 &lt;p&gt;There are two approaches to this.  They each have their drawbacks and advantages.&lt;/p&gt;
@@ -398,120 +398,120 @@ From a dev perspective it&amp;rsquo;s perfect.&lt;/p&gt;
 &lt;h3 id=&#34;nginx-vhost-config&#34;&gt;NGINX vhost config.&lt;/h3&gt;
 &lt;p&gt;This will vary on your OS, but Debian bases hosts under /etc/nginx/sites-available you&amp;rsquo;ll need to create the config and have a symlink on /etc/nginx/sites-enabled/&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s an example configuration:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;server&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# SSL configuration&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;listen&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;443&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ssl;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;listen&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;[::]:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;443&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ssl;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;access_log&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/var/log/nginx/APPNAME_access.log;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;error_log&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/var/log/nginx/APPNAME_error.log;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;ssl&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;on;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;ssl_certificate&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/etc/letsencrypt/live/appname.myhost.org/fullchain.pem;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;ssl_certificate_key&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/etc/letsencrypt/live/appname.myhost.org/privkey.pem;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;client_max_body_size&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;50M;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;#log_format compression &amp;#39;$remote_addr - $remote_user [$time_local] &amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;#                       &amp;#39;&amp;#34;$request&amp;#34; $status $bytes_sent &amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;#                       &amp;#39;&amp;#34;$http_referer&amp;#34; &amp;#34;$http_user_agent&amp;#34; &amp;#34;$gzip_ratio&amp;#34;&amp;#39;;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;#access_log log/nixie_access.log  compression;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;server_name&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;appname.myhost.org;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;location&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;proxy_pass&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;http://localhost:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;8080&lt;/span&gt;;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;proxy_set_header&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Host&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;$host;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;proxy_set_header&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;X-Forwarded-For&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;$remote_addr;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;proxy_set_header&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;X-Real-IP&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;$remote_addr;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;         
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;location&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;=&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/favicon.ico&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;log_not_found&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;off;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;access_log&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;off;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;location&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;=&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/robots.txt&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;allow&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;all;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;log_not_found&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;off;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;access_log&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;off;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;location&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;~*&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;\.(txt|log)$&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;allow&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;192.168.0.0&lt;/span&gt;/&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;16&lt;/span&gt;;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;deny&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;all;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;location&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;~&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;\..&lt;span style=&#34;color:#ff0007;background-color:#0f140f;font-weight:bold;font-style:italic&#34;&gt;*/.*\.php$&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;return&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;403&lt;/span&gt;;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# Block access to &amp;#34;hidden&amp;#34; files and directories whose names begin with a&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# period. This includes directories used by version control systems such&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# as Subversion or Git to store control files.&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;location&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;~&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;(^|/)\.&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;return&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;403&lt;/span&gt;;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;server&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;listen&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;listen&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;[::]:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;         &lt;/span&gt;server_name&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;appname.myhost.org&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;	&lt;/span&gt;rewrite&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;^&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;https://$server_name$request_uri?&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;permanent;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;}&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here&amp;rsquo;s the big take away from this file.  We are hosting a new application that&amp;rsquo;s exposing locally port 8080.  Any request that comes in on appname.myhost.org will get redirected to localhost:8080 and we will return the response.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;server {
+	&lt;span style=&#34;color:#007f7f&#34;&gt;# SSL configuration&lt;/span&gt;
+	&lt;span style=&#34;color:#007f7f&#34;&gt;#&lt;/span&gt;
+	listen &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;443&lt;/span&gt; ssl;
+	listen [::]:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;443&lt;/span&gt; ssl;
+
+
+        access_log /var/log/nginx/APPNAME_access.log;
+        error_log /var/log/nginx/APPNAME_error.log;
+
+	ssl on;
+
+	ssl_certificate /etc/letsencrypt/live/appname.myhost.org/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/appname.myhost.org/privkey.pem;
+        client_max_body_size 50M;
+
+        &lt;span style=&#34;color:#007f7f&#34;&gt;#log_format compression &amp;#39;$remote_addr - $remote_user [$time_local] &amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color:#007f7f&#34;&gt;#                       &amp;#39;&amp;#34;$request&amp;#34; $status $bytes_sent &amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color:#007f7f&#34;&gt;#                       &amp;#39;&amp;#34;$http_referer&amp;#34; &amp;#34;$http_user_agent&amp;#34; &amp;#34;$gzip_ratio&amp;#34;&amp;#39;;&lt;/span&gt;
+
+        &lt;span style=&#34;color:#007f7f&#34;&gt;#access_log log/nixie_access.log  compression;&lt;/span&gt;
+
+        server_name appname.myhost.org;
+
+        location / {
+            proxy_pass http://localhost:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;8080&lt;/span&gt;;
+            proxy_set_header Host            $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Real-IP $remote_addr;
+         
+        }
+
+
+        location = /favicon.ico {
+            log_not_found off;
+            access_log off;
+        }
+
+        location = /robots.txt {
+            allow all;
+            log_not_found off;
+            access_log off;
+        }
+
+        location ~* \.(txt|log)$ {
+            allow &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;192.168.0.0&lt;/span&gt;/&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;16&lt;/span&gt;;
+            deny all;
+        }
+
+        location ~ \..&lt;span style=&#34;color:#0f0;font-weight:bold&#34;&gt;*/.*\.php$&lt;/span&gt; {
+            return &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;403&lt;/span&gt;;
+        }
+
+
+        &lt;span style=&#34;color:#007f7f&#34;&gt;# Block access to &amp;#34;hidden&amp;#34; files and directories whose names begin with a&lt;/span&gt;
+        &lt;span style=&#34;color:#007f7f&#34;&gt;# period. This includes directories used by version control systems such&lt;/span&gt;
+        &lt;span style=&#34;color:#007f7f&#34;&gt;# as Subversion or Git to store control files.&lt;/span&gt;
+        location ~ (^|/)\. {
+            return &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;403&lt;/span&gt;;
+        }
+
+}
+
+server {
+	listen &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;80&lt;/span&gt;;
+	listen [::]:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;80&lt;/span&gt;;
+         server_name appname.myhost.org ;
+
+
+	rewrite ^ https://$server_name$request_uri? permanent;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here&amp;rsquo;s the big take away from this file.  We are hosting a new application that&amp;rsquo;s exposing locally port 8080.  Any request that comes in on appname.myhost.org will get redirected to localhost:8080 and we will return the response.&lt;/p&gt;
 &lt;p&gt;This will work great, but we do need to make sure that our docker stack is also running.&lt;/p&gt;
 &lt;h2 id=&#34;docker-application&#34;&gt;Docker application&lt;/h2&gt;
 &lt;p&gt;I won&amp;rsquo;t spend too much time on this but let&amp;rsquo;s assume you have a wordpress application similar to the one in the example on their &lt;a href=&#34;https://hub.docker.com/_/wordpress&#34;&gt;docker hub&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This is the config example pulled from that link:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;version&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#39;3.1&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;services&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;image&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;wordpress&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;restart&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;always&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ports&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- &lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;8080&lt;/span&gt;:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;environment&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_HOST&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;db&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_USER&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampleuser&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_PASSWORD&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;examplepass&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;WORDPRESS_DB_NAME&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampledb&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- wordpress:/var/www/html&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;db&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;image&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;mysql:&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;5.7&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;restart&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;always&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;environment&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_DATABASE&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampledb&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_USER&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;exampleuser&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_PASSWORD&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;examplepass&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;MYSQL_RANDOM_ROOT_PASSWORD&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- db:/var/lib/mysql&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;db&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;if everything works as expected when you start the application via docker-compose up -d http://localhost:8080 will become accessible.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#39;3.1&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;services&lt;/span&gt;:
+
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;image&lt;/span&gt;: wordpress
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;restart&lt;/span&gt;: always
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;8080&lt;/span&gt;:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;80&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;environment&lt;/span&gt;:
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_HOST&lt;/span&gt;: db
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_USER&lt;/span&gt;: exampleuser
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_PASSWORD&lt;/span&gt;: examplepass
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;WORDPRESS_DB_NAME&lt;/span&gt;: exampledb
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:
+      - wordpress:/var/www/html
+
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;db&lt;/span&gt;:
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;image&lt;/span&gt;: mysql:&lt;span style=&#34;color:#ff0;font-weight:bold&#34;&gt;5.7&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;restart&lt;/span&gt;: always
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;environment&lt;/span&gt;:
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_DATABASE&lt;/span&gt;: exampledb
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_USER&lt;/span&gt;: exampleuser
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_PASSWORD&lt;/span&gt;: examplepass
+      &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;MYSQL_RANDOM_ROOT_PASSWORD&lt;/span&gt;: &lt;span style=&#34;color:#0ff;font-weight:bold&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:
+      - db:/var/lib/mysql
+
+&lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;volumes&lt;/span&gt;:
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;wordpress&lt;/span&gt;:
+  &lt;span style=&#34;color:#fff;font-weight:bold&#34;&gt;db&lt;/span&gt;:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;if everything works as expected when you start the application via docker-compose up -d http://localhost:8080 will become accessible.&lt;/p&gt;
 &lt;p&gt;Now, what we need to do is to get it so our docker based application starts up each time our host restarts.  It would be nice if we can manage a docker app like any other service installed.&lt;/p&gt;
 &lt;p&gt;So, we&amp;rsquo;re going to create a systemd start up script.&lt;/p&gt;
 &lt;h3 id=&#34;docker-systemd-script&#34;&gt;Docker Systemd script&lt;/h3&gt;
 &lt;p&gt;I&amp;rsquo;m running all my docker apps as the docker_user with limited permissions.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;[Unit]
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;[Unit]
 Description = WordPress Blog
 After=docker.service
 Requires=docker.service
@@ -534,23 +534,23 @@ WantedBy=multi-user.target
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;let&amp;rsquo;s save this file in /etc/systemd/system/blog.service&lt;/p&gt;
 &lt;p&gt;we can enable the service on boot via:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo systemctl enable blog.service
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo systemctl enable blog.service
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can also test this out manually by simply running:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo service blog {start|stop|restart}
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo service blog {start|stop|restart}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point you should be able to get a response from:&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://appname.myhost.org&#34;&gt;https://appname.myhost.org&lt;/a&gt;, granted the behavior and hostname will vary based on what you do end up running, but if you are running wordpress, You should see the Installation wizards come up.&lt;/p&gt;
 &lt;h2 id=&#34;docker-check-list&#34;&gt;Docker Check List.&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;It&amp;rsquo;s always a good practice to have&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt; restart: always
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt; restart: always
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
 &lt;li&gt;Database backups are not configured here but you should have a script or cron that will create a datadump every so often.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id=&#34;final-stage&#34;&gt;Final stage&lt;/h2&gt;
 &lt;p&gt;Ensure the nginx config is valid by using &lt;code&gt;nginx -t&lt;/code&gt; and if it all checks out let&amp;rsquo;s restart the nginx server.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo service nginx start
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo service nginx start
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point even if you have a power outage or someone does a sudo reboot all your services should come back up as expected.&lt;/p&gt;
 &lt;p&gt;Naturally this still suffers from a single point of failure, but it&amp;rsquo;s much easier to manage IMO, then the typical bare metal deployments.&lt;/p&gt;
 </description>
@@ -558,10 +558,10 @@ WantedBy=multi-user.target
     
     <item>
       <title>Converting Raid 1 to Raid 5 on Linux file systems</title>
-      <link>https://www.esamir.com/blog/raid_convertion_guide/</link>
+      <link>https://www.esamir.com/posts/raid_convertion_guide/</link>
       <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/raid_convertion_guide/</guid>
+      <guid>https://www.esamir.com/posts/raid_convertion_guide/</guid>
       <description>&lt;p&gt;Converting from Raid 1 to Raid 5
 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.&lt;/p&gt;
 &lt;p&gt;Disclaimer:  At some point during this process I realized that I had a bad mother board.  The reason my /dev/sdd1 failed wasn&amp;rsquo;t the drive, but the bus on the board.  That being said, this is the unverified procedure.&lt;/p&gt;
@@ -569,21 +569,21 @@ This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.&lt
 &lt;ol&gt;
 &lt;li&gt;Stop all mdadm related tasks.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sudo umount /media/data &lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;#of whatever mountpoint is appropriate.&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sudo umount /media/data &lt;span style=&#34;color:#007f7f&#34;&gt;#of whatever mountpoint is appropriate.&lt;/span&gt;
 sudo /etc/init.d/mdadm stop 
 sudo mdadm --stop /dev/md0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
 &lt;li&gt;Change the raid layout&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;This part is kind of scary, and I wouldn&amp;rsquo;t advice mounting the raid at this point.  I especially didn&amp;rsquo;t like the fact that it looks like it&amp;rsquo;s overwriting my raid.. that made me nerveous, but it&amp;rsquo;s essentially restrucuting how data is stored, and putting  a raid 5 mapping on 2 drives.  ie.  creating a degraded raid 5.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;#update this as appropriate.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;#update this as appropriate.
 mdadm --create /dev/md0 --level=5 --raid-devices=2 /dev/sda1 /dev/sdd1 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;WARNING: wait for this step to complete.. look at /prod/mdstats and wait for it to finish before proceeding.&lt;/p&gt;
 &lt;ol start=&#34;3&#34;&gt;
 &lt;li&gt;Add a 3rd drive.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;#in my case I started with /dev/sdd1, added /dev/sda1 to create a raid 1, and then adding /dev/sdb1 as the final device.  You don&amp;rsquo;t have to follow my convention.  That made sense for my use case, since my dead drive was /dev/sdd you can simply start with /dev/sda1 and go alphabetical.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;mdadm --add /dev/md0 /dev/sdb1
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;mdadm --add /dev/md0 /dev/sdb1
 mdadm --grow /dev/md0 --raid-devices=3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This part took around 15 hours for me.&lt;/p&gt;
 &lt;p&gt;At this point, I&amp;rsquo;d be okay with mounting my raid partition.  Again, it&amp;rsquo;s safer not to&amp;hellip; but.. it&amp;rsquo;s won&amp;rsquo;t break the process if you do.&lt;/p&gt;
@@ -601,22 +601,22 @@ mdadm --grow /dev/md0 --raid-devices=3
 mount /dev/md0 /media/data&lt;/p&gt;
 &lt;p&gt;xfs_growfs /media/data&lt;/p&gt;
 &lt;p&gt;c. EXT3/4&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;e2fsck -f /dev/md0 #check file system
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;e2fsck -f /dev/md0 #check file system
 resize2fs /dev/md0   #grow file system
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;5&#34;&gt;
 &lt;li&gt;Update fstab&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;This should not need any changes, but just in case:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;/dev/md0        /media/data     xfs     defaults
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;/dev/md0        /media/data     xfs     defaults
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;6&#34;&gt;
 &lt;li&gt;Update mdadm.conf&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo su - 
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;sudo su - 
 mdadm --detail --scan &amp;gt;&amp;gt; /etc/mdadm/mdadm.conf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;##edit the file and remove the next to last line.  ie.  The command above appends the new mdadm config to your config file.  So remove the previous raid 1 line.  There should be a single line defining md0 which looks something like this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;ARRAY /dev/md/md0 metadata=1.2  UUID=0ec3c5aa:5cee600b:ef1e8f7d:09b20cc8
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;ARRAY /dev/md/md0 metadata=1.2  UUID=0ec3c5aa:5cee600b:ef1e8f7d:09b20cc8
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is the line I removed:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;#ARRAY /dev/md/md0 metadata=0.90 UUID=bf8a2737:554e654c:c2eab133:b01f9710
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;#ARRAY /dev/md/md0 metadata=0.90 UUID=bf8a2737:554e654c:c2eab133:b01f9710
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In other words, assuming you only have 1 raid setup, your mdadm.conf should only have a single ARRAY configured.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ol&gt;

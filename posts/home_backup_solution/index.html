@@ -27,20 +27,20 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
 I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
 I have about 3 TB of data I want to backup and was looking for something that&rsquo;s secure and is a bit more intelligent than a crontab of aws sync." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.esamir.com/blog/home_backup_solution/" />
+<meta property="og:url" content="https://www.esamir.com/posts/home_backup_solution/" />
 <meta property="article:published_time" content="2021-03-07T00:00:00+00:00" />
 <meta property="article:modified_time" content="2021-03-07T00:00:00+00:00" />
 
 
     
-      <base href="https://www.esamir.com/blog/home_backup_solution/">
+      <base href="https://www.esamir.com/posts/home_backup_solution/">
     
     <title>
-  Home Backup Solution · &#39;csgeek&#39; Blog
+  Home Backup Solution · csgeek Blog
 </title>
 
     
-      <link rel="canonical" href="https://www.esamir.com/blog/home_backup_solution/">
+      <link rel="canonical" href="https://www.esamir.com/posts/home_backup_solution/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -80,14 +80,14 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
   
     
   
-  <body class="colorscheme-auto"
+  <body class="colorscheme-dark"
         onload=" twemoji.parse(document.body); "
   >
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
     <a class="navigation-title" href="https://www.esamir.com/">
-      &#39;csgeek&#39; Blog
+      csgeek Blog
     </a>
     
       <span id="dark-mode-toggle" class="float-right">
@@ -101,7 +101,7 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
         
           
             <li class="navigation-item">
-              <a class="navigation-link" href="https://www.esamir.com/blog/">Blog</a>
+              <a class="navigation-link" href="https://www.esamir.com/posts/">Blog</a>
             </li>
           
             <li class="navigation-item">
@@ -121,13 +121,39 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
 
       <div class="content">
         
-  <section class="container page">
-  <article>
-    <header>
-      <h1>Home Backup Solution</h1>
-    </header>
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Home Backup Solution</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2021-03-07T00:00:00Z'>
+                March 7, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              5-minute read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://www.esamir.com/categories/blog/">blog</a></div>
 
-    <h2 id="home-backup-solution">Home Backup Solution</h2>
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://www.esamir.com/tags/software_development/">software_development</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h2 id="home-backup-solution">Home Backup Solution</h2>
 <p>I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology.  It&rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.</p>
 <p>I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.</p>
 <p>I have about 3 TB of data I want to backup and was looking for something that&rsquo;s secure and is a bit more intelligent than a crontab of <code>aws sync</code>.</p>
@@ -142,51 +168,51 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
 <h3 id="backup-service">Backup Service</h3>
 <p>Duplicati is a really cool project though it can be a bit tricky to setup.  I ended up utilizing docker-compose and docker to get it up and running.</p>
 <p>Here&rsquo;s my simple little setup.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;3.7&#34;</span><span style="color:#888">
-</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
-</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">duplicati</span>:<span style="color:#888">
-</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>ghcr.io/linuxserver/duplicati<span style="color:#888">
-</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">container_name</span>:<span style="color:#888"> </span>duplicati<span style="color:#888">
-</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">hostname</span>:<span style="color:#888"> </span>duplicati<span style="color:#888">
-</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">environment</span>:<span style="color:#888">
-</span><span style="color:#888">      </span>- PUID=<span style="color:#0086f7;font-weight:bold">1000</span><span style="color:#888">
-</span><span style="color:#888">      </span>- PGID=<span style="color:#0086f7;font-weight:bold">1000</span><span style="color:#888">
-</span><span style="color:#888">      </span>- TZ=America/Los_Angeles<span style="color:#888">
-</span><span style="color:#888"></span><span style="color:#080;background-color:#0f140f;font-style:italic">#      - CLI_ARGS= #optional</span><span style="color:#888">
-</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
-</span><span style="color:#888">      </span>- ./config:/config<span style="color:#888">
-</span><span style="color:#888">      </span>- /backups:/backups<span style="color:#888">
-</span><span style="color:#888">      </span>- /tank:/source<span style="color:#888">
-</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
-</span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8200</span>:<span style="color:#0086f7;font-weight:bold">8200</span><span style="color:#888">
-</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>unless-stopped<span style="color:#888">
-</span></code></pre></div><p>Please note the mounts.  /backups is the destination where you want to store data.  I&rsquo;m mainly using it for the cloud storage so that is mainly pointless. /tank is my ZFS mount point which is mapped to /source and of course the configuration is exposed as a local volume.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fff;font-weight:bold">version</span>: <span style="color:#0ff;font-weight:bold">&#34;3.7&#34;</span>
+<span style="color:#fff;font-weight:bold">services</span>:
+  <span style="color:#fff;font-weight:bold">duplicati</span>:
+    <span style="color:#fff;font-weight:bold">image</span>: ghcr.io/linuxserver/duplicati
+    <span style="color:#fff;font-weight:bold">container_name</span>: duplicati
+    <span style="color:#fff;font-weight:bold">hostname</span>: duplicati
+    <span style="color:#fff;font-weight:bold">environment</span>:
+      - PUID=<span style="color:#ff0;font-weight:bold">1000</span>
+      - PGID=<span style="color:#ff0;font-weight:bold">1000</span>
+      - TZ=America/Los_Angeles
+<span style="color:#007f7f">#      - CLI_ARGS= #optional</span>
+    <span style="color:#fff;font-weight:bold">volumes</span>:
+      - ./config:/config
+      - /backups:/backups
+      - /tank:/source
+    <span style="color:#fff;font-weight:bold">ports</span>:
+      - <span style="color:#ff0;font-weight:bold">8200</span>:<span style="color:#ff0;font-weight:bold">8200</span>
+    <span style="color:#fff;font-weight:bold">restart</span>: unless-stopped
+</code></pre></div><p>Please note the mounts.  /backups is the destination where you want to store data.  I&rsquo;m mainly using it for the cloud storage so that is mainly pointless. /tank is my ZFS mount point which is mapped to /source and of course the configuration is exposed as a local volume.</p>
 <h4 id="systemd-service">Systemd Service</h4>
 <p>Place the following file under /etc/systemd/system/duplicati.service</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#fb660a;font-weight:bold">[Unit]</span>
-<span style="color:#ff0086;font-weight:bold">Description</span> = <span style="color:#0086d2">Duplicati</span>
-<span style="color:#ff0086;font-weight:bold">After</span>=<span style="color:#0086d2">docker.service</span>
-<span style="color:#ff0086;font-weight:bold">Requires</span>=<span style="color:#0086d2">docker.service</span>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#fff;font-weight:bold">[Unit]</span>
+<span style="color:#007f7f">Description</span> = <span style="color:#0ff;font-weight:bold">Duplicati</span>
+<span style="color:#007f7f">After</span>=<span style="color:#0ff;font-weight:bold">docker.service</span>
+<span style="color:#007f7f">Requires</span>=<span style="color:#0ff;font-weight:bold">docker.service</span>
 
-<span style="color:#fb660a;font-weight:bold">[Service]</span>
-<span style="color:#ff0086;font-weight:bold">Type</span>=<span style="color:#0086d2">idle</span>
-<span style="color:#ff0086;font-weight:bold">WorkingDirectory</span>=<span style="color:#0086d2">/home/docker_user/backup</span>
-<span style="color:#ff0086;font-weight:bold">ExecStart</span>=<span style="color:#0086d2">/usr/bin/docker-compose up</span>
-<span style="color:#ff0086;font-weight:bold">ExecStop</span>=<span style="color:#0086d2">/usr/bin/docker-compose  stop</span>
-<span style="color:#ff0086;font-weight:bold">ExecReload</span> =<span style="color:#0086d2">/usr/bin/docker-compose  restart</span>
-<span style="color:#ff0086;font-weight:bold">User</span>=<span style="color:#0086d2">docker_user</span>
-<span style="color:#ff0086;font-weight:bold">Restart</span>=<span style="color:#0086d2">always</span>
-<span style="color:#ff0086;font-weight:bold">RestartSec</span>=<span style="color:#0086d2">3</span>
-<span style="color:#ff0086;font-weight:bold">RestartPreventExitStatus</span>=<span style="color:#0086d2">0</span>
-<span style="color:#ff0086;font-weight:bold">TimeoutStopSec</span>=<span style="color:#0086d2">10</span>
+<span style="color:#fff;font-weight:bold">[Service]</span>
+<span style="color:#007f7f">Type</span>=<span style="color:#0ff;font-weight:bold">idle</span>
+<span style="color:#007f7f">WorkingDirectory</span>=<span style="color:#0ff;font-weight:bold">/home/docker_user/backup</span>
+<span style="color:#007f7f">ExecStart</span>=<span style="color:#0ff;font-weight:bold">/usr/bin/docker-compose up</span>
+<span style="color:#007f7f">ExecStop</span>=<span style="color:#0ff;font-weight:bold">/usr/bin/docker-compose  stop</span>
+<span style="color:#007f7f">ExecReload</span> =<span style="color:#0ff;font-weight:bold">/usr/bin/docker-compose  restart</span>
+<span style="color:#007f7f">User</span>=<span style="color:#0ff;font-weight:bold">docker_user</span>
+<span style="color:#007f7f">Restart</span>=<span style="color:#0ff;font-weight:bold">always</span>
+<span style="color:#007f7f">RestartSec</span>=<span style="color:#0ff;font-weight:bold">3</span>
+<span style="color:#007f7f">RestartPreventExitStatus</span>=<span style="color:#0ff;font-weight:bold">0</span>
+<span style="color:#007f7f">TimeoutStopSec</span>=<span style="color:#0ff;font-weight:bold">10</span>
 
-<span style="color:#fb660a;font-weight:bold">[Install]</span>
-<span style="color:#ff0086;font-weight:bold">WantedBy</span>=<span style="color:#0086d2">multi-user.target</span>
+<span style="color:#fff;font-weight:bold">[Install]</span>
+<span style="color:#007f7f">WantedBy</span>=<span style="color:#0ff;font-weight:bold">multi-user.target</span>
 </code></pre></div><p>As you can see I&rsquo;m running this as a special user I created with limited permissions only being used for running docker applications.</p>
 <p>Let&rsquo;s enable the service using:</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemclt enable duplicati
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemclt <span style="color:#fff;font-weight:bold">enable</span> duplicati
 </code></pre></div><p>and of course if you haven&rsquo;t done so already you should start the service.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemctl start duplicati
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemctl start duplicati
 </code></pre></div><h2 id="backup-data">BackUp Data</h2>
 <p>Once duplicati is running it&rsquo;ll be accessible via at port 8200.  My NAS&rsquo;s local ip, is 192.168.1.200, so I can access it via http://192.168.1.200:8200</p>
 <p>You should see something that looks like this:</p>
@@ -217,26 +243,40 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
 <li><a href="https://cloud.google.com/">Google Cloud</a></li>
 </ol>
 
-  </article>
-</section>
+      </div>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
-  <script>
-    MathJax = {
-      tex: {
-        inlineMath: [
-          ['$', '$'], ['\\(', '\\)']
-        ],
-        processEscapes: true,
-        processEnvironments: true
-      },
-      options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-      }
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
     };
-  </script>
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "esamir" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
 
       </div>
 
@@ -249,6 +289,8 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
       
         ©
         
+          2019 -
+        
         2021
          Samir Faci (csgeek) 
       
@@ -256,6 +298,8 @@ I have about 3 TB of data I want to backup and was looking for something that&rs
          · 
         Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
       
+      
+        
       
     </section>
   </footer>

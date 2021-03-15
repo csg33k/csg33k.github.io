@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>devops on &#39;csgeek&#39; Blog</title>
+    <title>devops on csgeek Blog</title>
     <link>https://www.esamir.com/tags/devops/</link>
-    <description>Recent content in devops on &#39;csgeek&#39; Blog</description>
+    <description>Recent content in devops on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 22 Aug 2020 00:00:00 +0000</lastBuildDate>
@@ -13,10 +13,10 @@
     
     <item>
       <title>Converting Raid 1 to Raid 5 on Linux file systems</title>
-      <link>https://www.esamir.com/blog/raid_convertion_guide/</link>
+      <link>https://www.esamir.com/posts/raid_convertion_guide/</link>
       <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/raid_convertion_guide/</guid>
+      <guid>https://www.esamir.com/posts/raid_convertion_guide/</guid>
       <description>Converting from Raid 1 to Raid 5 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.
 Disclaimer: At some point during this process I realized that I had a bad mother board. The reason my /dev/sdd1 failed wasn&amp;rsquo;t the drive, but the bus on the board. That being said, this is the unverified procedure.
 I&amp;rsquo;m running on Ubuntu 12.10 but you should be able to do this on any modern Linux distribution.</description>

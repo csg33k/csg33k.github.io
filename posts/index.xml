@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blogs on &#39;csgeek&#39; Blog</title>
-    <link>https://www.esamir.com/blog/</link>
-    <description>Recent content in Blogs on &#39;csgeek&#39; Blog</description>
+    <title>Posts on csgeek Blog</title>
+    <link>https://www.esamir.com/posts/</link>
+    <description>Recent content in Posts on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.esamir.com/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.esamir.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Awesome Kubernetes Resources Testing</title>
-      <link>https://www.esamir.com/blog/kubenetes_resources/</link>
+      <title>Awesome Kubernetes Resources</title>
+      <link>https://www.esamir.com/posts/kubenetes_resources/</link>
       <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/kubenetes_resources/</guid>
+      <guid>https://www.esamir.com/posts/kubenetes_resources/</guid>
       <description>A much more comprehensive list can be found here. This is likely a subset of the items in that repo and a few additions of tools i&amp;rsquo;ve tried out or want to try out to make my K8s life easier.
 CLI Tools:
  Helm Kubernetes package manager K9s CLI management tool. kube-shell integrated shell environment  Cluster Provisioning
@@ -25,10 +25,10 @@ CLI Tools:
     
     <item>
       <title>Home Backup Solution</title>
-      <link>https://www.esamir.com/blog/home_backup_solution/</link>
+      <link>https://www.esamir.com/posts/home_backup_solution/</link>
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/home_backup_solution/</guid>
+      <guid>https://www.esamir.com/posts/home_backup_solution/</guid>
       <description>Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&amp;rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.
 I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
 I have about 3 TB of data I want to backup and was looking for something that&amp;rsquo;s secure and is a bit more intelligent than a crontab of aws sync.</description>
@@ -36,10 +36,10 @@ I have about 3 TB of data I want to backup and was looking for something that&am
     
     <item>
       <title>The Toxicity Of Open Source</title>
-      <link>https://www.esamir.com/blog/toxicity_of_oss/</link>
+      <link>https://www.esamir.com/posts/toxicity_of_oss/</link>
       <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>
       
-      <guid>https://www.esamir.com/blog/toxicity_of_oss/</guid>
+      <guid>https://www.esamir.com/posts/toxicity_of_oss/</guid>
       <description>My most recent experiences though really saddened me and exposed a certain toxicity in the OSS community that I really wish wasn&amp;rsquo;t so prevalent.
 I&amp;rsquo;ve been posting on and off on dev.to but I never introduced myself so let me preface this post with a bit about me to give some context.
 I&amp;rsquo;ve been using open source and Linux on and off since the early 2000s. My first Linux distro was Caldera 2.</description>
@@ -47,10 +47,10 @@ I&amp;rsquo;ve been using open source and Linux on and off since the early 2000s
     
     <item>
       <title>Docker IPV6 Guide</title>
-      <link>https://www.esamir.com/blog/docker_ipv6_guide/</link>
+      <link>https://www.esamir.com/posts/docker_ipv6_guide/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/docker_ipv6_guide/</guid>
+      <guid>https://www.esamir.com/posts/docker_ipv6_guide/</guid>
       <description>I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
 Assumptions:
  You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&amp;rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</description>
@@ -58,10 +58,10 @@ Assumptions:
     
     <item>
       <title>Poor Man&#39;s Docker Deployment</title>
-      <link>https://www.esamir.com/blog/docker_deploy_cheaply/</link>
+      <link>https://www.esamir.com/posts/docker_deploy_cheaply/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/docker_deploy_cheaply/</guid>
+      <guid>https://www.esamir.com/posts/docker_deploy_cheaply/</guid>
       <description>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
 Assumptions:
  You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init.</description>
@@ -69,10 +69,10 @@ Assumptions:
     
     <item>
       <title>Converting Raid 1 to Raid 5 on Linux file systems</title>
-      <link>https://www.esamir.com/blog/raid_convertion_guide/</link>
+      <link>https://www.esamir.com/posts/raid_convertion_guide/</link>
       <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/blog/raid_convertion_guide/</guid>
+      <guid>https://www.esamir.com/posts/raid_convertion_guide/</guid>
       <description>Converting from Raid 1 to Raid 5 This assumes you have a functional Raid 1 and wish to convert it to a Raid 5.
 Disclaimer: At some point during this process I realized that I had a bad mother board. The reason my /dev/sdd1 failed wasn&amp;rsquo;t the drive, but the bus on the board. That being said, this is the unverified procedure.
 I&amp;rsquo;m running on Ubuntu 12.10 but you should be able to do this on any modern Linux distribution.</description>
