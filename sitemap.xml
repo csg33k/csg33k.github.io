@@ -73,12 +73,17 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/about/</loc>
-    <lastmod>2020-09-20T18:56:42-07:00</lastmod>
+    <loc>https://www.esamir.com/</loc>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.esamir.com/</loc>
+    <loc>https://www.esamir.com/search/</loc>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/about/</loc>
     <lastmod>2020-09-20T18:56:42-07:00</lastmod>
   </url>
   

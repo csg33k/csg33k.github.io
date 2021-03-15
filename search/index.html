@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Language" content="en">
 
     <meta name="author" content="Samir Faci (csgeek)">
-    <meta name="description" content="csgeek&#39;s personal website">
+    <meta name="description" content="Search website for keywords">
     <meta name="keywords" content="blog,personal">
 
     
@@ -15,25 +15,26 @@
     
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Posts"/>
-<meta name="twitter:description" content="csgeek&#39;s personal website"/>
+<meta name="twitter:title" content="Site Search"/>
+<meta name="twitter:description" content="Search website for keywords"/>
 
-    <meta property="og:title" content="Posts" />
-<meta property="og:description" content="csgeek&#39;s personal website" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://www.esamir.com/posts/" />
-<meta property="og:updated_time" content="2021-03-15T00:00:00+00:00" />
+    <meta property="og:title" content="Site Search" />
+<meta property="og:description" content="Search website for keywords" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.esamir.com/search/" />
+<meta property="article:published_time" content="2020-10-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-29T00:00:00+00:00" />
 
 
     
-      <base href="https://www.esamir.com/posts/">
+      <base href="https://www.esamir.com/search/">
     
     <title>
-  Posts · csgeek Blog
+  Site Search · csgeek Blog
 </title>
 
     
-      <link rel="canonical" href="https://www.esamir.com/posts/">
+      <link rel="canonical" href="https://www.esamir.com/search/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -66,7 +67,6 @@
     <link rel="apple-touch-icon" href="https://www.esamir.com/images/apple-touch-icon.png">
     <link rel="apple-touch-icon"  sizes="180x180" href="https://www.esamir.com/images/apple-touch-icon.png">
 
-    <link rel="alternate" type="application/rss+xml" href="https://www.esamir.com/posts/index.xml" title="csgeek Blog" />
     <meta name="generator" content="Hugo 0.70.0" />
   </head>
   
@@ -119,43 +119,73 @@
 
       <div class="content">
         
-  <section class="container list">
-    <h1 class="title"> Posts </h1>
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Site Search</h1>
+    </header>
+
+    <form id="custom-search" name="custom-search" method="post" action="" onsubmit="customSearchResults(); return false;">
+    <p>
+        <input id="custom-search-field" type="text" name="search" value="" title="Search String"
+            placeholder="SearchString">
+        
+    </p>
     
-    <ul><li>
-  <span class="date">March 15, 2021</span>
-  <a class="title" href="https://www.esamir.com/posts/kubenetes_resources/">Awesome Kubernetes Resources</a>
-</li>
-<li>
-  <span class="date">March 7, 2021</span>
-  <a class="title" href="https://www.esamir.com/posts/home_backup_solution/">Home Backup Solution</a>
-</li>
-<li>
-  <span class="date">December 23, 2020</span>
-  <a class="title" href="https://www.esamir.com/posts/toxicity_of_oss/">The Toxicity Of Open Source</a>
-</li>
-<li>
-  <span class="date">August 26, 2020</span>
-  <a class="title" href="https://www.esamir.com/posts/docker_ipv6_guide/">Docker IPV6 Guide</a>
-</li>
-<li>
-  <span class="date">August 26, 2020</span>
-  <a class="title" href="https://www.esamir.com/posts/docker_deploy_cheaply/">Poor Man&#39;s Docker Deployment</a>
-</li>
-<li>
-  <span class="date">August 22, 2020</span>
-  <a class="title" href="https://www.esamir.com/posts/raid_convertion_guide/">Converting Raid 1 to Raid 5 on Linux file systems</a>
-</li>
-</ul>
+    <p>
+        <input type="hidden" name="option" value="AND">
+        
+        
+    </p>
+</form>
+
+<div id="custom-search-results"></div>
+
+<script>
+    
+    let params = {
+        json_src: '/index.json', 
+        minlength: 3,
+        defaultsearch: 'AND',
+        sort_date: 'DESC',
+        autocomplete: 1, 
+        section_search: 0, 
+        badwords: 'and,there,the,this,that,you', 
+        json_wait: '<p><em>loading...</em></p>',
+        json_ready: '<p><em>Please enter a search term</em></p>',
+        extern_icon: ' (external link)', 
+        err_badstring: '<p>To short!</p>',
+        err_noresult: '<p>Unfortunately no search result. Please try again.</p>',
+        err_norequest: '<p style="text-align: center; color:red;">The full text search is currently not available.</p>',
+        err_filefailed: '<p style="text-align: center;color: red;">Search file could not be retrieved.</p>',
+        res_one_item: '<p><em>[CNT] RESULT</em></p>',
+        res_more_items: '<p><em>[CNT] RESULTS</em></p>',
+        res_out_top: '<ul>',
+        res_out_bottom: '</ul>',
+        res_item_tpl: '<li><a href="[URL]">[TITLE]</a><br>[DATE]:[SUMMARY]<br><em>[SECTION][TAGS]</em></li>',
+        add_searchlink: '<p><a href="https://duckduckgo.com/?q=site:yourdomain.com [QUERY]" target="_blank"><i>Not satisfied with the search results? External search via DuckDuckGo ...</i></a></p>'
+    };
 
     
+    let section_trans = {
+        "post": "Blog",
+        
+    };
 
+    let searchfield_weight = {
+        "title": 5,
+        "tags": 5,
+        "summary": 2,
+        "content": 1
+    };
 
+</script>
+<script type="text/javascript" src="https://www.esamir.com/js/search.js"></script>
 
+  </article>
+</section>
 
-
-
-  </section>
+  
 
       </div>
 
