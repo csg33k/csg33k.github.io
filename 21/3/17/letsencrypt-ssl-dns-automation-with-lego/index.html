@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Samir Faci (csgeek)">
+    <meta name="description" content="Lego and LetsEncrypt if you haven&rsquo;t heard about letsencrypt you should. If you&rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&rsquo;t be any reason not to use SSL. The CPU/server cost is minimal and there is tooling that makes this trivial. I&rsquo;m going to walk you through the process of setting SSL using nginx and we&rsquo;ll use docker for good measure.">
+    <meta name="keywords" content="blog,personal">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="LetsEncrypt SSL DNS automation with lego"/>
+<meta name="twitter:description" content="Lego and LetsEncrypt if you haven&rsquo;t heard about letsencrypt you should. If you&rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&rsquo;t be any reason not to use SSL. The CPU/server cost is minimal and there is tooling that makes this trivial. I&rsquo;m going to walk you through the process of setting SSL using nginx and we&rsquo;ll use docker for good measure."/>
+
+    <meta property="og:title" content="LetsEncrypt SSL DNS automation with lego" />
+<meta property="og:description" content="Lego and LetsEncrypt if you haven&rsquo;t heard about letsencrypt you should. If you&rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&rsquo;t be any reason not to use SSL. The CPU/server cost is minimal and there is tooling that makes this trivial. I&rsquo;m going to walk you through the process of setting SSL using nginx and we&rsquo;ll use docker for good measure." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.esamir.com/21/3/17/letsencrypt-ssl-dns-automation-with-lego/" />
+<meta property="article:published_time" content="2021-03-17T15:47:21-07:00" />
+<meta property="article:modified_time" content="2021-03-17T15:47:21-07:00" />
+
+
+    
+      <base href="https://www.esamir.com/21/3/17/letsencrypt-ssl-dns-automation-with-lego/">
+    
+    <title>
+  LetsEncrypt SSL DNS automation with lego · csgeek Blog
+</title>
+
+    
+      <link rel="canonical" href="https://www.esamir.com/21/3/17/letsencrypt-ssl-dns-automation-with-lego/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.esamir.com/css/coder.min.fce3d3684e836ce340cdd591dad1749c310472d5ed4049fab99845c9aec4d4bf.css" integrity="sha256-/OPTaE6DbONAzdWR2tF0nDEEctXtQEn6uZhFya7E1L8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.esamir.com/css/coder-dark.min.717236c74e0a5208ef73964a9f44c6b443b689a95b270d8b2a40d0c012460dac.css" integrity="sha256-cXI2x04KUgjvc5ZKn0TGtEO2ialbJw2LKkDQwBJGDaw=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://www.esamir.com/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon"  sizes="180x180" href="https://www.esamir.com/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+  
+  
+  
+    
+  
+  <body class="colorscheme-dark"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.esamir.com/">
+      csgeek Blog
+    </a>
+    
+      <span id="dark-mode-toggle" class="float-right">
+        <i class="fas fa-adjust fa-fw"></i>
+      </span>
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fas fa-bars fa-fw"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/search">Search</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://github.com/safaci2000/blog">Source</a>
+            </li>
+          
+        
+        
+        <li class="navigation-item separator">
+          <span>|</span>
+        </li>
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">LetsEncrypt SSL DNS automation with lego</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2021-03-17T15:47:21-07:00'>
+                March 17, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              5-minute read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://www.esamir.com/tags/docker/">docker</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/ssl/">ssl</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/security/">security</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/automation/">automation</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/ghost/">ghost</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/lego/">lego</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h1 id="lego-and-letsencrypt">Lego and LetsEncrypt</h1>
+<p>if you haven&rsquo;t heard about letsencrypt you should.  If you&rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything.  Honestly at this point there shouldn&rsquo;t be any reason not to use SSL.  The CPU/server cost is minimal and there is tooling that makes this trivial.  I&rsquo;m going to walk you through the process of setting SSL using nginx and we&rsquo;ll use docker for good measure.</p>
+<h2 id="dependenciestooling">Dependencies/Tooling</h2>
+<p>Some familiarity with the following tools would be nice to have but not required.</p>
+<ul>
+<li>Docker</li>
+<li>nginx</li>
+<li>SSL</li>
+</ul>
+<h2 id="ssl">SSL</h2>
+<p><a href="https://letsencrypt.org/">LetsEncrypt</a> provides free SSL/TLS certificate for the world at large as long as you can verify that you are who you are.  They have several tools that validate you, the easiest being running a web server, adding a DNS entry and so on.  <a href="https://certbot.eff.org/">Certbot</a> is likely the most famous tool that generates SSL certificate</p>
+<p>Personally I prefer using <a href="https://github.com/go-acme/lego">Lego</a> which is a letsencrypt written in Go.  Partly I&rsquo;m a big fan of Go as a language so I appreciate the developer&rsquo;s choice but also it lets me wildcard certificates and SAN very easily.</p>
+<p>Although you can generate an SSL easily enough in order to get a wildcard DNS verification is much easier and simpler to use.  Though you do need a more legit DNS provider that has an API exposed.  Lego has a long list of supported <a href="https://go-acme.github.io/lego/dns/">DNS Providers</a>.  I have used Amazon Route53 and will likely move to a GCP one down the line, but honestly any of them will work fine.</p>
+<p>What is very cool and special about SAN is that it creates a single certificate that supports multiple domains.</p>
+<p>You can run this anywhere but in my case I have it setup in <code>/etc/letsencrypt</code>.</p>
+<p>The first step is obtaining the certificate the first time.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cd /etc/letsencrypt
+<span style="color:#fb660a">AWS_ACCESS_KEY_ID</span>=SECRET  <span style="color:#fb660a">AWS_SECRET_ACCESS_KEY</span>=<span style="color:#0086d2">&#34;SECRET&#34;</span>  lego --dns route53 --domains=<span style="color:#0086d2">&#34;*.foobar.org&#34;</span> --domains=<span style="color:#0086d2">&#34;foobar.org&#34;</span>   --email valid@email run
+</code></pre></div><p>As you can see I created a wildcard and a <code>foobar.org</code>.  It&rsquo;s a bit annoying but *.foobar.org does not cover the base domain.  You can enumerate all your domains if you don&rsquo;t want to have a wild card.  Example</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cd /etc/letsencrypt
+<span style="color:#fb660a">AWS_ACCESS_KEY_ID</span>=SECRET  <span style="color:#fb660a">AWS_SECRET_ACCESS_KEY</span>=<span style="color:#0086d2">&#34;SECRET&#34;</span>  lego --dns route53 --domains=<span style="color:#0086d2">&#34;www.foobar.org&#34;</span> --domains=<span style="color:#0086d2">&#34;foobar.org&#34;</span> --domains=<span style="color:#0086d2">&#34;mail.foobar.org&#34;</span> --domains=<span style="color:#0086d2">&#34;ftp.foobar.org&#34;</span> --email valid@email run
+</code></pre></div><p>Once you have your certificate you simply need to ensure to renew it regularly. I created a simple bash scripts to do so.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#ff0007;background-color:#0f140f;font-weight:bold;font-style:italic">#!/usr/bin/env bash
+</span><span style="color:#ff0007;background-color:#0f140f;font-weight:bold;font-style:italic"></span>cd /etc/letsencrypt/
+<span style="color:#fb660a">DOMAINS</span>=<span style="color:#0086d2">&#34;domain1 domain2 foobar.org&#34;</span>
+<span style="color:#fb660a">AWS_KEY</span>=&lt;CHANGEME&gt;
+<span style="color:#fb660a">AWS_SECRET</span>=&lt;CHANGEME&gt;
+
+<span style="color:#fb660a;font-weight:bold">for</span> domain in <span style="color:#fb660a">$DOMAINS</span>;
+<span style="color:#fb660a;font-weight:bold">do</span>
+        <span style="color:#fb660a">AWS_ACCESS_KEY_ID</span>=<span style="color:#fb660a">$AWS_KEY</span>  <span style="color:#fb660a">AWS_SECRET_ACCESS_KEY</span>=<span style="color:#0086d2">&#34;</span><span style="color:#fb660a">$AWS_SECRET</span><span style="color:#0086d2">&#34;</span>  lego --dns route53 --domains=<span style="color:#0086d2">&#34;*.</span><span style="color:#fb660a">$domain</span><span style="color:#0086d2">&#34;</span> --domains=<span style="color:#0086d2">&#34;</span><span style="color:#fb660a">$domain</span><span style="color:#0086d2">&#34;</span>   --email user@gmail.com renew
+<span style="color:#fb660a;font-weight:bold">done</span>
+</code></pre></div><p>Using AWS has a bit of a cost for using their DNS providers, but with the 3 domains I have I don&rsquo;t think my bill comes to more than maybe $3/month. That&rsquo;s well worth it to me.</p>
+<h2 id="ghost-web-site">Ghost Web Site</h2>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;3.7&#34;</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">www</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>ghost:<span style="color:#0086f7;font-weight:bold">4.0.1</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- <span style="color:#0086d2">&#34;8890:2368&#34;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">env_file</span>:<span style="color:#888"> </span>.env<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- ./content:/var/lib/ghost/content/<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">mysql</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">container_name</span>:<span style="color:#888"> </span>shared_mysql<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>mysql:<span style="color:#0086f7;font-weight:bold">5.7.29</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">env_file</span>:<span style="color:#888"> </span>.env<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- ./data:/var/lib/mysql<span style="color:#888">
+</span></code></pre></div><p>At this point we expose a port locally 8890 that is serving HTTP traffic.</p>
+<p>We need a .env file that is referenced in the MySQL and ghost instance.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#080;background-color:#0f140f;font-style:italic">## Database Ghost config</span>
+<span style="color:#ff0086;font-weight:bold">database__client</span>=<span style="color:#0086d2">mysql</span>
+<span style="color:#ff0086;font-weight:bold">database__connection__host</span>=<span style="color:#0086d2">shared_mysql</span>
+<span style="color:#ff0086;font-weight:bold">database__connection__user</span>=<span style="color:#0086d2">root</span>
+<span style="color:#ff0086;font-weight:bold">database__connection__password</span>=<span style="color:#0086d2">testing</span>
+<span style="color:#ff0086;font-weight:bold">database__connection__database</span>=<span style="color:#0086d2">ghost</span>
+
+<span style="color:#080;background-color:#0f140f;font-style:italic">##MySQL config</span>
+<span style="color:#ff0086;font-weight:bold">MYSQL_ROOT_PASSWORD</span>=<span style="color:#0086d2">testing</span>
+<span style="color:#ff0086;font-weight:bold">MYSQL_DATABASE</span>=<span style="color:#0086d2">gbfest</span>
+
+
+<span style="color:#080;background-color:#0f140f;font-style:italic">## Domain config</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#url=http://0.0.0.0:8890</span>
+<span style="color:#ff0086;font-weight:bold">url</span>=<span style="color:#0086d2">https://www.foobar.org</span>
+
+<span style="color:#080;background-color:#0f140f;font-style:italic">## Email settings Production </span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">## FILL THESE IN as appropriate</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#mail__from=donotreply@domain</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#mail__transport=SMTP</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#mail__options__port=587</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#mail__options__host=</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#mail_options_service=SMTP</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#mail__options__auth__user=</span>
+<span style="color:#080;background-color:#0f140f;font-style:italic">#mail__options__auth__pass=</span>
+
+</code></pre></div><p>At this point we can bring up the website using <code>docker-compose up -d</code> but to earn brownie points, we&rsquo;ll use a systemd file.</p>
+<h3 id="systemd-startup-script">Systemd startup script</h3>
+<p>in <code>/etc/systemd/system</code> create the following file.  We&rsquo;ll assume you have a local user named docker_user that ideally has a shell of <code>/bin/nologin</code> that&rsquo;s part of the docker group.</p>
+<p>ghost.service file:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">[Unit]
+<span style="color:#fb660a">Description</span> = Ghost Website
+<span style="color:#fb660a">After</span>=docker.service
+<span style="color:#fb660a">Requires</span>=docker.service
+
+[Service]
+<span style="color:#fb660a">Type</span>=simple
+<span style="color:#fb660a">WorkingDirectory</span>=/home/docker_user/ghost
+<span style="color:#fb660a">ExecStart</span>=/usr/bin/docker-compose up
+<span style="color:#fb660a">ExecStop</span>=/usr/bin/docker-compose stop
+<span style="color:#fb660a">ExecReload</span> =/usr/bin/docker-compose restart
+<span style="color:#fb660a">User</span>=docker_user
+<span style="color:#fb660a">Group</span>=docker
+<span style="color:#fb660a">Restart</span>=always
+<span style="color:#fb660a">RestartSec</span>=<span style="color:#0086f7;font-weight:bold">3</span>
+
+
+[Install]
+<span style="color:#fb660a">WantedBy</span>=multi-user.target
+</code></pre></div><p>At this point we can start/stop/enable using systemd.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">systemctl enable ghost.service
+systemctl status ghost
+</code></pre></div><p>In otherwords, if you restart your computer your website will still come up.</p>
+<h3 id="final-notes-on-ghost">Final Notes on ghost</h3>
+<p>At this point we&rsquo;re listening to traffic on http://localhost:8890 that we are not exposing to the internet because like good little internet samaritans we have firewall rules that prevents bad actors from getting in.  But we do need to let people wanting to see our website access.</p>
+<h2 id="nginx-ssl-wrapping">Nginx SSL Wrapping</h2>
+<p>If you haven&rsquo;t you should open up port 80 and 443 on your webserver.  We won&rsquo;t be serving traffic on 80 but if someone comes on 80 we should redirect them and in order to do that we need 80 exposed.</p>
+<p>in <code>/etc/nginx/sites-available</code> we&rsquo;re going to create the following ghost.conf.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx"><span style="color:#fb660a;font-weight:bold">server</span> {
+	<span style="color:#080;background-color:#0f140f;font-style:italic"># SSL configuration
+</span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>	<span style="color:#080;background-color:#0f140f;font-style:italic">#
+</span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>	<span style="color:#fb660a;font-weight:bold">listen</span> <span style="color:#0086f7;font-weight:bold">443</span> <span style="color:#0086d2">ssl</span>;
+	<span style="color:#fb660a;font-weight:bold">listen</span> <span style="color:#0086d2">[::]:443</span> <span style="color:#0086d2">ssl</span>;
+
+        <span style="color:#fb660a;font-weight:bold">access_log</span> <span style="color:#0086d2">/var/log/nginx/ghost_access.log</span>;
+        <span style="color:#fb660a;font-weight:bold">error_log</span> <span style="color:#0086d2">/var/log/nginx/ghost_error.log</span>;
+
+        <span style="color:#fb660a;font-weight:bold">ssl_certificate</span> <span style="color:#0086d2">/etc/letsencrypt/.lego/certificates/_.foobar.org.crt</span>;
+        <span style="color:#fb660a;font-weight:bold">ssl_certificate_key</span> <span style="color:#0086d2">/etc/letsencrypt/.lego/certificates/_.foobar.org.key</span>;
+
+        <span style="color:#fb660a;font-weight:bold">client_max_body_size</span> <span style="color:#0086d2">50M</span>;
+
+
+        <span style="color:#fb660a;font-weight:bold">root</span> <span style="color:#0086d2">/var/www/html/ghost</span>;
+        <span style="color:#fb660a;font-weight:bold">index</span> <span style="color:#0086d2">index.html</span> <span style="color:#0086d2">index.htm</span>;
+
+        <span style="color:#fb660a;font-weight:bold">server_name</span> <span style="color:#0086d2">www.foobar.org</span>;
+        <span style="color:#fb660a;font-weight:bold">large_client_header_buffers</span> <span style="color:#0086f7;font-weight:bold">4</span> <span style="color:#0086f7;font-weight:bold">32k</span>;
+
+	    <span style="color:#fb660a;font-weight:bold">location</span> <span style="color:#0086d2">/</span> {
+	    	<span style="color:#fb660a;font-weight:bold">proxy_set_header</span>        <span style="color:#0086d2">X-Real-IP</span> <span style="color:#fb660a">$remote_addr</span>;
+	    	<span style="color:#fb660a;font-weight:bold">proxy_set_header</span>        <span style="color:#0086d2">X-Forwarded-For</span> <span style="color:#fb660a">$proxy_add_x_forwarded_for</span>;
+	    	<span style="color:#fb660a;font-weight:bold">proxy_set_header</span>        <span style="color:#0086d2">X-Forwarded-Proto</span> <span style="color:#fb660a">$scheme</span>;
+	    	<span style="color:#fb660a;font-weight:bold">proxy_pass</span> <span style="color:#0086d2">http://0.0.0.0:8890</span>;
+	    	<span style="color:#fb660a;font-weight:bold">include</span> <span style="color:#0086d2">proxy_params</span>;
+	    }
+
+        <span style="color:#fb660a;font-weight:bold">location</span> ~ <span style="color:#0086d2">/(data|conf|bin|inc)/</span> {
+            <span style="color:#fb660a;font-weight:bold">deny</span> <span style="color:#0086d2">all</span>;
+        }
+
+        <span style="color:#fb660a;font-weight:bold">location</span> = <span style="color:#0086d2">/robots.txt</span> {
+            <span style="color:#fb660a;font-weight:bold">allow</span> <span style="color:#0086d2">all</span>;
+            <span style="color:#fb660a;font-weight:bold">log_not_found</span> <span style="color:#0086d2">off</span>;
+            <span style="color:#fb660a;font-weight:bold">access_log</span> <span style="color:#0086d2">off</span>;
+        }
+
+        <span style="color:#080;background-color:#0f140f;font-style:italic"># Block access to &#34;hidden&#34; files and directories whose names begin with a
+</span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>        <span style="color:#080;background-color:#0f140f;font-style:italic"># period. This includes directories used by version control systems such
+</span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>        <span style="color:#080;background-color:#0f140f;font-style:italic"># as Subversion or Git to store control files.
+</span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>        <span style="color:#fb660a;font-weight:bold">location</span> ~ <span style="color:#0086d2">(^|/)\.</span> {
+            <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#0086f7;font-weight:bold">403</span>;
+        }
+
+
+}
+
+<span style="color:#fb660a;font-weight:bold">server</span> {
+	<span style="color:#fb660a;font-weight:bold">listen</span> <span style="color:#0086f7;font-weight:bold">80</span>;
+	<span style="color:#fb660a;font-weight:bold">listen</span> <span style="color:#0086d2">[::]:80</span>;
+    <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#0086f7;font-weight:bold">301</span> <span style="color:#0086d2">https://</span><span style="color:#fb660a">$host$request_uri</span>;
+
+    <span style="color:#fb660a;font-weight:bold">server_name</span> <span style="color:#0086d2">www.foobar.org</span>;
+}
+</code></pre></div><p>Before this is finalized we need to enable the site.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cd /etc/nginx/sites-enabled
+ln -s ../sites-available/ghost.conf 01_ghost.conf
+nginx -t <span style="color:#080;background-color:#0f140f;font-style:italic">## Validates config</span>
+systemclt restart nginx
+</code></pre></div><p>We&rsquo;re essentially redirecting port 80 to 443 and creating a proxy that wraps all traffic around SSL and services traffic for <a href="http://www.foobar.org">www.foobar.org</a>.  That also means if we connect to our server by IP we&rsquo;ll get the default page rather then a valid website.</p>
+<h3 id="backup-strategies">Backup Strategies</h3>
+<p>At this point you should be taking a regular SQL dump of your database, and backup the content of your ghost website.  The ghost lab has a export for all your content which you should use regularly before doing any major operations.</p>
+<h2 id="final-notes">Final Notes</h2>
+<p>I personally like using Google Storage for all my images content.  I&rsquo;m currently maintaining a copy of the ghost docker image with additional plugins so support GS with plans of adding S3 soon. You can find the source <a href="https://github.com/OSAlt/gb-docker-ghost">here</a> and docker images can be found <a href="https://hub.docker.com/r/geekbeacon/gb-ghost">here</a>.  The tags are matched to the official ghost docker container.</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "esamir" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>Geeky musings, thoughts and other randomness</p>
+      
+      
+        ©
+        
+          2019 -
+        
+        2021
+         Samir Faci (csgeek) 
+      
+      
+         · 
+        Powered by a modified version of <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+      
+      
+        
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="https://www.esamir.com/js/dark-mode.min.0213e1773e6d1c5a644f847c67a6f8abac49a3776e2976f6008038af8c5b76a1.js"></script>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46486821-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+    
+
+    
+
+  </body>
+
+</html>

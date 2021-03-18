@@ -6,10 +6,64 @@
     <description>Recent content in Tags on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 17 Mar 2021 15:47:21 -0700</lastBuildDate>
     
 	<atom:link href="https://www.esamir.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>automation</title>
+      <link>https://www.esamir.com/tags/automation/</link>
+      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/automation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://www.esamir.com/tags/docker/</link>
+      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ghost</title>
+      <link>https://www.esamir.com/tags/ghost/</link>
+      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/ghost/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lego</title>
+      <link>https://www.esamir.com/tags/lego/</link>
+      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/lego/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://www.esamir.com/tags/security/</link>
+      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssl</title>
+      <link>https://www.esamir.com/tags/ssl/</link>
+      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/ssl/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>awesome</title>
@@ -39,11 +93,38 @@
     </item>
     
     <item>
-      <title>software_development</title>
-      <link>https://www.esamir.com/tags/software_development/</link>
+      <title>homeserver</title>
+      <link>https://www.esamir.com/tags/homeserver/</link>
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.esamir.com/tags/software_development/</guid>
+      <guid>https://www.esamir.com/tags/homeserver/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://www.esamir.com/tags/linux/</link>
+      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>opensource</title>
+      <link>https://www.esamir.com/tags/opensource/</link>
+      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/tags/opensource/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tutorial</title>
+      <link>https://www.esamir.com/tags/tutorial/</link>
+      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/tags/tutorial/</guid>
       <description></description>
     </item>
     
@@ -53,33 +134,6 @@
       <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>
       
       <guid>https://www.esamir.com/tags/community/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>linux</title>
-      <link>https://www.esamir.com/tags/linux/</link>
-      <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>
-      
-      <guid>https://www.esamir.com/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>opensource</title>
-      <link>https://www.esamir.com/tags/opensource/</link>
-      <pubDate>Wed, 23 Dec 2020 19:39:55 -0800</pubDate>
-      
-      <guid>https://www.esamir.com/tags/opensource/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>docker</title>
-      <link>https://www.esamir.com/tags/docker/</link>
-      <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.esamir.com/tags/docker/</guid>
       <description></description>
     </item>
     

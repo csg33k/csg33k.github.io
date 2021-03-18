@@ -6,10 +6,19 @@
     <description>Recent content in docker on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 17 Mar 2021 15:47:21 -0700</lastBuildDate>
     
 	<atom:link href="https://www.esamir.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>LetsEncrypt SSL DNS automation with lego</title>
+      <link>https://www.esamir.com/21/3/17/letsencrypt-ssl-dns-automation-with-lego/</link>
+      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/21/3/17/letsencrypt-ssl-dns-automation-with-lego/</guid>
+      <description>Lego and LetsEncrypt if you haven&amp;rsquo;t heard about letsencrypt you should. If you&amp;rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&amp;rsquo;t be any reason not to use SSL. The CPU/server cost is minimal and there is tooling that makes this trivial. I&amp;rsquo;m going to walk you through the process of setting SSL using nginx and we&amp;rsquo;ll use docker for good measure.</description>
+    </item>
     
     <item>
       <title>Docker IPV6 Guide</title>
