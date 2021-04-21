@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.esamir.com/categories/blog/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/categories/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/tags/development/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/tags/email/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/21/4/21/local-email-development-service/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/posts/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/tags/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.esamir.com/tags/automation/</loc>
     <lastmod>2021-03-17T15:47:21-07:00</lastmod>
   </url>
@@ -28,11 +63,6 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/posts/</loc>
-    <lastmod>2021-03-17T15:47:21-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.esamir.com/tags/security/</loc>
     <lastmod>2021-03-17T15:47:21-07:00</lastmod>
   </url>
@@ -43,27 +73,12 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/tags/</loc>
-    <lastmod>2021-03-17T15:47:21-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.esamir.com/tags/awesome/</loc>
     <lastmod>2021-03-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.esamir.com/21/3/15/awesome-kubernetes-resources/</loc>
-    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.esamir.com/categories/blog/</loc>
-    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.esamir.com/categories/</loc>
     <lastmod>2021-03-15T00:00:00+00:00</lastmod>
   </url>
   

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>development on csgeek Blog</title>
+    <link>https://www.esamir.com/tags/development/</link>
+    <description>Recent content in development on csgeek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.esamir.com/tags/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Local Email Development Service</title>
+      <link>https://www.esamir.com/21/4/21/local-email-development-service/</link>
+      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/21/4/21/local-email-development-service/</guid>
+      <description>Whenever I&amp;rsquo;ve worked on any application that sends out emails it&amp;rsquo;s always an issue on how to mimic the behavior on my local laptop. Usually wherever the app is deployed is configured to be able to just &amp;lsquo;work&amp;rsquo;. aka you can send email by connecting to localhost with no auth.
+Now, how do I mimic locally? In the past i&amp;rsquo;ve tried setting up postfix etc in a docker stack, or more recently doing an smtp relay using google services.</description>
+    </item>
+    
+  </channel>
+</rss>

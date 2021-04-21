@@ -6,10 +6,20 @@
     <description>Recent content in blog on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://www.esamir.com/categories/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Local Email Development Service</title>
+      <link>https://www.esamir.com/21/4/21/local-email-development-service/</link>
+      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.esamir.com/21/4/21/local-email-development-service/</guid>
+      <description>Whenever I&amp;rsquo;ve worked on any application that sends out emails it&amp;rsquo;s always an issue on how to mimic the behavior on my local laptop. Usually wherever the app is deployed is configured to be able to just &amp;lsquo;work&amp;rsquo;. aka you can send email by connecting to localhost with no auth.
+Now, how do I mimic locally? In the past i&amp;rsquo;ve tried setting up postfix etc in a docker stack, or more recently doing an smtp relay using google services.</description>
+    </item>
     
     <item>
       <title>Awesome Kubernetes Resources</title>
