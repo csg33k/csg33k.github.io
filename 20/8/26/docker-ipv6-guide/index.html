@@ -7,9 +7,9 @@
     <meta http-equiv="Content-Language" content="en">
 
     <meta name="author" content="Samir Faci (csgeek)">
-    <meta name="description" content="I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
+    <meta name="description" content="IPV4 IPV6  Step 1, enable in the Daemon Step 2, Firewall rules Step 3, Docker Compose &#43; IPV6 Step 4, Resolve NAT Issues   Final thoughts. Unconfirmed Fix  I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
 Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.">
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals.">
     <meta name="keywords" content="blog,personal">
 
     
@@ -18,14 +18,14 @@ Assumptions:
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Docker IPV6 Guide"/>
-<meta name="twitter:description" content="I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
+<meta name="twitter:description" content="IPV4 IPV6  Step 1, enable in the Daemon Step 2, Firewall rules Step 3, Docker Compose &#43; IPV6 Step 4, Resolve NAT Issues   Final thoughts. Unconfirmed Fix  I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
 Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ."/>
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals."/>
 
     <meta property="og:title" content="Docker IPV6 Guide" />
-<meta property="og:description" content="I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
+<meta property="og:description" content="IPV4 IPV6  Step 1, enable in the Daemon Step 2, Firewall rules Step 3, Docker Compose &#43; IPV6 Step 4, Resolve NAT Issues   Final thoughts. Unconfirmed Fix  I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.
 Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ." />
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.esamir.com/20/8/26/docker-ipv6-guide/" />
 <meta property="article:published_time" content="2020-08-26T00:00:00+00:00" />
@@ -145,7 +145,7 @@ Assumptions:
             </span>
             <span class="reading-time">
               <i class="fas fa-clock"></i>
-              6-minute read
+              7-minute read
             </span>
           </div>
           <div class="categories">
@@ -167,7 +167,20 @@ Assumptions:
 
       <div>
         
-        <p>I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.</p>
+        <ul>
+<li><a href="#ipv4">IPV4</a></li>
+<li><a href="#ipv6">IPV6</a>
+<ul>
+<li><a href="#step-1-enable-in-the-daemon">Step 1, enable in the Daemon</a></li>
+<li><a href="#step-2-firewall-rules">Step 2, Firewall rules</a></li>
+<li><a href="#step-3-docker-compose--ipv6">Step 3, Docker Compose + IPV6</a></li>
+<li><a href="#step-4-resolve-nat-issues">Step 4, Resolve NAT Issues</a></li>
+</ul>
+</li>
+<li><a href="#final-thoughts">Final thoughts.</a></li>
+<li><a href="#unconfirmed-fix">Unconfirmed Fix</a></li>
+</ul>
+<p>I spent a good bit of time trying to figure this out, so I thought I&rsquo;d record this for posterity&rsquo;s sake and others might benefit.</p>
 <p><strong>Assumptions</strong>:</p>
 <ol>
 <li>You are somewhat familiar with <a href="www.docker.com">docker</a></li>
@@ -179,7 +192,6 @@ Assumptions:
 <p>First of all as a developer I find docker to be a glorious thing.  Though it&rsquo;s not limited to just docker, containers in general have made software development so much easier.  It allows a user to run a simple command and have a database, cache, application pretty much any component at your disposal without having the need to be a system administrator and understand the intricacies of configurations in order to get all of these services up and running.</p>
 <p>That being said, in production there are many MANY questions that need to be addressed before going from a dev&rsquo;s use case of docker to a production environment but still it&rsquo;s really a great tool.</p>
 <p>Now, back to the problem at hand, networking.</p>
-<h1 id="networking">Networking</h1>
 <h2 id="ipv4">IPV4</h2>
 <p>Docker was initially built with IPV4 in mind and IPV6 feels like an afterthought.  For IPV4, if you want to expose a service, linked multiple docker containers together, do load balancing everything seems to &lsquo;Just work&rsquo;.  Everything is taken care of for you under the hood and you really don&rsquo;t need to do much.</p>
 <p>This is an example configuration pulled from the <a href="https://hub.docker.com/_/wordpress">wordpress</a> docker hug.</p>
@@ -218,7 +230,7 @@ Assumptions:
 </span><span style="color:#888">
 </span></code></pre></div><p>Bringing up different services and wiring them together is a breeze.  All the iptables rules are taken care of and things just work.  I can connect to http://localhost:8080 and I will see the wordpress getting started guide that walks me through the steps to configure my application.</p>
 <p>Now, IF you are operating in an IPV6 only world.  Let&rsquo;s see what this nightmare is about.</p>
-<h3 id="ipv6-networking">IPV6 Networking</h3>
+<h2 id="ipv6">IPV6</h2>
 <h4 id="step-1-enable-in-the-daemon">Step 1, enable in the Daemon</h4>
 <p>You need to edit /etc/docker/daemon.json and add these options.</p>
 <div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
@@ -228,7 +240,7 @@ Assumptions:
 </code></pre></div><p>The fixed-cidr6 doesn&rsquo;t matter too much but you shouldn&rsquo;t clash with other networks already defined.   The official documentation can be found <a href="https://docs.docker.com/config/daemon/ipv6/">here</a> and I wouldn&rsquo;t stray too far from it unless you know what you&rsquo;re doing.</p>
 <p>Now, the official instructions say all you need to do is restart the service, but I&rsquo;ve found you may need to restart your computer.</p>
 <p>At this point, the network for docker0 default network has been updated to use IPv6.  This does NOT mean that every docker network is IPv6 enabled.</p>
-<h3 id="step-2-firewall-rules">Step 2. FIrewall rules</h3>
+<h3 id="step-2-firewall-rules">Step 2, Firewall rules</h3>
 <p>For some reason this is not automatic and needs to be applied manually.</p>
 <div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ip6tables -t nat -A POSTROUTING -s fd00::/80 ! -o docker0 -j MASQUERADE
 
@@ -244,7 +256,7 @@ Assumptions:
 --- google.com ping statistics ---
 <span style="color:#0086f7;font-weight:bold">4</span> packets transmitted, <span style="color:#0086f7;font-weight:bold">4</span> packets received, 0% packet loss
 round-trip min/avg/max = 17.119/17.240/17.430 ms
-</code></pre></div><h3 id="docker-compose--ipv6">Docker Compose + IPV6</h3>
+</code></pre></div><h3 id="step-3-docker-compose--ipv6">Step 3, Docker Compose + IPV6</h3>
 <p>At this point docker has support for IPV6, but since docker-compose generally creates a new network for each docker-compose.yml definition it won&rsquo;t work as expected.</p>
 <p>The big issue with docker-compose is that it seems IPV6 is not supported for any schema version higher than 2.1 (Current version is 3.7).</p>
 <p>Here is an equivalent version using IPV6 and docker-compose</p>
@@ -278,7 +290,7 @@ round-trip min/avg/max = 17.119/17.240/17.430 ms
 <li>The network cannot clash with the existing docker0 network you gave the daemon.</li>
 <li>Version of the schema must not be higher than 2.1.  Docker-compose Binary can be the latest version, but the schema has to be 2.1.  You can read more info on the issue <a href="https://github.com/docker/compose/issues/3988">here</a>.</li>
 </ol>
-<h3 id="nat-issues">NAT Issues</h3>
+<h3 id="step-4-resolve-nat-issues">Step 4, Resolve NAT Issues</h3>
 <p>Okay, so the way IPV4 works is that all traffic is masked so that if  the host&rsquo;s IP is 10.5.5.23 (for example) and we have 5 different containers all with their own individual addresses, let&rsquo;s say 1.1.1.2-1.1.1.7 respectively.   Any traffic that goes out is <a href="https://en.wikipedia.org/wiki/Network_address_translation">NAT</a>ed  and as far as the outside world and internet network is concerned the request came from 10.5.5.23.</p>
 <p>For IPV6, The request is NOT NATed so all request are coming from the IPV6 docker address and if the firewall doesn&rsquo;t explicitly allow that address then the request will be dropped.</p>
 <p>This is especially troublesome for internal networks where we want to ensure we don&rsquo;t allow external traffic in.</p>
@@ -293,43 +305,52 @@ round-trip min/avg/max = 17.119/17.240/17.430 ms
 <p>In general this practice is frowned upon.  I&rsquo;m not a network expert so I will let you all make your decision on this but from a Developer perspective this solution is great.  Though I do encourage you to read up more about this before just copy/pasting this in.</p>
 <p>I ran across this github project called <a href="https://github.com/robbertkl/docker-ipv6nat">docker-ipv6nat</a> which solved all of my problems.  Someone should really buy the author a beer.</p>
 <p>Let&rsquo;s convert our busybox ping project to use this then I&rsquo;ll explain everything it does.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">version: &#34;2.1&#34;
-services:
-  busy:
-    image: busybox
-    command: ping6 -c 4 google.com
-    networks:
-      - app_net
-
-
-  ipv6:
-    image: robbertkl/ipv6nat
-    restart: unless-stopped
-    network_mode: &#34;host&#34;
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /lib/modules:/lib/modules:ro
-
-networks:
-  beef:
-    enable_ipv6: true
-    driver: bridge
-    driver_opts:
-      com.docker.network.enable_ipv6: &#34;true&#34;
-    ipam:
-      driver: default
-      config:
-       - subnet: 2001:3984:3989::/64
-</code></pre></div><p>This approach no longer requires you to create custom iptables rules AND it NATs ipv6 so the request will be accepted without having to update all firewall rules with your favorite IPv6 network.  The project also cleans up after itself and removes any routing rules it creates.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;2.1&#34;</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">busy</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>busybox<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">command</span>:<span style="color:#888"> </span>ping6<span style="color:#888"> </span>-c<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">4</span><span style="color:#888"> </span>google.com<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">networks</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- app_net<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">ipv6</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>robbertkl/ipv6nat<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>unless-stopped<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">network_mode</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;host&#34;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">privileged</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
+</span><span style="color:#888">      </span>- /var/run/docker.sock:/var/run/docker.sock:ro<span style="color:#888">
+</span><span style="color:#888">      </span>- /lib/modules:/lib/modules:ro<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">networks</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">beef</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">enable_ipv6</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">driver</span>:<span style="color:#888"> </span>bridge<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">driver_opts</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">com.docker.network.enable_ipv6</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#34;true&#34;</span><span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ipam</span>:<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">driver</span>:<span style="color:#888"> </span>default<span style="color:#888">
+</span><span style="color:#888">      </span><span style="color:#fb660a;font-weight:bold">config</span>:<span style="color:#888">
+</span><span style="color:#888">       </span>- <span style="color:#fb660a;font-weight:bold">subnet</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2001</span>:<span style="color:#0086f7;font-weight:bold">3984</span>:<span style="color:#0086f7;font-weight:bold">3989</span>::/<span style="color:#0086f7;font-weight:bold">64</span><span style="color:#888">
+</span></code></pre></div><p>This approach no longer requires you to create custom iptables rules AND it NATs ipv6 so the request will be accepted without having to update all firewall rules with your favorite IPv6 network.  The project also cleans up after itself and removes any routing rules it creates.</p>
 <p>This unblocked me personally and allowed me to have a docker container work as it used under IPV4.</p>
 <p>Now, is this ideal? It depends.</p>
 <p>From a networking perspective, it&rsquo;s an anti-pattern because we&rsquo;re doing doing things we shouldn&rsquo;t be with IPV6
 From a dev perspective it&rsquo;s perfect.</p>
 <p>The alternative though is to make things work as desired from a networking perspective and create an administration hell which makes docker have to be treated as if it was bare metal.</p>
-<p>Final thoughts.</p>
+<h2 id="final-thoughts">Final thoughts.</h2>
 <p>For the love of god docker needs to update its IPV6 policy and the way their application supports IPV6.  This is so overly complicated for no reason.</p>
 <p>I would love to hear everyone&rsquo;s thoughts on this and if there are better ways of doing this, but for now for my own personal use I will use IPV6 NAT whenever and wherever i need IPV6 support.1G</p>
+<h2 id="unconfirmed-fix">Unconfirmed Fix</h2>
+<p><a href="https://dev.to/elabftw">eLabFTW</a> shared this fix with me.  I haven&rsquo;t had the time to really confirm it, but I thought I&rsquo;d share the fix for everyone else&rsquo;s benefit.</p>
+<p>I haven&rsquo;t been able to get this to work on OS X and haven&rsquo;t tested this on Linux yet, but should be added in for reference.  It&rsquo;s definitely worth exploring before following the guide in this article</p>
+<hr>
+<p>With docker 20.10.5 and docker-compose 1.28.6 you don&rsquo;t need to use the ip6tables commands manually and docker can take care of doing the NAT properly (which is MUCH better!).</p>
+<p>For that you need to have &ldquo;experimental&rdquo;: true in /etc/docker/daemon.json, along with &ldquo;ip6tables&rdquo;: true. Then restart docker service and check it has an ipv6 on docker0 bridge.</p>
+<p>I have found that for the network part in the docker-compose.yml file, you need to omit the &ldquo;gateway&rdquo; part (last line).</p>
+<p>After that, all should work nicely :D.</p>
+<p>Side note: if you&rsquo;re using HAProxy, use bind :::80 v4v6. Nothing needs to be changed for exposed ports, it&rsquo;ll listen on both.</p>
 
       </div>
 

@@ -7,9 +7,7 @@
     <meta http-equiv="Content-Language" content="en">
 
     <meta name="author" content="Samir Faci (csgeek)">
-    <meta name="description" content="I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
-Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init.">
+    <meta name="description" content="SSL NGINX  NGINX vhost config.   Docker application  Docker Systemd script   Docker Check List. Final stage  I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others">
     <meta name="keywords" content="blog,personal">
 
     
@@ -18,14 +16,10 @@ Assumptions:
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Poor Man&#39;s Docker Deployment"/>
-<meta name="twitter:description" content="I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
-Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init."/>
+<meta name="twitter:description" content="SSL NGINX  NGINX vhost config.   Docker application  Docker Systemd script   Docker Check List. Final stage  I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others"/>
 
     <meta property="og:title" content="Poor Man&#39;s Docker Deployment" />
-<meta property="og:description" content="I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
-Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init." />
+<meta property="og:description" content="SSL NGINX  NGINX vhost config.   Docker application  Docker Systemd script   Docker Check List. Final stage  I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.esamir.com/20/8/26/poor-mans-docker-deployment/" />
 <meta property="article:published_time" content="2020-08-26T00:00:00+00:00" />
@@ -161,7 +155,22 @@ Assumptions:
 
       <div>
         
-        <p>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one.  Low entry bar, less maintenance that makes docker deployment more appealing.  I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others</p>
+        <ul>
+<li><a href="#ssl">SSL</a></li>
+<li><a href="#nginx">NGINX</a>
+<ul>
+<li><a href="#nginx-vhost-config">NGINX vhost config.</a></li>
+</ul>
+</li>
+<li><a href="#docker-application">Docker application</a>
+<ul>
+<li><a href="#docker-systemd-script">Docker Systemd script</a></li>
+</ul>
+</li>
+<li><a href="#docker-check-list">Docker Check List.</a></li>
+<li><a href="#final-stage">Final stage</a></li>
+</ul>
+<p>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one.  Low entry bar, less maintenance that makes docker deployment more appealing.  I don&rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others</p>
 <p><strong>Assumptions</strong>:</p>
 <ol>
 <li>You are somewhat familiar with <a href="www.docker.com">docker</a></li>

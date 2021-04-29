@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.esamir.com/tags/docker/</loc>
+    <lastmod>2021-04-29T10:04:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/</loc>
+    <lastmod>2021-04-29T10:04:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/tags/kubernetes/</loc>
+    <lastmod>2021-04-29T10:04:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/tags/linux/</loc>
+    <lastmod>2021-04-29T10:04:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/tags/opensource/</loc>
+    <lastmod>2021-04-29T10:04:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/posts/</loc>
+    <lastmod>2021-04-29T10:04:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.esamir.com/tags/</loc>
+    <lastmod>2021-04-29T10:04:58-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.esamir.com/categories/blog/</loc>
     <lastmod>2021-04-21T00:00:00+00:00</lastmod>
   </url>
@@ -28,22 +63,7 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/posts/</loc>
-    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.esamir.com/tags/</loc>
-    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.esamir.com/tags/automation/</loc>
-    <lastmod>2021-03-17T15:47:21-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.esamir.com/tags/docker/</loc>
     <lastmod>2021-03-17T15:47:21-07:00</lastmod>
   </url>
   
@@ -88,27 +108,12 @@
   </url>
   
   <url>
-    <loc>https://www.esamir.com/tags/kubernetes/</loc>
-    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.esamir.com/21/3/7/home-backup-solution/</loc>
     <lastmod>2021-03-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.esamir.com/tags/homeserver/</loc>
-    <lastmod>2021-03-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.esamir.com/tags/linux/</loc>
-    <lastmod>2021-03-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.esamir.com/tags/opensource/</loc>
     <lastmod>2021-03-07T00:00:00+00:00</lastmod>
   </url>
   

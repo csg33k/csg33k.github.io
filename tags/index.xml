@@ -6,10 +6,46 @@
     <description>Recent content in Tags on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Apr 2021 10:04:58 -0700</lastBuildDate>
     
 	<atom:link href="https://www.esamir.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>docker</title>
+      <link>https://www.esamir.com/tags/docker/</link>
+      <pubDate>Thu, 29 Apr 2021 10:04:58 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://www.esamir.com/tags/kubernetes/</link>
+      <pubDate>Thu, 29 Apr 2021 10:04:58 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://www.esamir.com/tags/linux/</link>
+      <pubDate>Thu, 29 Apr 2021 10:04:58 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>opensource</title>
+      <link>https://www.esamir.com/tags/opensource/</link>
+      <pubDate>Thu, 29 Apr 2021 10:04:58 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/tags/opensource/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>development</title>
@@ -35,15 +71,6 @@
       <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
       
       <guid>https://www.esamir.com/tags/automation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>docker</title>
-      <link>https://www.esamir.com/tags/docker/</link>
-      <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
-      
-      <guid>https://www.esamir.com/tags/docker/</guid>
       <description></description>
     </item>
     
@@ -102,38 +129,11 @@
     </item>
     
     <item>
-      <title>kubernetes</title>
-      <link>https://www.esamir.com/tags/kubernetes/</link>
-      <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.esamir.com/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>homeserver</title>
       <link>https://www.esamir.com/tags/homeserver/</link>
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/tags/homeserver/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>linux</title>
-      <link>https://www.esamir.com/tags/linux/</link>
-      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.esamir.com/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>opensource</title>
-      <link>https://www.esamir.com/tags/opensource/</link>
-      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.esamir.com/tags/opensource/</guid>
       <description></description>
     </item>
     

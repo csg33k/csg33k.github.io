@@ -17,7 +17,7 @@
       <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
       
       <guid>https://www.esamir.com/21/3/17/letsencrypt-ssl-dns-automation-with-lego/</guid>
-      <description>Lego and LetsEncrypt if you haven&amp;rsquo;t heard about letsencrypt you should. If you&amp;rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&amp;rsquo;t be any reason not to use SSL. The CPU/server cost is minimal and there is tooling that makes this trivial. I&amp;rsquo;m going to walk you through the process of setting SSL using nginx and we&amp;rsquo;ll use docker for good measure.</description>
+      <description>Lego and LetsEncrypt  Dependencies/Tooling SSL Ghost Web Site  Systemd startup script Final Notes on ghost   Nginx SSL Wrapping  Backup Strategies   Final Notes    Lego and LetsEncrypt if you haven&amp;rsquo;t heard about letsencrypt you should. If you&amp;rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&amp;rsquo;t be any reason not to use SSL.</description>
     </item>
     
   </channel>

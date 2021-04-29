@@ -6,10 +6,19 @@
     <description>Recent content in docker on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Mar 2021 15:47:21 -0700</lastBuildDate>
+    <lastBuildDate>Thu, 29 Apr 2021 10:04:58 -0700</lastBuildDate>
     
 	<atom:link href="https://www.esamir.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GCP Google IPv6 Kubernetes support</title>
+      <link>https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/</link>
+      <pubDate>Thu, 29 Apr 2021 10:04:58 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/</guid>
+      <description>Assumptions Implementation  IPV6 Config Load Balancer Backend Configuration LoadBalancer FrontEnd configuration Verification   Closing Notes  HTTPS    Most technical writes and writers in general tend to write in content in the hope that there will be value in their contribution for a good while. Usually most of the content I write is mainly for my own purposes to preserve the directions because I struggled to find a solution online.</description>
+    </item>
     
     <item>
       <title>LetsEncrypt SSL DNS automation with lego</title>
@@ -17,7 +26,7 @@
       <pubDate>Wed, 17 Mar 2021 15:47:21 -0700</pubDate>
       
       <guid>https://www.esamir.com/21/3/17/letsencrypt-ssl-dns-automation-with-lego/</guid>
-      <description>Lego and LetsEncrypt if you haven&amp;rsquo;t heard about letsencrypt you should. If you&amp;rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&amp;rsquo;t be any reason not to use SSL. The CPU/server cost is minimal and there is tooling that makes this trivial. I&amp;rsquo;m going to walk you through the process of setting SSL using nginx and we&amp;rsquo;ll use docker for good measure.</description>
+      <description>Lego and LetsEncrypt  Dependencies/Tooling SSL Ghost Web Site  Systemd startup script Final Notes on ghost   Nginx SSL Wrapping  Backup Strategies   Final Notes    Lego and LetsEncrypt if you haven&amp;rsquo;t heard about letsencrypt you should. If you&amp;rsquo;re still serving all your traffic over HTTP you should stop and move over the HTTPS everything. Honestly at this point there shouldn&amp;rsquo;t be any reason not to use SSL.</description>
     </item>
     
     <item>
@@ -26,9 +35,9 @@
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/20/8/26/docker-ipv6-guide/</guid>
-      <description>I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
+      <description>IPV4 IPV6  Step 1, enable in the Daemon Step 2, Firewall rules Step 3, Docker Compose + IPV6 Step 4, Resolve NAT Issues   Final thoughts. Unconfirmed Fix  I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
 Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&amp;rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</description>
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals.</description>
     </item>
     
     <item>
@@ -37,9 +46,7 @@ Assumptions:
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/20/8/26/poor-mans-docker-deployment/</guid>
-      <description>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
-Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init.</description>
+      <description>SSL NGINX  NGINX vhost config.   Docker application  Docker Systemd script   Docker Check List. Final stage  I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others</description>
     </item>
     
   </channel>

@@ -39,9 +39,7 @@ CLI Tools:
       <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/21/3/7/home-backup-solution/</guid>
-      <description>Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&amp;rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.
-I had S3 backups setup with Synology and wanted to create something similar on the Arch Server.
-I have about 3 TB of data I want to backup and was looking for something that&amp;rsquo;s secure and is a bit more intelligent than a crontab of aws sync.</description>
+      <description>Home Backup Solution  Choosing Storage Solution Backup Service  Systemd Service     BackUp Data  Encryption Destination Source Schedule Backup Retention   Final Step, Backup Duplicati References/ Requirements  Home Backup Solution I setup a NAS a while ago using Arch Linux and ZFS migrating away from Synology. It&amp;rsquo;s really nice to control your data and be able to use more advanced tooling then the limited set of applications that are available from Synology.</description>
     </item>
     
     <item>
@@ -52,7 +50,7 @@ I have about 3 TB of data I want to backup and was looking for something that&am
       <guid>https://www.esamir.com/20/12/23/the-toxicity-of-open-source/</guid>
       <description>My most recent experiences though really saddened me and exposed a certain toxicity in the OSS community that I really wish wasn&amp;rsquo;t so prevalent.
 I&amp;rsquo;ve been posting on and off on dev.to but I never introduced myself so let me preface this post with a bit about me to give some context.
-I&amp;rsquo;ve been using open source and Linux on and off since the early 2000s. My first Linux distro was Caldera 2.</description>
+I&amp;rsquo;ve been using open source and Linux on and off since the early 2000s. My first Linux distribution was Caldera 2.</description>
     </item>
     
     <item>
@@ -61,9 +59,9 @@ I&amp;rsquo;ve been using open source and Linux on and off since the early 2000s
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/20/8/26/docker-ipv6-guide/</guid>
-      <description>I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
+      <description>IPV4 IPV6  Step 1, enable in the Daemon Step 2, Firewall rules Step 3, Docker Compose + IPV6 Step 4, Resolve NAT Issues   Final thoughts. Unconfirmed Fix  I spent a good bit of time trying to figure this out, so I thought I&amp;rsquo;d record this for posterity&amp;rsquo;s sake and others might benefit.
 Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals. I&amp;rsquo;m not a networking expert but you should have an understanding of TCP, the existence of IPV4 and IPV6 and how they differ.</description>
+ You are somewhat familiar with docker You have some exposure with docker-compose You have at least a basic understanding of networking fundamentals.</description>
     </item>
     
     <item>
@@ -72,9 +70,7 @@ Assumptions:
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://www.esamir.com/20/8/26/poor-mans-docker-deployment/</guid>
-      <description>I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others
-Assumptions:
- You are somewhat familiar with docker You have some exposure with docker-compose You know what systemd, init.</description>
+      <description>SSL NGINX  NGINX vhost config.   Docker application  Docker Systemd script   Docker Check List. Final stage  I have had several use cases where I want to deploy things in docker for multiple reasons, but ease of deployment is a big one. Low entry bar, less maintenance that makes docker deployment more appealing. I don&amp;rsquo;t have the resources to do a full K8 deployment and ended up with this pattern I wanted to share with others</description>
     </item>
     
     <item>

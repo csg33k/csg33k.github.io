@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Samir Faci (csgeek)">
+    <meta name="description" content="Assumptions Implementation  IPV6 Config Load Balancer Backend Configuration LoadBalancer FrontEnd configuration Verification   Closing Notes  HTTPS    Most technical writes and writers in general tend to write in content in the hope that there will be value in their contribution for a good while. Usually most of the content I write is mainly for my own purposes to preserve the directions because I struggled to find a solution online.">
+    <meta name="keywords" content="blog,personal">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GCP Google IPv6 Kubernetes support"/>
+<meta name="twitter:description" content="Assumptions Implementation  IPV6 Config Load Balancer Backend Configuration LoadBalancer FrontEnd configuration Verification   Closing Notes  HTTPS    Most technical writes and writers in general tend to write in content in the hope that there will be value in their contribution for a good while. Usually most of the content I write is mainly for my own purposes to preserve the directions because I struggled to find a solution online."/>
+
+    <meta property="og:title" content="GCP Google IPv6 Kubernetes support" />
+<meta property="og:description" content="Assumptions Implementation  IPV6 Config Load Balancer Backend Configuration LoadBalancer FrontEnd configuration Verification   Closing Notes  HTTPS    Most technical writes and writers in general tend to write in content in the hope that there will be value in their contribution for a good while. Usually most of the content I write is mainly for my own purposes to preserve the directions because I struggled to find a solution online." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/" />
+<meta property="article:published_time" content="2021-04-29T10:04:58-07:00" />
+<meta property="article:modified_time" content="2021-04-29T10:04:58-07:00" />
+
+
+    
+      <base href="https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/">
+    
+    <title>
+  GCP Google IPv6 Kubernetes support · csgeek Blog
+</title>
+
+    
+      <link rel="canonical" href="https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://www.esamir.com/css/coder.min.fce3d3684e836ce340cdd591dad1749c310472d5ed4049fab99845c9aec4d4bf.css" integrity="sha256-/OPTaE6DbONAzdWR2tF0nDEEctXtQEn6uZhFya7E1L8=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="https://www.esamir.com/css/coder-dark.min.717236c74e0a5208ef73964a9f44c6b443b689a95b270d8b2a40d0c012460dac.css" integrity="sha256-cXI2x04KUgjvc5ZKn0TGtEO2ialbJw2LKkDQwBJGDaw=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.esamir.com/img/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="https://www.esamir.com/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon"  sizes="180x180" href="https://www.esamir.com/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+  
+  
+  
+    
+  
+  <body class="colorscheme-dark"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://www.esamir.com/">
+      csgeek Blog
+    </a>
+    
+      <span id="dark-mode-toggle" class="float-right">
+        <i class="fas fa-adjust fa-fw"></i>
+      </span>
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fas fa-bars fa-fw"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://github.com/safaci2000/blog">Source</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="https://www.esamir.com/search">🔍</a>
+            </li>
+          
+        
+        
+        <li class="navigation-item separator">
+          <span>|</span>
+        </li>
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">GCP Google IPv6 Kubernetes support</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2021-04-29T10:04:58-07:00'>
+                April 29, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              5-minute read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://www.esamir.com/tags/docker/">docker</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/linux/">linux</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/opensource/">opensource</a>
+      <span class="separator">•</span>
+    <a href="https://www.esamir.com/tags/kubernetes/">kubernetes</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <ul>
+<li><a href="#assumptions">Assumptions</a></li>
+<li><a href="#implementation">Implementation</a>
+<ul>
+<li><a href="#ipv6-config">IPV6 Config</a></li>
+<li><a href="#load-balancer-backend-configuration">Load Balancer Backend Configuration</a></li>
+<li><a href="#loadbalancer-frontend-configuration">LoadBalancer FrontEnd configuration</a></li>
+<li><a href="#verification">Verification</a></li>
+</ul>
+</li>
+<li><a href="#closing-notes">Closing Notes</a>
+<ul>
+<li><a href="#https">HTTPS</a></li>
+</ul>
+</li>
+</ul>
+<p>Most technical writes and writers in general tend to write in content in the hope that there will be value in their contribution for a good while.  Usually most of the content I write is mainly for my own purposes to preserve the directions because I struggled to find a solution online.  In other cases, I write because I have something to add to the conversation that I didn&rsquo;t see highlighted in the other technical writing / online chatter.</p>
+<p>This is one of those few articles that I hope very much will become obsolete sooner rather then later.  It&rsquo;s getting close to 10 years since IPv6 has launched.  We were supposed to run out and have run out of IPV4 addresses ages ago. Somehow we still manage to squeeze some IPV4 addresses from here and there but we&rsquo;re really way past the time when we should be moving forward.</p>
+<p>There are far too many applications and libraries that still use IPV4 and don&rsquo;t even think about IPv6 networking just yet.  Docker is a great example where it feels like IPv6 was an afterthought.  I wrote an article a while back about the pains of <a href="https://www.esamir.com/20/8/26/docker-ipv6-guide/">Docker IPv6</a>.  Since then, it sounds like they&rsquo;ve added a few fixes that make the experience easier to use.</p>
+<p>I do wish IPv6 adoption was a bit more prevalent.  This particular guide is how to get IPv6 working on Kubernetes on GCP.  There is native support for IPv6 on kubernetes but that hasn&rsquo;t made it out to GCP just yet.  Most of VPC&rsquo;s <a href="https://cloud.google.com/vpc/docs/vpc">networking</a> has yet to add support for IPv6.</p>
+<p>To quote the article: &ldquo;VMs in the VPC network can only send to IPv4 destinations and only receive traffic from IPv4 sources. However, it is possible to create an IPv6 address for a global load balancer.&rdquo;  The latter part is what we&rsquo;re focusing on.  We have a IPV4 based kubernetes cluster where we&rsquo;re using a load balancer to direct traffic from an IPv6 stack to the application we have running.</p>
+<p>Lastly although I&rsquo;m writing this to solve a problem for kubernetes networking not having IPv6 support, this solution doesn&rsquo;t actually rely or event expect kubernetes.  We&rsquo;re simply mapping traffic from one IPv6 address to an IPv4 address.  As long as it&rsquo;s responding than it&rsquo;ll work fine.</p>
+<h2 id="assumptions">Assumptions</h2>
+<ol>
+<li>You have a running web app in kubernetes deployed using IPV4.</li>
+<li>You have some familiarity with the GCP platform.</li>
+</ol>
+<p>Disclaimer: This is VERY google specific. So it will not translate easily to other cloud providers.  There is likely a similar pattern you can use but you&rsquo;ll have to check with your own cloud provider to see how to make that work.</p>
+<p>Enough of all this background, let&rsquo;s get on the the fun stuff.</p>
+<h2 id="implementation">Implementation</h2>
+<h3 id="ipv6-config">IPV6 Config</h3>
+<p>First step is to create a new external IPv6 <a href="https://console.cloud.google.com/networking/addresses/list?">address</a>.</p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/ipv6_create.png" alt="ipv6_create "></p>
+<p>Once create you should see it in the listing.  You can add a DNS entry for your hostname if you&rsquo;d like or we can test this by IP if preferred.</p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/ipv6_address.png" alt="ipv6_address"></p>
+<h3 id="load-balancer-backend-configuration">Load Balancer Backend Configuration</h3>
+<p>Create a new HTTP Load Balancer.  Make sure to select HTTP and not TCP or UDP.</p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/http_lb.png" alt="http_lbl"></p>
+<p>Most load balancers in google defined a frontend (entrypoint), a backend (usually an internal GCP service to send the request to and routing rules (if needed) to control the flow of data.</p>
+<p>First we setup a backend.  We&rsquo;ll create a backend service and select <code>Internet Network Endpoint Group</code> for the backend type.  I&rsquo;m expecting HTTPS traffic so I&rsquo;ll select https as well for the protocol.</p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/backend_type.png" alt="backend_type"></p>
+<p>When you create a new instance group you&rsquo;ll have to put in the IP address you want traffic to be directed to.  Here&rsquo;s an example of a ghost-blog with an example IP.</p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/backend_configuration.png" alt="backend_config"></p>
+<p>At this point you have all the pieces you need to create your backend.  You can see what my final selection looks like here:</p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/backend_selection.png" alt="backend_selection"></p>
+<p>You can enable CDN, healthcheck, logging etc on here as well.  I didn&rsquo;t explore all these settings but feel free to enable/disable whatever you need.</p>
+<h3 id="loadbalancer-frontend-configuration">LoadBalancer FrontEnd configuration</h3>
+<p>This part is much easier.  Select the protocol, since I&rsquo;m routing IPv6 traffic, I chose https, Select the <code>IP Version</code> and choose IPv6 and then the drop down should give you all the options available.  Simple select the IP you created.  In my case that would be <code>blog-example-ip</code></p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/frontend_configuration.png" alt="frontend_selection"></p>
+<h3 id="verification">Verification</h3>
+<p>Finally you can confirm that everything is working with:</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ping6 2600:1901:0:39bc::
+</code></pre></div><p>That of course should respond and be reachable, and the real test is</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">curl -6 https://myhostname
+</code></pre></div><p>should respond with your website&rsquo;s content.</p>
+<p>If you don&rsquo;t want to wait for DNS propagation you can add this entry to your hosts file.  Naturally replace this IP with your own IPv6 address.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">2600:1901:0:39bc::	myhostname
+</code></pre></div><p>Once everything is loaded I highly recommended this chrome extension called <a href="https://chrome.google.com/webstore/detail/ipvfoo/ecanpcehffngcegjmadlcijfolapggal?hl=en">IPvFoo</a>.  It&rsquo;ll show you all the IPv4 and IPv6 address associated with your website.</p>
+<p>You can see an example for how <a href="https://www.geekbeacon.org">GeekBeacon</a> looks like.  If you haven&rsquo;t checked out it&rsquo;s a really cool community I&rsquo;m spending far too much time in.</p>
+<p><img src="https://www.esamir.com/images/k8s_ipv6_google/ipvfoo.png" alt="ipvfoo"></p>
+<h2 id="closing-notes">Closing Notes</h2>
+<h3 id="https">HTTPS</h3>
+<p>This pattern forwards https -&gt; https which is not usually how a load balancer is setup.  We tend to want to offload the CPU cycles of encryption on the load balancer and the backend usually simply serves HTTP traffic.</p>
+<p>My K8 application already handles HTTPS and I don&rsquo;t really want to turn that off.  My hope is that GCP would catch up and enable IPV6 in their GKE implementation sooner rather then later.</p>
+<p>Also, I&rsquo;m utilizing an K8s ingress control that manages https.  The big benefit of relying on K8s rather then GCP is that if at some point I need to migrate to another solution on another cloud provider or hosting internally, the only real requirement is to have an IP + SSL certificate allocated.  Everything else is simply a K8s manifest that needs to be deployed to one destination vs another.  The ability to be cloud agnostic is much preferred to over the savings a few CPU clock cycles.</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "esamir" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>Geeky musings, thoughts and other randomness</p>
+      
+      
+        ©
+        
+          2019 -
+        
+        2021
+         Samir Faci (csgeek) 
+      
+      
+         · 
+        Powered by a modified version of <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+      
+      
+        
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="https://www.esamir.com/js/dark-mode.min.0213e1773e6d1c5a644f847c67a6f8abac49a3776e2976f6008038af8c5b76a1.js"></script>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46486821-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+    
+
+    
+
+  </body>
+
+</html>
