@@ -13,7 +13,8 @@
       <pubDate>Thu, 29 Apr 2021 10:04:58 -0700</pubDate>
       
       <guid>https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/</guid>
-      <description>&lt;ul&gt;
+      <description>&lt;p&gt;&lt;img src=&#34;https://www.esamir.com/images/k8s_ipv6_google/grid.jpeg&#34; alt=&#34;Banner&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#assumptions&#34;&gt;Assumptions&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#implementation&#34;&gt;Implementation&lt;/a&gt;
 &lt;ul&gt;
