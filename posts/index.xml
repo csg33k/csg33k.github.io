@@ -6,7 +6,220 @@
     <description>Recent content in Posts on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 29 Apr 2021 10:04:58 -0700</lastBuildDate><atom:link href="https://www.esamir.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Jun 2021 12:53:04 -0700</lastBuildDate><atom:link href="https://www.esamir.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes SSL Letsencrypt</title>
+      <link>https://www.esamir.com/21/6/3/kubernetes-ssl-letsencrypt/</link>
+      <pubDate>Thu, 03 Jun 2021 12:53:04 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/21/6/3/kubernetes-ssl-letsencrypt/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#create-an-application&#34;&gt;Create An Application&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#load-balancer&#34;&gt;Load Balancer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#certificate-manager&#34;&gt;Certificate Manager&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#certificate-issuer&#34;&gt;Certificate Issuer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#certificate&#34;&gt;Certificate&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#update-nginx-to-enable-ssl&#34;&gt;Update Nginx To Enable SSL&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Assumptions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You have some familiarity with Docker and Kubernetes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt;: Any yaml file that&amp;rsquo;s included, please apply it via kubectl apply -f file.yml.&lt;/p&gt;
+&lt;p&gt;Once you have an application up and running you&amp;rsquo;ll need to ensure it&amp;rsquo;s secure.  We&amp;rsquo;ll explore using &lt;a href=&#34;https://letsencrypt.org/&#34;&gt;letsencrypt&lt;/a&gt; to enable SSL.  It&amp;rsquo;s a free certificate authority and makes it very easy to obtain a certificate.  Naturally SSL doesn&amp;rsquo;t mean your app is secure, but it&amp;rsquo;s a great first step.&lt;/p&gt;
+&lt;p&gt;LetsEncrypt has two methods to validate the authenticity of the request in order issue a certificate.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HTTP Validation&lt;/li&gt;
+&lt;li&gt;DNS Validation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since we&amp;rsquo;re running in K8s, if you do use DNS validation you&amp;rsquo;ll need to use a DNS provider that integrates with K8s.  In order to make this guide more portable and to avoid tying us to any particular DNS provider, I&amp;rsquo;m going to use HTTP Validation.&lt;/p&gt;
+&lt;h2 id=&#34;create-an-application&#34;&gt;Create An Application&lt;/h2&gt;
+&lt;p&gt;Before we get started, we just need to create a simple application to test this with.  We&amp;rsquo;ll install a hello world app running 3 replicas and a service load balancer for port 80.  Here&amp;rsquo;s the yaml I&amp;rsquo;ve used below.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;apiVersion&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;apps/v1&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Deployment&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;labels&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;app&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-world&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-world&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;replicas&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;selector&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;matchLabels&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;app&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-world&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;strategy&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{}&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;template&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;labels&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;app&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-world&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;containers&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;image&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;docker.io/lsizani/hello&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;imagePullPolicy&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Always&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-world&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ports&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;containerPort&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;resources&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{}&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;restartPolicy&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Always&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;status&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{}&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;---&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;apiVersion&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;v1&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Service&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;labels&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;app&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-world&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-docker-svc&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;namespace&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;default&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ports&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;port&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;protocol&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;TCP&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;targetPort&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;selector&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;app&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-world&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;sessionAffinity&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;None&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;type&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ClusterIP&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;status&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;loadBalancer&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;{}&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, the IP address of the service is still internal so you won&amp;rsquo;t be able to connect to it unless you run the following command temporarily.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;kubectl port-forward svc/hello-docker-svc 8000:80
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After which you can connect to &lt;a href=&#34;http://127.0.0.1:8000&#34;&gt;http://127.0.0.1:8000&lt;/a&gt; and you&amp;rsquo;ll see something along these lines:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.esamir.com/images/kubernetes-ssl-letsencrypt/screen1.png&#34; alt=&#34;ScreenShot&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;load-balancer&#34;&gt;Load Balancer&lt;/h2&gt;
+&lt;p&gt;At this point we need to actually expose this to the public.  You&amp;rsquo;ll need to install an nginx-ingress Load balancer.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install nginx ingress-nginx/ingress-nginx --set controller.publishService.enabled=true 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Configure nginx to serve traffic on port 80.  Please note the lack of SSL.  We&amp;rsquo;ll revisit this configuration and add SSL in a later pass.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;apiVersion&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;networking.k8s.io/v1&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Ingress&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-docker&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;annotations&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kubernetes.io/ingress.class&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;nginx&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;nginx.ingress.kubernetes.io/ssl-redirect&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&amp;#34;false&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;rules&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;host&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello.demo.com&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;http&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;paths&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;path&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;pathType&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Prefix&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;backend&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;              &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;service&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;                &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-docker-svc&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;                &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;port&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;                  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;number&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I&amp;rsquo;m using the DNS name hello.demo.com which is just an example, but if your K8s cluster is configured correctly you&amp;rsquo;ll get provisioned an IP address.  Please update the config to use your own DNS value and have it match the IP address.&lt;/p&gt;
+&lt;p&gt;For example, if hello.demo.com doesn&amp;rsquo;t resolve to your external IP address this won&amp;rsquo;t work and it&amp;rsquo;ll fail to generate an SSL.&lt;/p&gt;
+&lt;p&gt;At this point if we navigate to &lt;a href=&#34;http://hello.demo.com&#34;&gt;http://hello.demo.com&lt;/a&gt; we&amp;rsquo;ll see the nice little hello world screen we&amp;rsquo;ve seen previously.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.esamir.com/images/kubernetes-ssl-letsencrypt/screen1.png&#34; alt=&#34;ScreenShot&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;certificate-manager&#34;&gt;Certificate Manager&lt;/h2&gt;
+&lt;p&gt;Now, we need to add a certificate manager.  This is where you would either choose to use DNS validation.  As I mentioned in the intro, I won&amp;rsquo;t be using DNS validation to make this guide agnostic to the platform.  If you do simply specify the correct options you install the helm chart.&lt;/p&gt;
+&lt;p&gt;Installing the cert-manager:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;helm repo add jetstack https://charts.jetstack.io
+helm repo update
+helm install &lt;span style=&#34;color:#0086d2&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&lt;/span&gt;  cert-manager jetstack/cert-manager &lt;span style=&#34;color:#0086d2&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&lt;/span&gt;  --namespace cert-manager &lt;span style=&#34;color:#0086d2&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&lt;/span&gt;  --create-namespace &lt;span style=&#34;color:#0086d2&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&lt;/span&gt;  --version v1.3.1 &lt;span style=&#34;color:#0086d2&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#0086d2&#34;&gt;&lt;/span&gt;  --set &lt;span style=&#34;color:#fb660a&#34;&gt;installCRDs&lt;/span&gt;=true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;certificate-issuer&#34;&gt;Certificate Issuer&lt;/h3&gt;
+&lt;p&gt;There&amp;rsquo;s a Prod and Staging environment for LetsEncrypt.  I installed both of them for convenience.  Staging isn&amp;rsquo;t rate limited and allows you to debug/validate behavior without risking getting hit by a quota.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Staging&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;apiVersion&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;cert-manager.io/v1&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ClusterIssuer&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;letsencrypt-staging&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;acme&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# You must replace this email address with your own.&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# Let&amp;#39;s Encrypt will use this to contact you about expiring&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# certificates, and issues related to your account.&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;email&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;user@email.com&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;server&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;https://acme-staging-v02.api.letsencrypt.org/directory&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;privateKeySecretRef&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# Secret resource that will be used to store the account&amp;#39;s private key.&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;letsencrypt-staging-ssl&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# Add a single challenge solver, HTTP01 using nginx&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;solvers&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;http01&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ingress&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;class&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;nginx&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Production&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;apiVersion&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;cert-manager.io/v1&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ClusterIssuer&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;letsencrypt-prod&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;acme&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# You must replace this email address with your own.&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# Let&amp;#39;s Encrypt will use this to contact you about expiring&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# certificates, and issues related to your account.&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;email&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;samir@es.net&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;server&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;https://acme-v02.api.letsencrypt.org/directory&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;privateKeySecretRef&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# Secret resource that will be used to store the account&amp;#39;s private key.&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;letsencrypt-prod&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#080;background-color:#0f140f;font-style:italic&#34;&gt;# Add a single challenge solver, HTTP01 using nginx&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;solvers&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;http01&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;ingress&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;class&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;nginx&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point we have the ability to create a certificate.  It will utilize which ever issuer we want.  In the example below, I&amp;rsquo;m using the letsencrypt-prod which matches the definition above.&lt;/p&gt;
+&lt;h3 id=&#34;certificate&#34;&gt;Certificate&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;apiVersion&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;cert-manager.io/v1alpha2&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Certificate&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;namespace&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;default&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-certs&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;secretName&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-certs&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;issuerRef&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;letsencrypt-prod&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;ClusterIssuer&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;dnsNames&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;- hello.demo.com&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If everything worked correctly you should be able to see the certificate via&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;kubectl get secrets hello-certs -o json
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;update-nginx-to-enable-ssl&#34;&gt;Update Nginx To Enable SSL&lt;/h2&gt;
+&lt;p&gt;Finally now that we have a certificate, let&amp;rsquo;s enable nginx to use it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#fff;background-color:#111;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;apiVersion&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;networking.k8s.io/v1&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kind&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Ingress&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;metadata&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-docker&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;annotations&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;kubernetes.io/ingress.class&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;nginx&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;spec&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;tls&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;hosts&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;- hello.demo.com&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;secretName&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-certs&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;rules&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;    &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;host&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello.demo.com&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;      &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;http&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;paths&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;          &lt;/span&gt;- &lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;path&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;/&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;pathType&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;Prefix&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;            &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;backend&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;              &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;service&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;                &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;name&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;hello-docker-svc&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;                &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;port&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;                  &lt;/span&gt;&lt;span style=&#34;color:#fb660a;font-weight:bold&#34;&gt;number&lt;/span&gt;:&lt;span style=&#34;color:#888&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0086f7;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#888&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point you should be able to connect &lt;a href=&#34;https://hello.demo.com&#34;&gt;https://hello.demo.com&lt;/a&gt; and get a valid response.&lt;/p&gt;
+&lt;p&gt;You can also check the validity of your certificate by testing it via &lt;a href=&#34;https://www.ssllabs.com/ssltest/&#34;&gt;SSL Labs &lt;/a&gt; I received in A+ for the certificate I generated&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>GCP Google IPv6 Kubernetes support</title>
       <link>https://www.esamir.com/21/4/29/gcp-google-ipv6-kubernetes-support/</link>

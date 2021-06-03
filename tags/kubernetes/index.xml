@@ -6,10 +6,21 @@
     <description>Recent content in kubernetes on csgeek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 29 Apr 2021 10:04:58 -0700</lastBuildDate>
+    <lastBuildDate>Thu, 03 Jun 2021 12:53:04 -0700</lastBuildDate>
     
 	<atom:link href="https://www.esamir.com/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kubernetes SSL Letsencrypt</title>
+      <link>https://www.esamir.com/21/6/3/kubernetes-ssl-letsencrypt/</link>
+      <pubDate>Thu, 03 Jun 2021 12:53:04 -0700</pubDate>
+      
+      <guid>https://www.esamir.com/21/6/3/kubernetes-ssl-letsencrypt/</guid>
+      <description>Create An Application Load Balancer Certificate Manager  Certificate Issuer Certificate   Update Nginx To Enable SSL  Assumptions:
+ You have some familiarity with Docker and Kubernetes  NOTE: Any yaml file that&amp;rsquo;s included, please apply it via kubectl apply -f file.yml.
+Once you have an application up and running you&amp;rsquo;ll need to ensure it&amp;rsquo;s secure. We&amp;rsquo;ll explore using letsencrypt to enable SSL. It&amp;rsquo;s a free certificate authority and makes it very easy to obtain a certificate.</description>
+    </item>
     
     <item>
       <title>GCP Google IPv6 Kubernetes support</title>
